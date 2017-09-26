@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Latex," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Latex 数学公式语法\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)">
+<meta name="keywords" content="Latex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Latex Formula Grammar">
+<meta property="og:url" content="http://yoursite.com/2017/09/24/Latex-Formula-Grammar/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="Latex 数学公式语法\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-26T06:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Latex Formula Grammar">
+<meta name="twitter:description" content="Latex 数学公式语法\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/24/Latex-Formula-Grammar/"/>
+
+
+
+
+
+  <title>Latex Formula Grammar | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/Latex-Formula-Grammar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Latex Formula Grammar</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-24T19:35:02+08:00">
+                2017-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Latex-数学公式语法"><a href="#Latex-数学公式语法" class="headerlink" title="Latex 数学公式语法"></a>Latex 数学公式语法</h1><script type="math/tex; mode=display">\frac{\partial u}{\partial t}
+= h^2 \left( \frac{\partial^2 u}{\partial x^2} +
+\frac{\partial^2 u}{\partial y^2} +
+\frac{\partial^2 u}{\partial z^2}\right)</script><a id="more"></a>
+<h2 id="1-角标"><a href="#1-角标" class="headerlink" title="1. 角标"></a>1. 角标</h2><ul>
+<li>上标：^{}</li>
+<li>下标：_{}</li>
+</ul>
+<p>Example:</p>
+<script type="math/tex; mode=display">x^2,     x_1^2,     x^{(n)}_{22},     O^{2-}_{32},    x^{y^{z^a}},     x^{y_z}</script> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">x^2, x_1^2, x^&#123;(n)&#125;_&#123;22&#125;,  O^&#123;2-&#125;_&#123;32&#125;, x^&#123;y^&#123;z^a&#125;&#125;, x^&#123;y_z&#125;</div></pre></td></tr></table></figure>
+<h2 id="2-分式"><a href="#2-分式" class="headerlink" title="2. 分式"></a>2. 分式</h2><ul>
+<li>分式：\frac{分子}{分母}</li>
+</ul>
+<script type="math/tex; mode=display">\frac{x + y}{x - y}</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\frac&#123;x + y&#125;&#123;x - y&#125;</div></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">\displaystyle\frac{x + y}{x-y}</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\displaystyle\frac&#123;x + y&#125;&#123;x-y&#125;</div></pre></td></tr></table></figure>
+<h2 id="3-根式"><a href="#3-根式" class="headerlink" title="3.根式"></a>3.根式</h2><ul>
+<li>二次根式：\sprt{表达式}</li>
+</ul>
+<script type="math/tex; mode=display">\sqrt{x^2 + y ^2}</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sqrt&#123;x^2 + y^2&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>n次根式 : \sqrt[n]{表达式}</li>
+</ul>
+<script type="math/tex; mode=display">\sqrt[n]{x^2 + y^2}</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sqrt[n]&#123;x^2 + y^2&#125;</div></pre></td></tr></table></figure>
+<h2 id="4-求和与积分"><a href="#4-求和与积分" class="headerlink" title="4. 求和与积分"></a>4. 求和与积分</h2><ul>
+<li>求和：\sum_{k=1}^n表达式（求和项紧随其后,下同） </li>
+<li>积分：积分命令：\int_a^b表达式 </li>
+<li>改变上下限位置：\limits(强制上下限在上下侧) 和 \nolimits(强制上下限在左右侧)</li>
+</ul>
+<p>$\sum_{k=1}^\infty\frac{x^n}{n!}$</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum_&#123;k=1&#125;^\infty\frac&#123;x^n&#125;&#123;n!&#125;</div></pre></td></tr></table></figure>
+<p>$\int_0^\infty e^x$</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\int_0^\infty e^x</div></pre></td></tr></table></figure>
+<p> $\sum\limits_{k=1}^n$ </p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum\limits_&#123;k=1&#125;^n</div></pre></td></tr></table></figure>
+<p>  $\sum\nolimits_{k=1}^n$</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum\nolimits_&#123;k=1&#125;^n</div></pre></td></tr></table></figure>
+<h2 id="5-堆积符号"><a href="#5-堆积符号" class="headerlink" title="5. 堆积符号"></a>5. 堆积符号</h2><ul>
+<li>\stacrel{上位符号}{基位符号} 基位符号大，上位符号小</li>
+</ul>
+<script type="math/tex; mode=display">\vec{x}\stackrel{\mathrm{def}}{=}{x_1,\dots,x_n}</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\vec&#123;x&#125;\stackrel&#123;\mathrm&#123;def&#125;&#125;&#123;=&#125;&#123;x_1,\dots,x_n&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>{上位公式\atop 下位公式} 上下符号一样大</li>
+</ul>
+<script type="math/tex; mode=display">{n+1 \choose k}={n \choose k}+{n \choose k-1}</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;n+1 \choose k&#125;=&#123;n \choose k&#125;+&#123;n \choose k-1&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>{上位公式\choose 下位公式} 上下符号一样大；上下符号被包括在圆弧内</li>
+</ul>
+<script type="math/tex; mode=display">\sum_{k_0,k_1,\ldots>0 \atop k_0+k_1+\cdots=n}A_{k_0}A_{k_1}\cdots</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum_&#123;k_0,k_1,\ldots&gt;0 \atop k_0+k_1+\cdots=n&#125;A_&#123;k_0&#125;A_&#123;k_1&#125;\cdots</div></pre></td></tr></table></figure>
+<h2 id="6-定界符"><a href="#6-定界符" class="headerlink" title="6. 定界符"></a>6. 定界符</h2><script type="math/tex; mode=display">
+（）\big(\big) \Big(\Big) \bigg(\bigg) \Bigg(\Bigg)
+\big(\Big) \bigg(\Bigg)</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">（）\big(\big) \Big(\Big) \bigg(\bigg) \Bigg(\Bigg) \big(\Big) \bigg(\Bigg)</div></pre></td></tr></table></figure>
+<h2 id="占位符"><a href="#占位符" class="headerlink" title="占位符"></a>占位符</h2><ul>
+<li>两个quad空格 $a \qquad b $两个m的宽度,  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$a \qquad b$$</div></pre></td></tr></table></figure>
+<ul>
+<li>quad空格 $a \quad b$一个m的宽度</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$a \quad b $$</div></pre></td></tr></table></figure>
+<ul>
+<li>大空格 $a\ b$ 1/3m宽度  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$a\ b$$</div></pre></td></tr></table></figure>
+<ul>
+<li>中等空格 $a\;b$ 2/7m宽度</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$a\;b$$</div></pre></td></tr></table></figure>
+<ul>
+<li>小空格 $a\,b$ 1/6m宽度</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$ a\,b $$</div></pre></td></tr></table></figure>
+<ul>
+<li>没有空格$ ab$</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$ab$$</div></pre></td></tr></table></figure>
+<ul>
+<li>紧贴$ a!b $缩进1/6m宽度  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">a\!b</div></pre></td></tr></table></figure>
+<h2 id="7-集合"><a href="#7-集合" class="headerlink" title="7. 集合"></a>7. 集合</h2><ul>
+<li>集合的大括号：$ { A, B}$ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\&#123; ...\&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>集合中的$\mid$   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\mid</div></pre></td></tr></table></figure>
+<ul>
+<li>属于：$ \in$   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\in</div></pre></td></tr></table></figure>
+<ul>
+<li>不属于： $\not\in$   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\not\in</div></pre></td></tr></table></figure>
+<ul>
+<li>A包含于B：$ A\subset B$</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A\subset B</div></pre></td></tr></table></figure>
+<ul>
+<li>A真包含于B：$A \subsetneqq B$ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A \subsetneqq B</div></pre></td></tr></table></figure>
+<ul>
+<li>A包含B：$A \supset B$ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A supset B</div></pre></td></tr></table></figure>
+<ul>
+<li>A真包含B：$A \supsetneqq B$</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A \supsetneqq B</div></pre></td></tr></table></figure>
+<ul>
+<li>A不包含于B：$A \not \subset B$ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A \not \subset B</div></pre></td></tr></table></figure>
+<ul>
+<li>A交B： $A \cap B$ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A \cap B</div></pre></td></tr></table></figure>
+<ul>
+<li>A并B：$A \cup B$</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A \cup B</div></pre></td></tr></table></figure>
+<ul>
+<li>A的闭包：$\overline{A}$ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\overline&#123;A&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>A减去B: $A\setminus B$</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A\setminus</div></pre></td></tr></table></figure>
+<ul>
+<li>实数集合：$ \mathbb{R} $</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\mathbb&#123;R&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>空集：$\emptyset $ </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\emptyset</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/22/Binary-Tree/" rel="next" title="Binary Tree">
+                <i class="fa fa-chevron-left"></i> Binary Tree
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">Self-discipline</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Latex-数学公式语法"><span class="nav-number">1.</span> <span class="nav-text">Latex 数学公式语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-角标"><span class="nav-number">1.1.</span> <span class="nav-text">1. 角标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-分式"><span class="nav-number">1.2.</span> <span class="nav-text">2. 分式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-根式"><span class="nav-number">1.3.</span> <span class="nav-text">3.根式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-求和与积分"><span class="nav-number">1.4.</span> <span class="nav-text">4. 求和与积分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-堆积符号"><span class="nav-number">1.5.</span> <span class="nav-text">5. 堆积符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-定界符"><span class="nav-number">1.6.</span> <span class="nav-text">6. 定界符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#占位符"><span class="nav-number">1.7.</span> <span class="nav-text">占位符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-集合"><span class="nav-number">1.8.</span> <span class="nav-text">7. 集合</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
