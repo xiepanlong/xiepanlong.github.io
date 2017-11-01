@@ -67,18 +67,18 @@
 
 
 
-<meta name="description" content="Python学习笔记迭代器 判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】   12from collections import Iterableisinstance(object, Iterable)  判断一个对象是否为Iterator对象：【常见的Iterator对象有】   12from collections i">
+<meta name="description" content="Python学习笔记迭代器 判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】   12from collections import Iterableisinstance(object, Iterable)">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python-Learning-Note">
 <meta property="og:url" content="http://yoursite.com/2017/11/01/Python-Learning-Note/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="Python学习笔记迭代器 判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】   12from collections import Iterableisinstance(object, Iterable)  判断一个对象是否为Iterator对象：【常见的Iterator对象有】   12from collections i">
+<meta property="og:description" content="Python学习笔记迭代器 判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】   12from collections import Iterableisinstance(object, Iterable)">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-11-01T14:36:36.000Z">
+<meta property="og:updated_time" content="2017-11-01T14:39:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python-Learning-Note">
-<meta name="twitter:description" content="Python学习笔记迭代器 判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】   12from collections import Iterableisinstance(object, Iterable)  判断一个对象是否为Iterator对象：【常见的Iterator对象有】   12from collections i">
+<meta name="twitter:description" content="Python学习笔记迭代器 判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】   12from collections import Iterableisinstance(object, Iterable)">
 
 
 
@@ -344,6 +344,9 @@
 <li><p>判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】</p>
   <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Iterable</div><div class="line">isinstance(object, Iterable)</div></pre></td></tr></table></figure>
 </li>
+</ul>
+<a id="more"></a>
+<ul>
 <li><p>判断一个对象是否为Iterator对象：【常见的Iterator对象有】</p>
   <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Iterator</div><div class="line">isinstance(object, Iterable)</div></pre></td></tr></table></figure>
 <p>  【注】惰性序列Iterator<br>  迭代器的一个优点就是它不要求你事先准备好整个迭代过程中所有的元素。迭代器仅仅在迭代至某个元素时才计算该元素，而在这之前或之后，元素可以不存在或者被销毁。这个特点使得它特别适合用于遍历一些巨大的或是无限的集合，比如几个G的文件，或是斐波那契数列等等。这个特点被称为延迟计算或惰性求值(Lazy evaluation)。</p>

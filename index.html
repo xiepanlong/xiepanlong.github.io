@@ -342,85 +342,18 @@
 
       
         
-          
-            <h1 id="Python学习笔记"><a href="#Python学习笔记" class="headerlink" title="Python学习笔记"></a>Python学习笔记</h1><h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><ul>
+          <h1 id="Python学习笔记"><a href="#Python学习笔记" class="headerlink" title="Python学习笔记"></a>Python学习笔记</h1><h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><ul>
 <li><p>判断一个对象是否是Iterable对象：【常见的Iterable对象有list、tuple、dict、set、str等】</p>
   <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Iterable</div><div class="line">isinstance(object, Iterable)</div></pre></td></tr></table></figure>
 </li>
-<li><p>判断一个对象是否为Iterator对象：【常见的Iterator对象有】</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Iterator</div><div class="line">isinstance(object, Iterable)</div></pre></td></tr></table></figure>
-<p>  【注】惰性序列Iterator<br>  迭代器的一个优点就是它不要求你事先准备好整个迭代过程中所有的元素。迭代器仅仅在迭代至某个元素时才计算该元素，而在这之前或之后，元素可以不存在或者被销毁。这个特点使得它特别适合用于遍历一些巨大的或是无限的集合，比如几个G的文件，或是斐波那契数列等等。这个特点被称为延迟计算或惰性求值(Lazy evaluation)。</p>
-</li>
-<li><p>总结</p>
-<p>  凡是可作用于for循环的对象都是Iterable类型；凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；集合数据类型如list、dict、str等是Iterable但不是Iterator，不过可以通过iter()函数获得一个Iterator对象。Python的for循环本质上就是通过不断调用next()函数实现的。</p>
-</li>
 </ul>
-<h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><ul>
-<li><p>可以将函数当成变量传入另一个函数，或者简单的赋值给一个变量</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">advance_func</span><span class="params">(a, b, func)</span>:</span></div><div class="line">	<span class="keyword">return</span> func(a) + func(b)</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="map／reduce／filter／sorted函数"><a href="#map／reduce／filter／sorted函数" class="headerlink" title="map／reduce／filter／sorted函数"></a>map／reduce／filter／sorted函数</h2><ul>
-<li><p>map()函数接收两个参数，一个是函数，一个是Iterable，map将传入的函数依次作用到序列的每个元素，并把结果作为新的Iterator返回（类似生成器）。</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用map对list中所有元素求平方</span></div><div class="line">l = [x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)]</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></div><div class="line">	<span class="keyword">return</span> x * x</div><div class="line">ans = [map(f, l)]</div><div class="line"><span class="keyword">print</span> (ans)</div></pre></td></tr></table></figure>
-</li>
-<li><p>reduce把一个函数作用在一个序列[x1, x2, x3, …]上，这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算，其效果就是：</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># reduce(f, [x1, x2, x3, x4]) =&gt; f(f(f(x1, x2), x3), x4) eg: 计算连乘</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, y)</span>:</span></div><div class="line">	<span class="keyword">return</span> x * y</div><div class="line">l = [x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</div><div class="line">ans = [reduce(func, l)]</div><div class="line"><span class="keyword">print</span> (ans)</div></pre></td></tr></table></figure>
-</li>
-<li><p>[注]字符串大小写的转换函数</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">str.upper()          <span class="comment"># 把所有字符中的小写字母转换成大写字母</span></div><div class="line">str.lower()          <span class="comment"># 把所有字符中的大写字母转换成小写字母</span></div><div class="line">str.capitalize()    <span class="comment"># 把第一个字母转化为大写字母，其余小写</span></div><div class="line">str.title()		     <span class="comment"># 把每个单词的第一个字母转化为大写，其余小写</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>和map()类似，filter()也接收一个函数和一个序列。和map()不同的是，filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素。</p>
-</li>
-<li>[注] 用filter()这个高阶函数，关键在于正确实现一个“筛选”函数。注意到filter()函数返回的是一个Iterator，也就是一个惰性序列，所以要强迫filter()完成计算结果，需要用list()函数获得所有结果并返回list。</li>
-<li><p>eg：素数筛选器</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_odd_iter</span><span class="params">()</span>:</span></div><div class="line">	n = <span class="number">1</span></div><div class="line">	<span class="keyword">while</span> true:</div><div class="line">		<span class="keyword">return</span> n = n + <span class="number">2</span></div><div class="line">		<span class="keyword">yield</span> n</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_not_divisible</span><span class="params">(n)</span>:</span></div><div class="line">	<span class="keyword">return</span> <span class="keyword">lambda</span> x: x % n &gt; <span class="number">0</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">primes</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">yield</span> <span class="number">2</span></div><div class="line">   		it = _odd_iter() <span class="comment"># 初始序列</span></div><div class="line">   		<span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">      			n = next(it) <span class="comment"># 返回序列的第一个数</span></div><div class="line">       		<span class="keyword">yield</span> n</div><div class="line">       		it = filter(_not_divisible(n), it) <span class="comment"># 构造新序列</span></div><div class="line"><span class="comment"># 调用时需要设置终止条件</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>【注】lamada表达式的理解</p>
-</li>
-<li><p>Python内置的sorted()函数就可以对list进行排序,此外，sorted()函数也是一个高阶函数，它还可以接收一个key函数来实现自定义的排序，例如按绝对值大小排序,key指定的函数将作用于list的每一个元素上，并根据key函数返回的结果进行排序。</p>
-</li>
-<li><p>sorted()函数也是一个高阶函数，它还可以接收一个key函数来实现自定义的排序,key指定的函数将作用于list的每一个元素上，并根据key函数返回的结果进行排序。要进行反向排序，不必改动key函数，可以传入第三个参数reverse=True; 例如按照绝对值的大小进行排序:</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sorted([<span class="number">1</span>,<span class="number">-2</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">-9</span>], key = abs)</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">lambda x : x * x  </div><div class="line">=&gt; </div><div class="line">def f(x):</div><div class="line">	return x * x</div></pre></td></tr></table></figure>
-<p>关键字lambda表示匿名函数，冒号前面的x表示函数参数。匿名函数有个限制，就是只能有一个表达式，不用写return，返回值就是该表达式的结果。<br>用匿名函数有个好处，因为函数没有名字，不必担心函数名冲突。此外，匿名函数也是一个函数对象，也可以把匿名函数赋值给一个变量，再利用变量来调用该函数。</p>
-<ul>
-<li>【注】Python对匿名函数的支持有限，只有一些简单的情况下可以使用匿名函数。</li>
-</ul>
-<h2 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h2><p>面向过程的程序设计把计算机程序视为一系列的命令集合，即一组函数的顺序执行。为了简化程序设计，面向过程把函数继续切分为子函数，即把大块函数通过切割成小块函数来降低系统的复杂度。</p>
-<p>而面向对象的程序设计把计算机程序视为一组对象的集合，而每个对象都可以接收其他对象发过来的消息，并处理这些消息，计算机程序的执行就是一系列消息在各个对象之间传递。</p>
-<ul>
-<li><p>如果要获得一个对象的所有属性和方法，可以使用dir()函数，它返回一个包含字符串的list，比如，获得一个str对象的所有属性和方法.</p>
-</li>
-<li><p>使用<strong>slots</strong>，限制实例的属性，eg：</p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></div><div class="line">	__slots__ = (<span class="string">'name'</span>, <span class="string">'age'</span>)  </div><div class="line">	<span class="comment">#这样就限制了Student的实例只能动态的添加name和age这两个属性</span></div></pre></td></tr></table></figure>
-<ul>
-<li>【注】<strong>slots</strong>定义的属性仅对当前类实例起作用，对继承的子类是不起作用的。</li>
-<li>@property的使用</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span><span class="params">(object)</span>:</span></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">width</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.__width</div><div class="line"></div><div class="line"><span class="meta">    @width.setter</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">width</span><span class="params">(self, value)</span>:</span></div><div class="line">        self.__width = value</div><div class="line"></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">height</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.__height</div><div class="line"></div><div class="line"><span class="meta">    @height.setter</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">height</span><span class="params">(self, value)</span>:</span></div><div class="line">        self.__height = value</div><div class="line"></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">resolution</span><span class="params">(self)</span>:</span></div><div class="line">        self.__resolution = self.__height * self.__width</div><div class="line">        <span class="keyword">return</span> self.__resolution</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></div><div class="line">    sc = Screen()</div><div class="line">    sc.width = <span class="number">4</span></div><div class="line">    sc.height = <span class="number">5</span></div><div class="line">    <span class="keyword">print</span> (sc.width, sc.height, sc.resolution)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    test()</div><div class="line">```	</div><div class="line"><span class="comment">## 元类【未知】</span></div><div class="line"></div><div class="line"><span class="comment">## Exception</span></div><div class="line">常见错误类型和继承关系【Python内置的logging模块可以非常容易地记录错误信息】</div></pre></td></tr></table></figure>
-<p>BaseException<br> +— SystemExit<br> +— KeyboardInterrupt<br> +— GeneratorExit<br> +— Exception<br>      +— StopIteration<br>      +— StopAsyncIteration<br>      +— ArithmeticError<br>      |    +— FloatingPointError<br>      |    +— OverflowError<br>      |    +— ZeroDivisionError<br>      +— AssertionError<br>      +— AttributeError<br>      +— BufferError<br>      +— EOFError<br>      +— ImportError<br>           +— ModuleNotFoundError<br>      +— LookupError<br>      |    +— IndexError<br>      |    +— KeyError<br>      +— MemoryError<br>      +— NameError<br>      |    +— UnboundLocalError<br>      +— OSError<br>      |    +— BlockingIOError<br>      |    +— ChildProcessError<br>      |    +— ConnectionError<br>      |    |    +— BrokenPipeError<br>      |    |    +— ConnectionAbortedError<br>      |    |    +— ConnectionRefusedError<br>      |    |    +— ConnectionResetError<br>      |    +— FileExistsError<br>      |    +— FileNotFoundError<br>      |    +— InterruptedError<br>      |    +— IsADirectoryError<br>      |    +— NotADirectoryError<br>      |    +— PermissionError<br>      |    +— ProcessLookupError<br>      |    +— TimeoutError<br>      +— ReferenceError<br>      +— RuntimeError<br>      |    +— NotImplementedError<br>      |    +— RecursionError<br>      +— SyntaxError<br>      |    +— IndentationError<br>      |         +— TabError<br>      +— SystemError<br>      +— TypeError<br>      +— ValueError<br>      |    +— UnicodeError<br>      |         +— UnicodeDecodeError<br>      |         +— UnicodeEncodeError<br>      |         +— UnicodeTranslateError<br>      +— Warning<br>           +— DeprecationWarning<br>           +— PendingDeprecationWarning<br>           +— RuntimeWarning<br>           +— SyntaxWarning<br>           +— UserWarning<br>           +— FutureWarning<br>           +— ImportWarning<br>           +— UnicodeWarning<br>           +— BytesWarning<br>           +— ResourceWarning<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 正则表达式</div><div class="line">* 直接给出字符，相当于精确匹配</div></pre></td></tr></table></figure></p>
-<p>\d  # 匹配单个数字<br>\w  # 匹配单个字符<br>.  # 可以匹配任意字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* 匹配变长字符</div></pre></td></tr></table></figure></p>
-<ul>
-<li><h1 id="表示任意个字符（包含0个）"><a href="#表示任意个字符（包含0个）" class="headerlink" title="表示任意个字符（包含0个）"></a>表示任意个字符（包含0个）</h1></li>
-</ul>
-<ul>
-<li><h1 id="表示至少一个字符"><a href="#表示至少一个字符" class="headerlink" title="表示至少一个字符"></a>表示至少一个字符</h1>?     # 表示0个或者1个字符<br>{n}     # 表示n个字符<br>{n,m}    # 表示n-m个字符<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* 更精确的匹配，可以用[ ]表示范围</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>[a-zA-Z_][0-9a-zA-Z_]*    # 可以匹配由字母或者下划线开头，后接任意个由一个数字，字母或者下划线组成的字符串，也就是python的合法变量名的正则表达式<br>A|B        # 表示A或B<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* ^ 表示行的开头</div></pre></td></tr></table></figure></p>
-<p>^\d        # 表示必须以数字开头<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* $ 表示行的结束</div></pre></td></tr></table></figure></p>
-<p>\d$         # 表示必须以数字结尾<br>```</p>
-<ul>
-<li>【注】Python中提供的re模块，包含所有的正则表达式的功能。</li>
-</ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="external">廖雪峰的官方网站-Python教程</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/01/Python-Learning-Note/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
