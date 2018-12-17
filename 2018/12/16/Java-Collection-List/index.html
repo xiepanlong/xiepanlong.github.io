@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,List," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="keywords" content="Java,List">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java集合总结——List">
+<meta property="og:url" content="http://yoursite.com/2018/12/16/Java-Collection-List/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/list.jpeg">
+<meta property="og:updated_time" content="2018-12-17T00:24:08.156Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java集合总结——List">
+<meta name="twitter:image" content="http://yoursite.com/images/list.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/16/Java-Collection-List/"/>
+
+
+
+
+
+  <title>Java集合总结——List | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/Java-Collection-List/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java集合总结——List</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-16T17:12:31+08:00">
+                2018-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/list.jpeg" alt=""><br><a id="more"></a></p>
+<h2 id="1-Java集合框架简介"><a href="#1-Java集合框架简介" class="headerlink" title="1. Java集合框架简介"></a>1. Java集合框架简介</h2><p>如图所示，我们可以看到Java 的集合框架，Collection 接口是所有集合的根，然后扩展开提供了三大类集合：  </p>
+<ul>
+<li>List</li>
+<li>Set</li>
+<li>Queue / Deque<br>接下来就分别进行介绍这三大类集合</li>
+</ul>
+<h2 id="2-List"><a href="#2-List" class="headerlink" title="2.List"></a>2.List</h2><h3 id="2-1-Vector"><a href="#2-1-Vector" class="headerlink" title="2.1 Vector"></a>2.1 Vector</h3><p>Vector是动态数组，其内部元素以数组形式存储的，所以适合随机访问的场合。除了尾部插入、删除元素以及不顾及顺序的插入的情况，往往性能会相对较差，因为需要通过移动相应元素来保持原有的顺序。不过是在 add() 方法的时候使用 synchronized 进行同步写数据，但是开销较大，所以 Vector 是一个同步容器并不是一个并发容器。</p>
+<h3 id="2-2-ArrayList"><a href="#2-2-ArrayList" class="headerlink" title="2.2 ArrayList"></a>2.2 ArrayList</h3><p>ArrayList是动态数组，其与Vector的区别在于它是非同步的；其内部元素以数组形式存储的，所以适合随机访问的场合。除了尾部插入、删除元素以及不顾及顺序的插入的情况，往往性能会相对较差，因为需要通过移动相应元素来保持原有的顺序。  </p>
+<h4 id="2-2-1-ArrayList扩容"><a href="#2-2-1-ArrayList扩容" class="headerlink" title="2.2.1 ArrayList扩容"></a>2.2.1 ArrayList扩容</h4><ul>
+<li><p>初始化<br>以无参数构造方法创建 ArrayList 时，实际上初始化赋值的是一个空数组。当真正对数组进行添加元素操作时，才真正分配容量。即向数组中添加第一个元素时，数组容量扩为10。</p>
+</li>
+<li><p>扩容源码解读  </p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 在此列表中的指定位置插入指定的元素。 </span></div><div class="line"><span class="comment"> * 先调用 rangeCheckForAdd 对index进行界限检查；然后调用 ensureCapacityInternal 方法保证capacity足够大；</span></div><div class="line"><span class="comment"> * 再将从index开始之后的所有成员后移一个位置；将element插入index位置；最后size加1。</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</div><div class="line">    rangeCheckForAdd(index);</div><div class="line"></div><div class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></div><div class="line">    <span class="comment">//arraycopy()方法实现数组自己复制自己</span></div><div class="line">    <span class="comment">//elementData:源数组;index:源数组中的起始位置;elementData：目标数组；index + 1：目标数组中的起始位置； size - index：要复制的数组元素的数量；</span></div><div class="line">    System.arraycopy(elementData, index, elementData, index + <span class="number">1</span>, size - index);</div><div class="line">    elementData[index] = element;</div><div class="line">    size++;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">* 要分配的最大数组大小</span></div><div class="line"><span class="comment">*/</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ARRAY_SIZE = Integer.MAX_VALUE - <span class="number">8</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * ArrayList扩容的核心方法。扩容的时候会增加1.5倍</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</div><div class="line">    <span class="comment">// oldCapacity为旧容量，newCapacity为新容量</span></div><div class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</div><div class="line">    <span class="comment">//将oldCapacity 右移一位，其效果相当于oldCapacity /2，</span></div><div class="line">    <span class="comment">//我们知道位运算的速度远远快于整除运算，整句运算式的结果就是将新容量更新为旧容量的1.5倍，</span></div><div class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</div><div class="line">    <span class="comment">//然后检查新容量是否大于最小需要容量，若还是小于最小需要容量，那么就把最小需要容量当作数组的新容量，</span></div><div class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</div><div class="line">        newCapacity = minCapacity;</div><div class="line">   <span class="comment">// 如果新容量大于 MAX_ARRAY_SIZE,进入(执行) `hugeCapacity()` 方法来比较 minCapacity 和 MAX_ARRAY_SIZE，</span></div><div class="line">   <span class="comment">//如果minCapacity大于最大容量，则新容量则为`Integer.MAX_VALUE`，否则，新容量大小则为 MAX_ARRAY_SIZE 即为 `Integer.MAX_VALUE - 8`。</span></div><div class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</div><div class="line">        newCapacity = hugeCapacity(minCapacity);</div><div class="line">    <span class="comment">// minCapacity is usually close to size, so this is a win:</span></div><div class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>ensureCapacity方法  </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">    如有必要，增加此 ArrayList 实例的容量，以确保它至少可以容纳由minimum capacity  </span></div><div class="line"><span class="comment">    参数指定的元素数。</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span>   minCapacity   所需的最小容量</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)</div><div class="line">        <span class="comment">// any size if not default element table</span></div><div class="line">        ? <span class="number">0</span></div><div class="line">        <span class="comment">// larger than default for default empty table. It's already</span></div><div class="line">        <span class="comment">// supposed to be at default size.</span></div><div class="line">        : DEFAULT_CAPACITY;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (minCapacity &gt; minExpand) &#123;</div><div class="line">        ensureExplicitCapacity(minCapacity);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最好在 add 大量元素之前用 ensureCapacity 方法，以减少增量从新分配的次数</p>
+<h3 id="2-3-LinkedList"><a href="#2-3-LinkedList" class="headerlink" title="2.3 LinkedList"></a>2.3 LinkedList</h3><p>LinkedList 是基于双向链表实现的，进行节点插入、删除却要高效得多，但是随机访问性能则比动态数组慢。同时它实现了Deque接口，使得LinkedList类也具有队列的特性; LinkedList不是线程安全的，如果想使LinkedList变成线程安全的，可以调用静态类Collections类中的synchronizedList方法：</p>
+<p>【注意】理解Java提供的默认排序算法，具体是什么排序方式以及设计思路。<br>首先需要区分Arrays.sort() 以及 Collections.sort() ，其次需要区分数据类型以及数据集的大小。  </p>
+<ul>
+<li>Collections.sort()底层是调用Arrays.sort() 实现的；  </li>
+<li>对于较小的数据集，Java会直接进行二分插入排序；</li>
+<li>针对原始数据类型：目前使用的是所谓的双轴快速排序，是一种改进的快速排序；</li>
+<li>针对对象数据类型：目前则使用的是TimSort算法，思想上是一种归并和二分插入排序组合的优化排序算法；  </li>
+<li>除此之外，Java8中引入了并行排序算法（parallelSort），这是充分利用了现代多核处理器的计算能力，底层是基于fork-join框架。 </li>
+</ul>
+<h2 id="3-Set"><a href="#3-Set" class="headerlink" title="3.Set"></a>3.Set</h2><h3 id="3-1-HashSet"><a href="#3-1-HashSet" class="headerlink" title="3.1 HashSet"></a>3.1 HashSet</h3><p>HashSet是Set接口典型实现，它按照Hash算法来存储集合中的元素，具有很好的存取和查找性能。主要具有以下特点：</p>
+<ul>
+<li>不保证set的迭代顺序</li>
+<li>HashSet不是同步的，如果多个线程同时访问一个HashSet，要通过代码来保证其同步</li>
+<li>集合元素值可以是null  </li>
+<li>HashSet的底层实际上是由HashMap实现的</li>
+</ul>
+<p>当向HashSet集合中存入一个元素时，HashSet会调用该对象的hashCode()方法来得到该对象的hashCode值，然后根据该值确定对象在HashSet中的存储位置。在Hash集合中，不能同时存放两个相等的元素，而判断两个元素相等的标准是两个对象通过equals方法比较相等并且两个对象的HashCode方法返回值也相等。</p>
+<h3 id="3-2-TreeSet"><a href="#3-2-TreeSet" class="headerlink" title="3.2 TreeSet"></a>3.2 TreeSet</h3><p>TreeSet 是一个有序的集合，它的作用是提供有序的Set集合。TreeSet是基于TreeMap实现的。TreeSet中的元素支持2种排序方式：自然排序 或者 根据创建TreeSet 时提供的 Comparator 进行排序。这取决于使用的构造方法。TreeSet默认情况不允许使用null元素（第一元素为null除外），除非自己设置比较器（TreeMap的key同理），总而言之，与TreeMap采用的比较器有关。<br>TreeSet为基本操作（add、remove 和 contains）提供受保证的 log(n) 时间开销。另外，TreeSet是非同步的。</p>
+<h3 id="3-3-LinkedHashSet"><a href="#3-3-LinkedHashSet" class="headerlink" title="3.3 LinkedHashSet"></a>3.3 LinkedHashSet</h3><p>LinkedHashSet是Set集合的一个实现，具有set集合不重复的特点，同时具有可预测的迭代顺序，也就是我们插入的顺序。并且linkedHashSet是一个非线程安全的集合。其底层是基于LinkedHashMap实现的，LinkedHashSet是一个哈希表和链表的结合，且是一个双向链表。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/xiepanlong/JavaGuide/blob/master/Java%E7%9B%B8%E5%85%B3/ArrayList-Grow.md" target="_blank" rel="external">ArrayList-Grow</a><br><a href="https://www.cnblogs.com/xujian2014/p/4643759.html" target="_blank" rel="external">Java集合之HashSet源码分析</a><br><a href="http://www.cnblogs.com/skywang12345/p/3311268.html" target="_blank" rel="external">TreeSet详细介绍</a><br><a href="https://blog.csdn.net/zhaojie181711/article/details/80510129" target="_blank" rel="external">LinkedHashSet详解</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/16/JVM-Summary/" rel="next" title="JVM-Java虚拟机以及垃圾回收总结">
+                <i class="fa fa-chevron-left"></i> JVM-Java虚拟机以及垃圾回收总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java集合框架简介"><span class="nav-text">1. Java集合框架简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-List"><span class="nav-text">2.List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Vector"><span class="nav-text">2.1 Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-ArrayList"><span class="nav-text">2.2 ArrayList</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-ArrayList扩容"><span class="nav-text">2.2.1 ArrayList扩容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-LinkedList"><span class="nav-text">2.3 LinkedList</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Set"><span class="nav-text">3.Set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-HashSet"><span class="nav-text">3.1 HashSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-TreeSet"><span class="nav-text">3.2 TreeSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-LinkedHashSet"><span class="nav-text">3.3 LinkedHashSet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

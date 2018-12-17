@@ -51,7 +51,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Welcome,Blog," />
+  <meta name="keywords" content="Java,List," />
 
 
 
@@ -67,18 +67,18 @@
 
 
 
-<meta name="description" content="Welcome to Xie’s blog! This is my very first post. This blog focuses on technology in CS and my life and learning.">
-<meta name="keywords" content="Welcome,Blog">
+<meta name="description" content="HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。">
+<meta name="keywords" content="Java,List">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello Blog">
-<meta property="og:url" content="http://yoursite.com/2017/09/17/hello-world/index.html">
+<meta property="og:title" content="HashMap源码解读">
+<meta property="og:url" content="http://yoursite.com/2018/12/15/HashMap-Source-Code-Read/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="Welcome to Xie’s blog! This is my very first post. This blog focuses on technology in CS and my life and learning.">
+<meta property="og:description" content="HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-13T05:20:47.278Z">
+<meta property="og:updated_time" content="2018-12-17T00:24:37.301Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello Blog">
-<meta name="twitter:description" content="Welcome to Xie’s blog! This is my very first post. This blog focuses on technology in CS and my life and learning.">
+<meta name="twitter:title" content="HashMap源码解读">
+<meta name="twitter:description" content="HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/17/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/15/HashMap-Source-Code-Read/"/>
 
 
 
 
 
-  <title>Hello Blog | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>HashMap源码解读 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -251,7 +251,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/15/HashMap-Source-Code-Read/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Panlong Xie">
@@ -268,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello Blog</h1>
+          <h1 class="post-title" itemprop="name headline">HashMap源码解读</h1>
         
 
         <div class="post-meta">
@@ -280,8 +280,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T00:00:00+08:00">
-                2017-09-17
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-15T11:23:22+08:00">
+                2018-12-15
               </time>
             
 
@@ -303,8 +303,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Essay/" itemprop="url" rel="index">
-                    <span itemprop="name">Essay</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -340,10 +340,8 @@
       
 
       
-        <p>Welcome to <a href="https://xiepanlong.github.io/" target="_blank" rel="external">Xie’s blog</a>! This is my very first post. This blog focuses on technology in CS and my life and learning.<br><a id="more"></a></p>
-<p>【附】Hexo 发布流程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure>
-<p>Thanks for <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a> and NexT.</p>
+        <p>HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。</p>
+<p>还有选择6和8，中间有个差值7可以有效防止链表和树频繁转换。假设一下，如果设计成链表个数超过8则链表转换成树结构，链表个数小于8则树结构转换成链表，如果一个HashMap不停的插入、删除元素，链表个数在8左右徘徊，就会频繁的发生树转链表、链表转树，效率会很低。</p>
 
       
     </div>
@@ -376,14 +374,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/12/13/Java-concurrent-one/" rel="next" title="Java并发编程(一)：初识并发">
+                <i class="fa fa-chevron-left"></i> Java并发编程(一)：初识并发
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/22/Binary-Tree/" rel="prev" title="Binary Tree">
-                Binary Tree <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/16/JVM-Summary/" rel="prev" title="JVM-Java虚拟机以及垃圾回收总结">
+                JVM-Java虚拟机以及垃圾回收总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
