@@ -74,7 +74,7 @@
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/list.jpeg">
-<meta property="og:updated_time" content="2018-12-17T00:39:49.136Z">
+<meta property="og:updated_time" content="2018-12-17T00:43:49.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java集合总结—List">
 <meta name="twitter:image" content="http://yoursite.com/images/list.jpeg">
@@ -344,8 +344,9 @@
 <ul>
 <li>List</li>
 <li>Set</li>
-<li>Queue / Deque<br>接下来就分别进行介绍这三大类集合</li>
+<li>Queue / Deque </li>
 </ul>
+<p>接下来就分别进行介绍这三大类集合</p>
 <h2 id="2-List"><a href="#2-List" class="headerlink" title="2.List"></a>2.List</h2><h3 id="2-1-Vector"><a href="#2-1-Vector" class="headerlink" title="2.1 Vector"></a>2.1 Vector</h3><p>Vector是动态数组，其内部元素以数组形式存储的，所以适合随机访问的场合。除了尾部插入、删除元素以及不顾及顺序的插入的情况，往往性能会相对较差，因为需要通过移动相应元素来保持原有的顺序。不过是在 add() 方法的时候使用 synchronized 进行同步写数据，但是开销较大，所以 Vector 是一个同步容器并不是一个并发容器。</p>
 <h3 id="2-2-ArrayList"><a href="#2-2-ArrayList" class="headerlink" title="2.2 ArrayList"></a>2.2 ArrayList</h3><p>ArrayList是动态数组，其与Vector的区别在于它是非同步的；其内部元素以数组形式存储的，所以适合随机访问的场合。除了尾部插入、删除元素以及不顾及顺序的插入的情况，往往性能会相对较差，因为需要通过移动相应元素来保持原有的顺序。  </p>
 <h4 id="2-2-1-ArrayList扩容"><a href="#2-2-1-ArrayList扩容" class="headerlink" title="2.2.1 ArrayList扩容"></a>2.2.1 ArrayList扩容</h4><ul>
