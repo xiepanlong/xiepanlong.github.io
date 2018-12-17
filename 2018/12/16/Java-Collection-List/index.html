@@ -69,14 +69,14 @@
 
 <meta name="keywords" content="Java,List">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java集合总结——List">
+<meta property="og:title" content="Java集合总结—List">
 <meta property="og:url" content="http://yoursite.com/2018/12/16/Java-Collection-List/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/list.jpeg">
-<meta property="og:updated_time" content="2018-12-17T00:24:08.156Z">
+<meta property="og:updated_time" content="2018-12-17T00:39:49.136Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java集合总结——List">
+<meta name="twitter:title" content="Java集合总结—List">
 <meta name="twitter:image" content="http://yoursite.com/images/list.jpeg">
 
 
@@ -113,7 +113,7 @@
 
 
 
-  <title>Java集合总结——List | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Java集合总结—List | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -267,7 +267,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java集合总结——List</h1>
+          <h1 class="post-title" itemprop="name headline">Java集合总结—List</h1>
         
 
         <div class="post-meta">
@@ -379,7 +379,10 @@
 <p>当向HashSet集合中存入一个元素时，HashSet会调用该对象的hashCode()方法来得到该对象的hashCode值，然后根据该值确定对象在HashSet中的存储位置。在Hash集合中，不能同时存放两个相等的元素，而判断两个元素相等的标准是两个对象通过equals方法比较相等并且两个对象的HashCode方法返回值也相等。</p>
 <h3 id="3-2-TreeSet"><a href="#3-2-TreeSet" class="headerlink" title="3.2 TreeSet"></a>3.2 TreeSet</h3><p>TreeSet 是一个有序的集合，它的作用是提供有序的Set集合。TreeSet是基于TreeMap实现的。TreeSet中的元素支持2种排序方式：自然排序 或者 根据创建TreeSet 时提供的 Comparator 进行排序。这取决于使用的构造方法。TreeSet默认情况不允许使用null元素（第一元素为null除外），除非自己设置比较器（TreeMap的key同理），总而言之，与TreeMap采用的比较器有关。<br>TreeSet为基本操作（add、remove 和 contains）提供受保证的 log(n) 时间开销。另外，TreeSet是非同步的。</p>
 <h3 id="3-3-LinkedHashSet"><a href="#3-3-LinkedHashSet" class="headerlink" title="3.3 LinkedHashSet"></a>3.3 LinkedHashSet</h3><p>LinkedHashSet是Set集合的一个实现，具有set集合不重复的特点，同时具有可预测的迭代顺序，也就是我们插入的顺序。并且linkedHashSet是一个非线程安全的集合。其底层是基于LinkedHashMap实现的，LinkedHashSet是一个哈希表和链表的结合，且是一个双向链表。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/xiepanlong/JavaGuide/blob/master/Java%E7%9B%B8%E5%85%B3/ArrayList-Grow.md" target="_blank" rel="external">ArrayList-Grow</a><br><a href="https://www.cnblogs.com/xujian2014/p/4643759.html" target="_blank" rel="external">Java集合之HashSet源码分析</a><br><a href="http://www.cnblogs.com/skywang12345/p/3311268.html" target="_blank" rel="external">TreeSet详细介绍</a><br><a href="https://blog.csdn.net/zhaojie181711/article/details/80510129" target="_blank" rel="external">LinkedHashSet详解</a></p>
+<h2 id="4-Queue-Deque"><a href="#4-Queue-Deque" class="headerlink" title="4. Queue / Deque"></a>4. Queue / Deque</h2><h3 id="4-1-ArrayQueue"><a href="#4-1-ArrayQueue" class="headerlink" title="4.1 ArrayQueue"></a>4.1 ArrayQueue</h3><p>ArrayQueue 是一个循环队列(Queue)，继承了 AbstractList 抽象类，内部通过数组的方式来实现。同时 增加 和 删除 元素不会引起内部数组的拷贝，效率较高。但是，由于数组大小是提前确定的，也无法自动扩容(可以调用 resize() 进行手动扩容)，因此不太适合当前队列个数未知的情况。</p>
+<p>【<strong>注</strong>】<br>为什么在初始化循环队列时，在给定的容量大小上加1？<br>因为初始化时，队列内没有元素，此时 head=0; tail=0; ，当有一个元素添加进去后，tail 就要向后偏移一位(会有一个位移差)，在这个容器中需要多一位来存放这个 tail 指针。</p>
+<h3 id="4-2-PriorityQueue"><a href="#4-2-PriorityQueue" class="headerlink" title="4.2 PriorityQueue"></a>4.2 PriorityQueue</h3><p>PriorityQueue通过二叉小顶堆实现，可以用一棵完全二叉树表示；优先队列的作用是能保证每次取出的元素都是队列中权值最小的；不允许放入null元素；其通过堆实现，具体说是通过完全二叉树（complete binary tree）实现的小顶堆（任意一个非叶子节点的权值，都不大于其左右子节点的权值），也就意味着可以通过数组来作为PriorityQueue的底层实现。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/xiepanlong/JavaGuide/blob/master/Java%E7%9B%B8%E5%85%B3/ArrayList-Grow.md" target="_blank" rel="external">ArrayList-Grow</a><br><a href="https://www.cnblogs.com/xujian2014/p/4643759.html" target="_blank" rel="external">Java集合之HashSet源码分析</a><br><a href="http://www.cnblogs.com/skywang12345/p/3311268.html" target="_blank" rel="external">TreeSet详细介绍</a><br><a href="https://blog.csdn.net/zhaojie181711/article/details/80510129" target="_blank" rel="external">LinkedHashSet详解</a><br><a href="https://blog.csdn.net/love667767/article/details/80365068" target="_blank" rel="external">ArrayQueue源码分析</a><br><a href="https://blog.csdn.net/u010412719/article/details/52355557" target="_blank" rel="external">PriorityQueue</a></p>
 
       
     </div>
@@ -557,7 +560,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java集合框架简介"><span class="nav-text">1. Java集合框架简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-List"><span class="nav-text">2.List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Vector"><span class="nav-text">2.1 Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-ArrayList"><span class="nav-text">2.2 ArrayList</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-ArrayList扩容"><span class="nav-text">2.2.1 ArrayList扩容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-LinkedList"><span class="nav-text">2.3 LinkedList</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Set"><span class="nav-text">3.Set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-HashSet"><span class="nav-text">3.1 HashSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-TreeSet"><span class="nav-text">3.2 TreeSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-LinkedHashSet"><span class="nav-text">3.3 LinkedHashSet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java集合框架简介"><span class="nav-text">1. Java集合框架简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-List"><span class="nav-text">2.List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Vector"><span class="nav-text">2.1 Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-ArrayList"><span class="nav-text">2.2 ArrayList</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-ArrayList扩容"><span class="nav-text">2.2.1 ArrayList扩容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-LinkedList"><span class="nav-text">2.3 LinkedList</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Set"><span class="nav-text">3.Set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-HashSet"><span class="nav-text">3.1 HashSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-TreeSet"><span class="nav-text">3.2 TreeSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-LinkedHashSet"><span class="nav-text">3.3 LinkedHashSet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Queue-Deque"><span class="nav-text">4. Queue / Deque</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-ArrayQueue"><span class="nav-text">4.1 ArrayQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-PriorityQueue"><span class="nav-text">4.2 PriorityQueue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
