@@ -70,14 +70,14 @@
 <meta name="description" content="1 引入Volatile在Java并发编程中，涉及到三个概念：原子性、可见性、有序性。针对可见性，Java提供了volatile关键字来保证可见性。当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原">
 <meta name="keywords" content="Java,Volatile">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java-Concurrent-Volatile">
+<meta property="og:title" content="Java并发编程之volatile">
 <meta property="og:url" content="http://yoursite.com/2018/12/21/Java-Concurrent-Volatile/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 引入Volatile在Java并发编程中，涉及到三个概念：原子性、可见性、有序性。针对可见性，Java提供了volatile关键字来保证可见性。当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-21T14:39:11.228Z">
+<meta property="og:updated_time" content="2018-12-21T14:43:40.285Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java-Concurrent-Volatile">
+<meta name="twitter:title" content="Java并发编程之volatile">
 <meta name="twitter:description" content="1 引入Volatile在Java并发编程中，涉及到三个概念：原子性、可见性、有序性。针对可见性，Java提供了volatile关键字来保证可见性。当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原">
 
 
@@ -114,7 +114,7 @@
 
 
 
-  <title>Java-Concurrent-Volatile | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Java并发编程之volatile | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -268,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java-Concurrent-Volatile</h1>
+          <h1 class="post-title" itemprop="name headline">Java并发编程之volatile</h1>
         
 
         <div class="post-meta">
@@ -404,6 +404,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/12/21/Java-Concurrent-Synchronized/" rel="prev" title="Java并发编程之synchronized">
+                Java并发编程之synchronized <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -504,7 +508,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
