@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis,Cache," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 Redis简介Redis(Remote Dictionary Server)是一个基于key-value存储系统。它由C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value类型的数据库。它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set —有序集合)和hash（哈希类型）。这些数据类型">
+<meta name="keywords" content="Redis,Cache">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库之Redis">
+<meta property="og:url" content="http://yoursite.com/2018/12/21/DB-Redis/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="1 Redis简介Redis(Remote Dictionary Server)是一个基于key-value存储系统。它由C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value类型的数据库。它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set —有序集合)和hash（哈希类型）。这些数据类型">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-12-21T13:40:16.196Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库之Redis">
+<meta name="twitter:description" content="1 Redis简介Redis(Remote Dictionary Server)是一个基于key-value存储系统。它由C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value类型的数据库。它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set —有序集合)和hash（哈希类型）。这些数据类型">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/21/DB-Redis/"/>
+
+
+
+
+
+  <title>数据库之Redis | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/DB-Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库之Redis</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-21T20:41:00+08:00">
+                2018-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-Redis简介"><a href="#1-Redis简介" class="headerlink" title="1 Redis简介"></a>1 Redis简介</h2><p>Redis(Remote Dictionary Server)是一个基于key-value存储系统。它由C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value类型的数据库。它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set —有序集合)和hash（哈希类型）。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步，redis在3.0版本推出集群模式。Redis所提供的事务比较简单，它通过MULTI、EXEC、DISCARD和WATCH等命令实现事务。</p>
+<a id="more"></a>
+<p>【注】Redis乐观锁机制<br>乐观锁：总是认为不会产生并发问题，每次去取数据的时候总认为不会有其他线程对数据进行修改，因此不会上锁，但是在更新时会判断其他线程在这之前有没有对数据进行修改，一般会使用版本号机制或检查再设置(CAS)操作实现。<br>Redis通过WATCH命令实现乐观锁，作为WATCH命令的参数的键会受到Redis的监控，Redis能够检测到它们的变化。在执行EXEC命令之前，如果Redis检测到至少有一个键被修改了，那么整个事务便会中止运行，然后EXEC命令会返回一个nil值，提醒用户事务运行失败。  </p>
+<h2 id="2-Redis的好处"><a href="#2-Redis的好处" class="headerlink" title="2 Redis的好处"></a>2 Redis的好处</h2><ul>
+<li>速度快，因为数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)</li>
+<li>支持丰富数据类型，支持string，list，set，sorted set，hash</li>
+<li>支持事务，操作都是原子性，所谓的原子性就是对数据的更改要么全部执行，要么全部不执行</li>
+<li>丰富的特性：可用于缓存，消息，按key设置过期时间，过期后将会自动删除</li>
+</ul>
+<p>【<strong>注</strong>】  </p>
+<ol>
+<li>单线程的Redis为什么这么快</li>
+</ol>
+<ul>
+<li>纯内存操作</li>
+<li>单线程操作，避免了频繁的上下文切换</li>
+<li>采用了非阻塞I/O多路复用机制</li>
+<li>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的</li>
+</ul>
+<p>2.为什么Redis是单线程？<br>因为Redis是基于内存的操作，CPU不是Redis的瓶颈，Redis的瓶颈最有可能是机器内存的大小或者网络带宽。既然单线程容易实现，而且CPU不会成为瓶颈，那就顺理成章地采用单线程的方案了（毕竟采用多线程会有很多麻烦！）。  </p>
+<h2 id="3-Redis的缺点"><a href="#3-Redis的缺点" class="headerlink" title="3 Redis的缺点"></a>3 Redis的缺点</h2><ul>
+<li>缓存和数据库双写一致性问题</li>
+<li>缓存雪崩问题</li>
+<li>缓存击穿问题</li>
+<li>缓存的并发竞争问题</li>
+</ul>
+<h2 id="4-Redis的过期策略以及内存淘汰机制"><a href="#4-Redis的过期策略以及内存淘汰机制" class="headerlink" title="4 Redis的过期策略以及内存淘汰机制"></a>4 Redis的过期策略以及内存淘汰机制</h2><h3 id="4-1-过期策略"><a href="#4-1-过期策略" class="headerlink" title="4.1 过期策略"></a>4.1 过期策略</h3><p>Redis采用的是定期删除+惰性删除策略。</p>
+<ul>
+<li>定期删除<br>redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。</li>
+<li>惰性删除<br>在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。</li>
+</ul>
+<h3 id="4-2-内存淘汰机制"><a href="#4-2-内存淘汰机制" class="headerlink" title="4.2 内存淘汰机制"></a>4.2 内存淘汰机制</h3><p>采用定期删除+惰性删除还存在一些其他问题——如果定期删除没删除key。然后你也没即时去请求key，也就是说惰性删除也没生效。这样，redis的内存会越来越高。那么就应该采用内存淘汰机制。在Redis.conf中有一行配置——该配置就是配内存淘汰策略的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># maxmemory-policy volatile-lru</div></pre></td></tr></table></figure>
+<p>参数如下：<br>1）noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。<br>2）allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。推荐使用，目前项目在用这种。<br>3）allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。应该也没人用吧，你不删最少使用Key,去随机删。<br>4）volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。这种情况一般是把redis既当缓存，又做持久化存储的时候才用。不推荐<br>5）volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。依然不推荐<br>6）volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。不推荐</p>
+<h2 id="5-Redis和数据库双写一致性问题"><a href="#5-Redis和数据库双写一致性问题" class="headerlink" title="5 Redis和数据库双写一致性问题"></a>5 Redis和数据库双写一致性问题</h2><p>一致性问题是分布式常见问题，还可以再分为最终一致性和强一致性。数据库和缓存双写，就必然会存在不一致的问题。答这个问题，先明白一个前提。就是如果对数据有强一致性要求，不能放缓存。我们所做的一切，只能保证最终一致性。另外，我们所做的方案其实从根本上来说，只能说降低不一致发生的概率，无法完全避免。因此，有强一致性要求的数据，不能放缓存。</p>
+<ol>
+<li>对删除缓存进行重试，数据的一致性要求越高，我越是重试得快。</li>
+<li>定期全量更新，简单地说，就是我定期把缓存全部清掉，然后再全量加载。</li>
+<li>给所有的缓存一个失效期。</li>
+</ol>
+<h2 id="6-如何应对缓存穿透和缓存雪崩"><a href="#6-如何应对缓存穿透和缓存雪崩" class="headerlink" title="6 如何应对缓存穿透和缓存雪崩"></a>6 如何应对缓存穿透和缓存雪崩</h2><h3 id="6-1-缓存穿透"><a href="#6-1-缓存穿透" class="headerlink" title="6.1 缓存穿透"></a>6.1 缓存穿透</h3><p>黑客故意去请求缓存中不存在的数据，导致所有的请求都怼到数据库上，从而数据库连接异常。  </p>
+<p>解决方案：<br>(一)利用互斥锁，缓存失效的时候，先去获得锁，得到锁了，再去请求数据库。没得到锁，则休眠一段时间重试。<br>(二)采用异步更新策略，无论key是否取到值，都直接返回。value值中维护一个缓存失效时间，缓存如果过期，异步起一个线程去读数据库，更新缓存。需要做缓存预热(项目启动前，先加载缓存)操作。<br>(三)提供一个能迅速判断请求是否有效的拦截机制，比如，利用布隆过滤器，内部维护一系列合法有效的key。迅速判断出，请求所携带的Key是否合法有效。如果不合法，则直接返回。  </p>
+<h3 id="6-2-缓存雪崩"><a href="#6-2-缓存雪崩" class="headerlink" title="6.2 缓存雪崩"></a>6.2 缓存雪崩</h3><p>缓存同一时间大面积的失效，这个时候又来了一波请求，结果请求都怼到数据库上，从而导致数据库连接异常。<br>解决方案：<br>(一)给缓存的失效时间，加上一个随机值，避免集体失效。<br>(二)使用互斥锁，但是该方案吞吐量明显下降了。<br>(三)双缓存。我们有两个缓存，缓存A和缓存B。缓存A的失效时间为20分钟，缓存B不设失效时间。自己做缓存预热操作。然后细分以下几个小点：  </p>
+<ul>
+<li>从缓存A读数据，有则直接返回</li>
+<li>A没有数据，直接从B读数据，直接返回，并且异步启动一个更新线程。</li>
+<li>更新线程同时更新缓存A和缓存B。</li>
+</ul>
+<h2 id="7-Redis持久化"><a href="#7-Redis持久化" class="headerlink" title="7 Redis持久化"></a>7 Redis持久化</h2><p>Redis是一个支持持久化的内存数据库，且数据都是放在内存中的，也就是说Redis需要经常将内存中的数据同步到磁盘来保证持久化（防止数据丢失）。持久化是使用RDB方式或者AOF方式。</p>
+<h3 id="7-1-RDB"><a href="#7-1-RDB" class="headerlink" title="7.1 RDB"></a>7.1 RDB</h3><p>RDB持久化：可以在指定的时间间隔内生成数据集的时间点快照；</p>
+<h4 id="7-1-1-概念"><a href="#7-1-1-概念" class="headerlink" title="7.1.1 概念"></a>7.1.1 概念</h4><p>快照是默认的持久化方式。这种方式是就是将内存中数据以快照的方式写入到二进制文件中，默认的文件名为dump.rdb（如果需要恢复数据，只需将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可）。默认的快照保存配置如下：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">save 900 1  #900秒内如果超过1个key被修改，则发起快照保存</div><div class="line">save 300 10 #300秒内容如超过10个key被修改，则发起快照保存</div><div class="line">save 60 10000 #60秒内容如超过10000个key被修改，则发起快照保存</div></pre></td></tr></table></figure>
+<p>Client 也可以使用save或者bgsave命令手动通知redis做一次快照持久化。save操作是在主线程中保存快照的，由于redis是用一个主线程来处理所有 client的请求，这种方式会阻塞所有client请求。所以不推荐使用。</p>
+<h4 id="7-1-2-几个常用命令"><a href="#7-1-2-几个常用命令" class="headerlink" title="7.1.2 几个常用命令"></a>7.1.2 几个常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">save：#手动将数据同步保存到磁盘</div><div class="line">bgsave：#手动将数据异步保存到磁盘，后台执行</div><div class="line">lastsave：#返回上次成功将数据保存到磁盘的Unix时戳</div><div class="line">shundown：#将数据同步保存到磁盘，然后关闭服务</div></pre></td></tr></table></figure>
+<h4 id="7-1-3-快照的底层实现-原理"><a href="#7-1-3-快照的底层实现-原理" class="headerlink" title="7.1.3 快照的底层实现/原理"></a>7.1.3 快照的底层实现/原理</h4><ol>
+<li>Redis调用fork()，产生一个子进程。</li>
+<li>父进程继续处理client请求，子进程把内存数据写到一个临时的RDB文件。由于os的写时复制机制（copy on write)父子进程会共享相同的物理页面，当父进程处理写请求时os会为父进程要修改的页面创建副本，而不是写共享的页面。所以子进程的地址空间内的数据是fork时刻整个数据库的一个快照。</li>
+<li>当子进程将快照写入临时文件完毕后，用临时文件替换原来的快照文件，然后子进程退出</li>
+</ol>
+<h4 id="7-1-4-RDB的优先与缺点"><a href="#7-1-4-RDB的优先与缺点" class="headerlink" title="7.1.4 RDB的优先与缺点"></a>7.1.4 RDB的优先与缺点</h4><ol>
+<li>优点<br>  (1)RDB 是一个非常紧凑（compact）的文件，它保存了 Redis 在某个时间点上的数据集，非常适合备份；<br> (2)RDB 非常适用于灾难恢复;<br> (3)RDB 可以最大化 Redis 的性能;<br> (4)RDB 在恢复大数据集时的速度比 AOF 的恢复速度要快;  </li>
+<li>缺点<br> (1)不支持要避免服务器故障时丢失数据的应用场景；<br> (2)每次保存 RDB 的时候，Redis 都要 fork() 出一个子进程，并由子进程来进行实际的持久化工作。 在数据集比较庞大时， <strong>fork()可能会非常耗时</strong>；  </li>
+</ol>
+<h3 id="7-2-AOF"><a href="#7-2-AOF" class="headerlink" title="7.2 AOF"></a>7.2 AOF</h3><p>AOF持久化：记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集，AOF文件中全部以Redis协议的格式来保存，新命令会被追加到文件的末尾，Redis还可以在后台对AOF文件进行重写，文件的体积不会超出保存数据集状态所需要的实际大小。</p>
+<h4 id="7-2-1-概念"><a href="#7-2-1-概念" class="headerlink" title="7.2.1 概念"></a>7.2.1 概念</h4><p>AOF日志的全称是Append Only File，从名字上我们就能看出来，它是一个追加写入的日志文件。与一般数据库不同的是，AOF文件是可识别的纯文本，它的内容就是一个个的Redis标准命令。AOF比快照方式有更好的持久化性，是由于在使用AOF持久化方式时，redis会将每一个收到的写命令都通过write函数追加到文件中(默认是appendonly.aof)。<br>我们可以通过配置文件告诉redis我们想要通过fsync函数强制os写入到磁盘的时机。有三种方式如下（默认是：每秒fsync一次）：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ppendonly yes       #启用aof持久化方式</div><div class="line">appendfsync always   #每次收到写命令就立即强制写入磁盘，最慢的，但是保证完全的持久化，不推荐使用</div><div class="line">appendfsync everysec #每秒钟强制写入磁盘一次，在性能和持久化方面做了很好的折中，推荐</div><div class="line">appendfsync no    #完全依赖os，性能最好,持久化没保证</div></pre></td></tr></table></figure>
+<h4 id="7-2-2-AOF的底层实现-原理"><a href="#7-2-2-AOF的底层实现-原理" class="headerlink" title="7.2.2 AOF的底层实现/原理"></a>7.2.2 AOF的底层实现/原理</h4><ol>
+<li>redis调用fork ，现在有父子两个进程；</li>
+<li>子进程根据内存中的数据库快照，往临时文件中写入重建数据库状态的命令；  </li>
+<li>父进程继续处理client请求，除了把写命令写入到原来的AOF文件中，同时把收到的写命令缓存起来。这样就能保证如果子进程重写失败的话并不会出问题；</li>
+<li>当子进程把快照内容写入已命令方式写到临时文件中后，子进程发信号通知父进程。然后父进程把缓存的写命令也写入到临时文件；</li>
+<li>现在父进程可以使用临时文件替换老的AOF文件，并重命名，后面收到的写命令也开始往新的AOF文件中追加。</li>
+</ol>
+<h4 id="7-2-3-AOF的优先与缺点"><a href="#7-2-3-AOF的优先与缺点" class="headerlink" title="7.2.3 AOF的优先与缺点"></a>7.2.3 AOF的优先与缺点</h4><ol>
+<li>优点<br> (1)使用 AOF 持久化会让 Redis 变得非常耐久;<br> (2)Redis 可以在 AOF 文件体积变得过大时，自动地在后台对 AOF 进行重写;<br> (3)AOF 文件有序地保存了对数据库执行的所有写入操作， 这些写入操作以 Redis 协议的格式保存， 因此 AOF文件的内容非常容易被人读懂， 对文件进行分析也很轻松。  </li>
+<li>缺点<br> (1)对于相同的数据集来说，AOF 文件的体积通常要大于 RDB 文件的体积;<br> (2)根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB;</li>
+</ol>
+<h3 id="7-3-Redis持久化策略"><a href="#7-3-Redis持久化策略" class="headerlink" title="7.3 Redis持久化策略"></a>7.3 Redis持久化策略</h3><p>同时使用两种持久化功能。当Redis重启时，它会优先使用AOF文件来还原数据集，因为AOF文件保存的数据集通常比RDB文件所保存的数据集更加完整。</p>
+<h2 id="8-Redis的应用"><a href="#8-Redis的应用" class="headerlink" title="8 Redis的应用"></a>8 Redis的应用</h2><h3 id="8-1-分布式锁"><a href="#8-1-分布式锁" class="headerlink" title="8.1 分布式锁"></a>8.1 分布式锁</h3><p>选用Redis实现分布式锁原因：第一Redis有很高的性能； 第二Redis命令对此支持较好，实现起来比较方便。其核心思想如下： </p>
+<ol>
+<li>获取锁：使用setnx加锁，并使用expire命令为锁添加一个超时时间，超过该时间则自动释放锁，锁的value值为一个随机生成的uuid，通过此在释放的时候进行判断；</li>
+<li>获取锁的时候还设置一个获取的超时时间，若超过这个时间则放弃获取锁；</li>
+<li>释放锁的时候，通过uuid判断是不是该锁，若是，则执行delete进行锁释放。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u011001084/article/details/81198840" target="_blank" rel="external">Redis数据库看这一篇文章就够了</a><br><a href="https://blog.csdn.net/hjm4702192/article/details/80518856" target="_blank" rel="external">Redis 总结精讲</a><br><a href="https://blog.csdn.net/u011489043/article/details/78760074" target="_blank" rel="external">分布式缓存Redis之持久化</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/21/Java-Concurrent-ThreadPool/" rel="next" title="Java并发编程之线程池">
+                <i class="fa fa-chevron-left"></i> Java并发编程之线程池
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Redis简介"><span class="nav-text">1 Redis简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Redis的好处"><span class="nav-text">2 Redis的好处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Redis的缺点"><span class="nav-text">3 Redis的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Redis的过期策略以及内存淘汰机制"><span class="nav-text">4 Redis的过期策略以及内存淘汰机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-过期策略"><span class="nav-text">4.1 过期策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-内存淘汰机制"><span class="nav-text">4.2 内存淘汰机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Redis和数据库双写一致性问题"><span class="nav-text">5 Redis和数据库双写一致性问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-如何应对缓存穿透和缓存雪崩"><span class="nav-text">6 如何应对缓存穿透和缓存雪崩</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-缓存穿透"><span class="nav-text">6.1 缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-缓存雪崩"><span class="nav-text">6.2 缓存雪崩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Redis持久化"><span class="nav-text">7 Redis持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-RDB"><span class="nav-text">7.1 RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-1-概念"><span class="nav-text">7.1.1 概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-2-几个常用命令"><span class="nav-text">7.1.2 几个常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-3-快照的底层实现-原理"><span class="nav-text">7.1.3 快照的底层实现/原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-4-RDB的优先与缺点"><span class="nav-text">7.1.4 RDB的优先与缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-AOF"><span class="nav-text">7.2 AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-1-概念"><span class="nav-text">7.2.1 概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-2-AOF的底层实现-原理"><span class="nav-text">7.2.2 AOF的底层实现/原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-3-AOF的优先与缺点"><span class="nav-text">7.2.3 AOF的优先与缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-Redis持久化策略"><span class="nav-text">7.3 Redis持久化策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Redis的应用"><span class="nav-text">8 Redis的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-分布式锁"><span class="nav-text">8.1 分布式锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
