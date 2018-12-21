@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 面向对象1.1 封装首先是抽象，把事物抽象成一个类，其次才是封装，将事物拥有的属性和动作隐藏起来，只保留特定的方法与外界联系。封装符合面向对象设计原则的第一条：单一性原则，一个类把自己该做的事情封装起来，而不是暴露给其他类去处理，当内部的逻辑发生变化时，外部调用不用因此而修改，他们只调用开放的接口，而不用去关心内部的实现。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java语言基础总结">
+<meta property="og:url" content="http://yoursite.com/2018/12/21/Java-Foundation/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="1 面向对象1.1 封装首先是抽象，把事物抽象成一个类，其次才是封装，将事物拥有的属性和动作隐藏起来，只保留特定的方法与外界联系。封装符合面向对象设计原则的第一条：单一性原则，一个类把自己该做的事情封装起来，而不是暴露给其他类去处理，当内部的逻辑发生变化时，外部调用不用因此而修改，他们只调用开放的接口，而不用去关心内部的实现。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/classtointerface.png">
+<meta property="og:updated_time" content="2018-12-21T09:27:54.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java语言基础总结">
+<meta name="twitter:description" content="1 面向对象1.1 封装首先是抽象，把事物抽象成一个类，其次才是封装，将事物拥有的属性和动作隐藏起来，只保留特定的方法与外界联系。封装符合面向对象设计原则的第一条：单一性原则，一个类把自己该做的事情封装起来，而不是暴露给其他类去处理，当内部的逻辑发生变化时，外部调用不用因此而修改，他们只调用开放的接口，而不用去关心内部的实现。">
+<meta name="twitter:image" content="http://yoursite.com/images/classtointerface.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/21/Java-Foundation/"/>
+
+
+
+
+
+  <title>Java语言基础总结 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/Java-Foundation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java语言基础总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-21T17:06:42+08:00">
+                2018-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-面向对象"><a href="#1-面向对象" class="headerlink" title="1 面向对象"></a>1 面向对象</h2><h3 id="1-1-封装"><a href="#1-1-封装" class="headerlink" title="1.1 封装"></a>1.1 封装</h3><p>首先是抽象，把事物抽象成一个类，其次才是封装，将事物拥有的属性和动作隐藏起来，只保留特定的方法与外界联系。封装符合面向对象设计原则的第一条：单一性原则，一个类把自己该做的事情封装起来，而不是暴露给其他类去处理，当内部的逻辑发生变化时，外部调用不用因此而修改，他们只调用开放的接口，而不用去关心内部的实现。<br><a id="more"></a></p>
+<h3 id="1-2-继承"><a href="#1-2-继承" class="headerlink" title="1.2 继承"></a>1.2 继承</h3><p>Java的类可以分为三类：<br>• 类：使用class定义，没有抽象方法<br>• 抽象类：使用abstract class定义，可以有也可以没有抽象方法<br>• 接口：使用inerface定义，只能有抽象方法  </p>
+<p>在这三个类型之间存在如下关系：<br>• 类可以extends：类、抽象类（必须实现所有抽象方法），但只能extends一个，可以implements多个接口（必须实现所有接口方法）<br>• 抽象类可以extends：类，抽象类（可全部、部分、或者完全不实现父类抽象方法），可以implements多个接口（可全部、部分、或者完全不实现接口方法）<br>• 接口只能extends一个接口  </p>
+<p>继承以后子类可以得到什么：<br>•    子类拥有父类非private的属性和方法<br>•    子类可以添加自己的方法和属性，即对父类进行扩展<br>•    子类可以重新定义父类的方法，即多态里面的覆盖，后面会详述  </p>
+<p>关于构造函数：<br>•    构造函数不能被继承，子类可以通过super()显示调用父类的构造函数<br>•    创建子类时，编译器会自动调用父类的 无参构造函数<br>•    如果父类没有定义无参构造函数，子类必须在构造函数的第一行代码使用super()显示调用  </p>
+<p>类默认拥有无参构造函数，如果定义了其他有参构造函数，则无参函数失效，所以父类没有定义无参构造函数，不是指父类没有写无参构造函数。  </p>
+<h3 id="1-3-多态"><a href="#1-3-多态" class="headerlink" title="1.3 多态"></a>1.3 多态</h3><p>在了解多态之前，首先需要知道方法的唯一性标识即什么是相同/不同的方法：<br>•    一个方法可以由：修饰符如public、static+返回值+方法名+参数+throw的异常 5部分构成<br>•    其中只有方法名和参数是唯一性标识，意即只要方法名和参数相同那他们就是相同的方法<br>•    所谓参数相同，是指参数的个数，类型，顺序一致，其中任何一项不同都是不同的方法  </p>
+<p>何谓重载：<br>•    重载是指一个类里面（包括父类的方法）存在方法名相同，但是参数不一样的方法，参数不一样可以是不同的参数个数、类型或顺序<br>•    如果仅仅是修饰符、返回值、throw的异常 不同，那这是2个相同的方法，编译都通不过，更不要说重载了  </p>
+<p>何谓覆盖/重写：<br>•    覆盖描述存在继承关系时子类的一种行为<br>•    子类中存在和父类相同的方法即为覆盖，何谓相同方法请牢记前面的描述，方法名和参数相同，包括参数个数、类型、顺序  </p>
+<p>覆盖/重写的规则：<br>•    子类不能覆盖父类private的方法，private对子类不可见，如果子类定义了一个和父类private方法相同的方法，实为新增方法<br>•    重写方法的修饰符一定要大于被重写方法的修饰符(public &gt; protected &gt; default &gt; private)<br>•    重写抛出的异常需与父类相同或是父类异常的子类，或者重写方法干脆不写throws<br>•    重写方法的返回值必须与被重写方法一致，否则编译报错<br>•    静态方法不能被重写为非静态方法，否则编译出错  </p>
+<p>理解了上述知识点，是时候定义多态了：<br>•    多态可以说是“一个接口，多种实现”或者说是父类的引用变量可以指向子类的实例，被引用对象的类型决定调用谁的方法，但这个方法必须在父类中定义<br>•    多态可以分为两种类型：编译时多态（方法的重载）和运行时多态（继承时方法的重写），编译时多态很好理解，后述内容针对运行时多态<br>•    运行时多态依赖于继承、重写和向上转型  </p>
+<h3 id="1-3-抽象类和接口的区别"><a href="#1-3-抽象类和接口的区别" class="headerlink" title="1.3 抽象类和接口的区别"></a>1.3 抽象类和接口的区别</h3><ul>
+<li>接口的方法默认是public，所有方法在接口中不能有实现，抽象类可以有非抽象的方法</li>
+<li>接口中的实例变量默认是final类型的，而抽象类中则不一定</li>
+<li>一个类可以实现多个接口，但最多只能实现一个抽象类</li>
+<li>一个类实现接口的话要实现接口的所有方法，而抽象类不一定</li>
+<li>接口不能用new实例化，但可以声明，但是必须引用一个实现该接口的对象<br><img src="/images/classtointerface.png" alt=""><br>【注】什么时候使用抽象类和接口<br>•    如果你拥有一些方法并且想让它们中的一些有默认实现，那么使用抽象类吧。<br>•    如果你想实现多重继承，那么你必须使用接口。由于Java不支持多继承，子类不能够继承多个类，但可以实现多个接口。因此你就可以使用接口来解决它。<br>•    如果基本功能在不断改变，那么就需要使用抽象类。如果不断改变基本功能并且使用接口，那么就需要改变所有实现了该接口的类。</li>
+</ul>
+<h3 id="1-3-泛型"><a href="#1-3-泛型" class="headerlink" title="1.3 泛型"></a>1.3 泛型</h3><p>泛型，即“参数化类型”。一提到参数，最熟悉的就是定义方法时有形参，然后调用此方法时传递实参。那么参数化类型怎么理解呢？顾名思义，就是将类型由原来的具体的类型参数化，类似于方法中的变量参数，此时类型也定义成参数形式（可以称之为类型形参），然后在使用/调用时传入具体的类型（类型实参）。  </p>
+<p>Java的泛型中，通配符可以设置上限和下限。  </p>
+<ul>
+<li>上限：&lt;? extends T&gt; ?是T和T的子类  </li>
+<li>下限：&lt;? super T&gt; ?是T和T的父类  </li>
+</ul>
+<h2 id="2-关键字"><a href="#2-关键字" class="headerlink" title="2 关键字"></a>2 关键字</h2><h3 id="2-1-final关键字"><a href="#2-1-final关键字" class="headerlink" title="2.1 final关键字"></a>2.1 final关键字</h3><p>final关键字主要用在三个地方：变量、方法、类。  </p>
+<ol>
+<li>对于一个final变量，如果是基本数据类型的变量，则其数值一旦在初始化之后便不能更改；如果是引用类型的变量，则在对其初始化之后便不能再让其指向另一个对象。  </li>
+<li>当用final修饰一个类时，表明这个类不能被继承。final类中的所有成员方法都会被隐式地指定为final方法。  </li>
+<li>使用final方法的原因有两个。第一个原因是把方法锁定，以防任何继承类修改它的含义；第二个原因是效率。在早期的Java实现版本中，会将final方法转为内嵌调用。但是如果方法过于庞大，可能看不到内嵌调用带来的任何性能提升（现在的Java版本已经不需要使用final方法进行这些优化了）。类中所有的private方法都隐式地指定为final。</li>
+</ol>
+<h3 id="2-2-static关键字"><a href="#2-2-static关键字" class="headerlink" title="2.2 static关键字"></a>2.2 static关键字</h3><p>static 关键字主要有以下四种使用场景：  </p>
+<ol>
+<li>修饰成员变量和成员方法: 被 static 修饰的成员属于类，不属于单个这个类的某个对象，被类中所有对象共享，可以并且建议通过类名调用。被static 声明的成员变量属于静态成员变量，静态变量 存放在 Java 内存区域的方法区。调用格式：类名.静态变量名 类名.静态方法名()  </li>
+<li>静态代码块: 静态代码块定义在类中方法外, 静态代码块在非静态代码块之前执行(静态代码块—&gt;非静态代码块—&gt;构造方法)。 该类不管创建多少对象，静态代码块只执行一次.  </li>
+<li>静态内部类（static修饰类的话只能修饰内部类）： 静态内部类与非静态内部类之间存在一个最大的区别: 非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围类，但是静态内部类却没有。没有这个引用就意味着：1. 它的创建是不需要依赖外围类的创建。2. 它不能使用任何外围类的非static成员变量和方法。  </li>
+<li>静态导包(用来导入类中的静态资源，1.5之后的新特性): 格式为：import static 这两个关键字连用可以指定导入某个类中的指定静态资源，并且不需要使用类名调用类中静态成员，可以直接使用类中静态成员变量和成员方法。  </li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/21/Sort-Summary/" rel="next" title="算法总结-排序和查找">
+                <i class="fa fa-chevron-left"></i> 算法总结-排序和查找
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-面向对象"><span class="nav-text">1 面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-封装"><span class="nav-text">1.1 封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-继承"><span class="nav-text">1.2 继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-多态"><span class="nav-text">1.3 多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-抽象类和接口的区别"><span class="nav-text">1.3 抽象类和接口的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-泛型"><span class="nav-text">1.3 泛型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-关键字"><span class="nav-text">2 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-final关键字"><span class="nav-text">2.1 final关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-static关键字"><span class="nav-text">2.2 static关键字</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
