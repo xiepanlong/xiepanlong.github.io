@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 Java线程池在Java中，如果每个任务都创建一个新的thread，开销是非常大的。除了创建和销毁线程的时间开销外，还消耗大量的系统资源。为了规避以上问题，尽可能减少创建和销毁线程的次数，特别是一些资源耗费比较大的线程的创建和销毁，尽量利用已有的线程对象来进行服务，这就是线程池引入的原因。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-21T12:20:07.896Z">
+<meta property="og:updated_time" content="2018-12-21T12:23:38.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程之线程池">
 <meta name="twitter:description" content="1 Java线程池在Java中，如果每个任务都创建一个新的thread，开销是非常大的。除了创建和销毁线程的时间开销外，还消耗大量的系统资源。为了规避以上问题，尽可能减少创建和销毁线程的次数，特别是一些资源耗费比较大的线程的创建和销毁，尽量利用已有的线程对象来进行服务，这就是线程池引入的原因。">
@@ -349,8 +349,9 @@
 <h3 id="2-2-queueCapacity：任务队列容量"><a href="#2-2-queueCapacity：任务队列容量" class="headerlink" title="2.2 queueCapacity：任务队列容量"></a>2.2 queueCapacity：任务队列容量</h3><p>当核心线程数达到最大时，新任务会放到队列中排队等待执行</p>
 <h3 id="2-3-maxPoolSize：最大线程数"><a href="#2-3-maxPoolSize：最大线程数" class="headerlink" title="2.3 maxPoolSize：最大线程数"></a>2.3 maxPoolSize：最大线程数</h3><ul>
 <li>当线程数 &gt;= corePoolSize且任务队列已满时，线程池会创建新线程来处理任务；</li>
-<li>当线程数 = maxPoolSize且任务队列已满时，线程池会拒绝处理任务而抛出异常；<h3 id="2-4-keepAliveTime：线程空闲时间"><a href="#2-4-keepAliveTime：线程空闲时间" class="headerlink" title="2.4 keepAliveTime：线程空闲时间"></a>2.4 keepAliveTime：线程空闲时间</h3>当线程空闲时间达到keepAliveTime时，非核心线程会退出，直到线程数量 = corePoolSize；<br>如果allowCoreThreadTimeout = true，则会知道线程数量为0；</li>
+<li>当线程数 = maxPoolSize且任务队列已满时，线程池会拒绝处理任务而抛出异常；</li>
 </ul>
+<h3 id="2-4-keepAliveTime：线程空闲时间"><a href="#2-4-keepAliveTime：线程空闲时间" class="headerlink" title="2.4 keepAliveTime：线程空闲时间"></a>2.4 keepAliveTime：线程空闲时间</h3><p>当线程空闲时间达到keepAliveTime时，非核心线程会退出，直到线程数量 = corePoolSize；<br>如果allowCoreThreadTimeout = true，则会知道线程数量为0；</p>
 <h3 id="2-5-allowCoreThreadTimeout：允许核心线程超时"><a href="#2-5-allowCoreThreadTimeout：允许核心线程超时" class="headerlink" title="2.5 allowCoreThreadTimeout：允许核心线程超时"></a>2.5 allowCoreThreadTimeout：允许核心线程超时</h3><h3 id="2-6-rejectedExecutionHandler：任务拒绝处理器"><a href="#2-6-rejectedExecutionHandler：任务拒绝处理器" class="headerlink" title="2.6 rejectedExecutionHandler：任务拒绝处理器"></a>2.6 rejectedExecutionHandler：任务拒绝处理器</h3><p>【注】两种情况会拒绝处理任务：  </p>
 <ul>
 <li>当线程数已达到maxPoolSize且队列已满，会拒绝新任务；</li>
