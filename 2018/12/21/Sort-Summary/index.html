@@ -67,18 +67,15 @@
 
 
 
-<meta name="description" content="1 排序1.1 选择排序找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。 123456789101112public void selectSort(int[] a) &amp;#123;    int N = a.length;    for (int i = 0; i &amp;lt; N; i++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法总结-排序和查找">
 <meta property="og:url" content="http://yoursite.com/2018/12/21/Sort-Summary/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="1 排序1.1 选择排序找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。 123456789101112public void selectSort(int[] a) &amp;#123;    int N = a.length;    for (int i = 0; i &amp;lt; N; i++">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-21T08:59:31.777Z">
+<meta property="og:updated_time" content="2018-12-21T09:00:45.487Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法总结-排序和查找">
-<meta name="twitter:description" content="1 排序1.1 选择排序找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。 123456789101112public void selectSort(int[] a) &amp;#123;    int N = a.length;    for (int i = 0; i &amp;lt; N; i++">
 <meta name="twitter:image" content="http://yoursite.com/images/sort.png">
 
 
@@ -319,7 +316,7 @@
       
 
       
-        <p><img src="/images/sort.png" alt=""></p>
+        <p><img src="/images/sort.png" alt=""><br><a id="more"></a></p>
 <h2 id="1-排序"><a href="#1-排序" class="headerlink" title="1 排序"></a>1 排序</h2><h3 id="1-1-选择排序"><a href="#1-1-选择排序" class="headerlink" title="1.1 选择排序"></a>1.1 选择排序</h3><p>找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span>[] a)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> N = a.length;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</div><div class="line">        <span class="keyword">int</span> minPos = i;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++) &#123;</div><div class="line">            <span class="keyword">if</span> ((a[j] &lt; a[minPos])) &#123;</div><div class="line">                minPos = j;</div><div class="line">            &#125;</div><div class="line">            swap(a, i, minPos);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="1-2-插入排序"><a href="#1-2-插入排序" class="headerlink" title="1.2 插入排序"></a>1.2 插入排序</h3><p>插入排序从左到右进行，每次都将当前元素插入到左部已经排序的数组中，使得插入之后左部数组依然有序。插入排序的复杂度取决于数组的初始顺序，插入排序对于部分有序数组和小规模数组特别高效。</p>
