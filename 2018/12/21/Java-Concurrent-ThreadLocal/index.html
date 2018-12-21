@@ -70,14 +70,14 @@
 <meta name="description" content="1 ThreadLocalThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。">
 <meta name="keywords" content="Java,Concurrent">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java-Concurrent-ThreadLocal">
+<meta property="og:title" content="Java并发中的ThreadLocal详解">
 <meta property="og:url" content="http://yoursite.com/2018/12/21/Java-Concurrent-ThreadLocal/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 ThreadLocalThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-21T02:53:52.573Z">
+<meta property="og:updated_time" content="2018-12-21T07:07:01.262Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java-Concurrent-ThreadLocal">
+<meta name="twitter:title" content="Java并发中的ThreadLocal详解">
 <meta name="twitter:description" content="1 ThreadLocalThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。">
 
 
@@ -114,7 +114,7 @@
 
 
 
-  <title>Java-Concurrent-ThreadLocal | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Java并发中的ThreadLocal详解 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -268,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java-Concurrent-ThreadLocal</h1>
+          <h1 class="post-title" itemprop="name headline">Java并发中的ThreadLocal详解</h1>
         
 
         <div class="post-meta">
@@ -401,6 +401,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/12/21/Computer-Net-Summary/" rel="prev" title="计算机网络总结">
+                计算机网络总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -479,7 +483,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -490,7 +494,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -501,7 +505,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

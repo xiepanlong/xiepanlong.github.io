@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Computer Net,TCP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 Session &amp;amp; CookieHTTP协议本身是无状态的，这与HTTP协议本来的目的是相符的，客户端只需要简单的向服务器请求下载某些文件，无论是客户端还是服务器都没有必要纪录彼此过去的行为，每一次请求之间都是独立的，好比一个顾客和一个自动售货机或者一个普通的（非会员制）大卖场之间的关系一样。cookie的作用就是为了解决HTTP协议无状态的缺陷所作出的努力。至于后来出现的sessio">
+<meta name="keywords" content="Computer Net,TCP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络总结">
+<meta property="og:url" content="http://yoursite.com/2018/12/21/Computer-Net-Summary/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="1 Session &amp;amp; CookieHTTP协议本身是无状态的，这与HTTP协议本来的目的是相符的，客户端只需要简单的向服务器请求下载某些文件，无论是客户端还是服务器都没有必要纪录彼此过去的行为，每一次请求之间都是独立的，好比一个顾客和一个自动售货机或者一个普通的（非会员制）大卖场之间的关系一样。cookie的作用就是为了解决HTTP协议无状态的缺陷所作出的努力。至于后来出现的sessio">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/netport.jpg">
+<meta property="og:updated_time" content="2018-12-21T07:11:42.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络总结">
+<meta name="twitter:description" content="1 Session &amp;amp; CookieHTTP协议本身是无状态的，这与HTTP协议本来的目的是相符的，客户端只需要简单的向服务器请求下载某些文件，无论是客户端还是服务器都没有必要纪录彼此过去的行为，每一次请求之间都是独立的，好比一个顾客和一个自动售货机或者一个普通的（非会员制）大卖场之间的关系一样。cookie的作用就是为了解决HTTP协议无状态的缺陷所作出的努力。至于后来出现的sessio">
+<meta name="twitter:image" content="http://yoursite.com/images/netport.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/21/Computer-Net-Summary/"/>
+
+
+
+
+
+  <title>计算机网络总结 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/Computer-Net-Summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-21T10:57:25+08:00">
+                2018-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Computer-Net/" itemprop="url" rel="index">
+                    <span itemprop="name">Computer Net</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-Session-amp-Cookie"><a href="#1-Session-amp-Cookie" class="headerlink" title="1 Session &amp; Cookie"></a>1 Session &amp; Cookie</h2><p>HTTP协议本身是无状态的，这与HTTP协议本来的目的是相符的，客户端只需要简单的向服务器请求下载某些文件，无论是客户端还是服务器都没有必要纪录彼此过去的行为，每一次请求之间都是独立的，好比一个顾客和一个自动售货机或者一个普通的（非会员制）大卖场之间的关系一样。cookie的作用就是为了解决HTTP协议无状态的缺陷所作出的努力。至于后来出现的session机制则是又一种在客户端与服务器之间保持状态的解决方案。 具体来说cookie机制采用的是在客户端保持状态的方案，而session机制采用的是在服务器端保持状态的方案。<br><a id="more"></a></p>
+<h3 id="1-1-Cookie机制"><a href="#1-1-Cookie机制" class="headerlink" title="1.1 Cookie机制"></a>1.1 Cookie机制</h3><h4 id="1-1-1-cookie的分发"><a href="#1-1-1-cookie的分发" class="headerlink" title="1.1.1 cookie的分发"></a>1.1.1 cookie的分发</h4><p>正统的cookie分发是通过扩展HTTP协议来实现的，服务器通过在HTTP的响应头中加上一行特殊的指示以提示浏览器按照指示生成相应的cookie。然而纯粹的客户端脚本如JavaScript或者VBScript也可以生成cookie。而cookie的使用是由浏览器按照一定的原则在后台自动发送给服务器的。浏览器检查所有存储的cookie，如果某个cookie所声明的作用范围大于等于将要请求的资源所在的位置，则把该cookie附在请求资源的HTTP请求头上发送给服务器。</p>
+<h4 id="1-1-2-cookie的内容"><a href="#1-1-2-cookie的内容" class="headerlink" title="1.1.2 cookie的内容"></a>1.1.2 cookie的内容</h4><p>cookie的内容主要包括：名字，值，过期时间，路径和域。</p>
+<ul>
+<li>其中域可以指定某一个域比如.google.com；</li>
+<li>路径就是跟在域名后面的URL路径，路径与域合在一起就构成了cookie的作用范围；</li>
+<li>如果不设置过期时间，则表示这个cookie的生命期为浏览器会话期间，只要关闭浏览器窗口，cookie就消失了；这种生命期为浏览器会话期的cookie被称为会话cookie。会话cookie一般不存储在硬盘上而是保存在内存里，当然这种行为并不是规范规定的。如果设置了过期时间，浏览器就会把cookie保存到硬盘上，关闭后再次打开浏览器，这些cookie仍然有效直到超过设定的过期时间。 </li>
+</ul>
+<h3 id="1-2-Sesiion机制"><a href="#1-2-Sesiion机制" class="headerlink" title="1.2 Sesiion机制"></a>1.2 Sesiion机制</h3><p>session机制是一种服务器端的机制，服务器使用一种类似于散列表的结构（也可能就是使用散列表）来保存信息。<br>当程序需要为某个客户端的请求创建一个session的时候，服务器首先检查这个客户端的请求里是否已包含了一个session标识 - 称为session id，如果已包含一个session id则说明以前已经为此客户端创建过session，服务器就按照session id把这个session检索出来使用（如果检索不到，可能会新建一个），如果客户端请求不包含session id，则为此客户端创建一个session并且生成一个与此session相关联的session id，session id的值应该是一个既不会重复，又不容易被找到规律以仿造的字符串，这个session id将被在本次响应中返回给客户端保存。保存这个session id的方式可以采用cookie，这样在交互过程中浏览器可以自动的按照规则把这个标识发挥给服务器。一般这个cookie的名字都是类似于SEEESIONID。</p>
+<h2 id="2-TCP传输控制协议"><a href="#2-TCP传输控制协议" class="headerlink" title="2 TCP传输控制协议"></a>2 TCP传输控制协议</h2><h3 id="2-1-TCP的特点"><a href="#2-1-TCP的特点" class="headerlink" title="2.1 TCP的特点"></a>2.1 TCP的特点</h3><ul>
+<li>面向连接的运输层协议</li>
+<li>每一条TCP连接只能有两个端点</li>
+<li>提供可靠交付</li>
+<li>全双工通信</li>
+<li>面向字节流</li>
+</ul>
+<p>【注】单工，半双工和全双工有何区别和联系  </p>
+<ol>
+<li>单工数据传输只支持数据在一个方向上传输；在同一时间只有一方能接受或发送信息，不能实现双向通信，举例：电视，广播。  </li>
+<li>半双工数据传输允许数据在两个方向上传输,但是,在某一时刻,只允许数据在一个方向上传输,它实际上是一种切换方向的单工通信；在同一时间只可以有一方接受或发送信息，可以实现双向通信。举例：对讲机。</li>
+<li>全双工数据通信允许数据同时在两个方向上传输,因此,全双工通信是两个单工通信方式的结合,它要求发送设备和接收设备都有独立的接收和发送能力；在同一时间可以同时接受和发送信息，实现双向通信，举例：电话通信。</li>
+</ol>
+<h3 id="2-2-TCP的三次握手"><a href="#2-2-TCP的三次握手" class="headerlink" title="2.2 TCP的三次握手"></a>2.2 TCP的三次握手</h3><p>刚开始, 客户端和服务器都处于<strong> CLOSE </strong>状态. 此时, 客户端向服务器主动发出连接请求, 服务器被动接受连接请求.</p>
+<p>1, TCP服务器进程先创建传输控制块TCB, 时刻准备接受客户端进程的连接请求, 此时服务器就进入了 <strong>LISTEN（监听）</strong>状态<br>2, TCP客户端进程也是先创建传输控制块TCB, 然后向服务器发出连接请求报文，此时报文首部中的同步标志位SYN=1, 同时选择一个初始序列号 seq = x, 此时，TCP客户端进程进入了 <strong>SYN-SENT（同步已发送状态）</strong>状态。TCP规定, SYN报文段（SYN=1的报文段）不能携带数据，但需要消耗掉一个序号。<br>3, TCP服务器收到请求报文后, 如果同意连接, 则发出确认报文。确认报文中的 ACK=1, SYN=1, 确认序号是 x+1, 同时也要为自己初始化一个序列号 seq = y, 此时, TCP服务器进程进入了<strong>SYN-RCVD（同步收到）</strong>状态。这个报文也不能携带数据, 但是同样要消耗一个序号。<br>4, TCP客户端进程收到确认后还, 要向服务器给出确认。确认报文的ACK=1，确认序号是 y+1，自己的序列号是 x+1。<br>5, 此时，TCP连接建立，客户端进入<strong>ESTABLISHED（已建立连接）</strong>状态。当服务器收到客户端的确认后也进入ESTABLISHED状态，此后双方就可以开始通信了。  </p>
+<p>【注】<br>1.为什么不用两次?<br><strong>主要是为了防止已经失效的连接请求报文突然又传送到了服务器，从而产生错误</strong>。如果使用的是两次握手建立连接，假设有这样一种场景，客户端发送的第一个请求连接并且没有丢失，只是因为在网络中滞留的时间太长了，由于TCP的客户端迟迟没有收到确认报文，以为服务器没有收到，此时重新向服务器发送这条报文，此后客户端和服务器经过两次握手完成连接，传输数据，然后关闭连接。此时之前滞留的那一次请求连接，因为网络通畅了, 到达了服务器，这个报文本该是失效的，但是，两次握手的机制将会让客户端和服务器再次建立连接，这将导致不必要的错误和资源的费。<br>如果采用的是三次握手，就算是那一次失效的报文传送过来了，服务端接受到了那条失效报文并且回复了确认报文，但是客户端不会再次发出确认。由于服务器收不到确认，就知道客户端并没有请求连接。<br>2.为什么不用四次?<br>因为三次已经可以满足需要了, 四次就多余了.</p>
+<h3 id="2-3-TCP的四次握手"><a href="#2-3-TCP的四次握手" class="headerlink" title="2.3 TCP的四次握手"></a>2.3 TCP的四次握手</h3><p>数据传输完毕后，双方都可以释放连接.<br>此时客户端和服务器都是处于<strong>ESTABLISHED</strong>状态，然后客户端主动断开连接，服务器被动断开连接.</p>
+<p>1, 客户端进程发出连接释放报文，并且停止发送数据。释放数据报文首部，FIN=1，其序列号为seq=u（等于前面已经传送过来的数据的最后一个字节的序号加1），此时客户端进入<strong>FIN-WAIT-1（终止等待1）</strong>状态。 TCP规定，FIN报文段即使不携带数据，也要消耗一个序号。<br>2, 服务器收到连接释放报文，发出确认报文，ACK=1，确认序号为 u+1，并且带上自己的序列号seq=v，此时服务端就进入了<strong>CLOSE-WAIT（关闭等待）</strong>状态。TCP服务器通知高层的应用进程，客户端向服务器的方向就释放了，这时候处于半关闭状态，即客户端已经没有数据要发送了，但是服务器若发送数据，客户端依然要接受。这个状态还要持续一段时间，也就是整个CLOSE-WAIT状态持续的时间。<br>3, 客户端收到服务器的确认请求后，此时客户端就进入<strong>FIN-WAIT-2（终止等待2）</strong>状态，等待服务器发送连接释放报文（在这之前还需要接受服务器发送的最终数据）<br>4, 服务器将最后的数据发送完毕后，就向客户端发送连接释放报文，FIN=1，确认序号为v+1，由于在半关闭状态，服务器很可能又发送了一些数据，假定此时的序列号为seq=w，此时，服务器就进入了<strong>LAST-ACK（最后确认）</strong>状态，等待客户端的确认。<br>5, 客户端收到服务器的连接释放报文后，必须发出确认，ACK=1，确认序号为w+1，而自己的序列号是u+1，此时，客户端就进入了<strong>TIME-WAIT（时间等待）</strong>状态。注意此时TCP连接还没有释放，必须经过2∗MSL（最长报文段寿命）的时间后，当客户端撤销相应的TCB后，才进入CLOSED状态。<br>6, 服务器只要收到了客户端发出的确认，立即进入<strong>CLOSED状态</strong>。同样，撤销TCB后，就结束了这次的TCP连接。可以看到，服务器结束TCP连接的时间要比客户端早一些。  </p>
+<p>【注】<br>1.为什么最后客户端还要等待 2*MSL的时间呢?<br>MSL（Maximum Segment Lifetime），TCP允许不同的实现可以设置不同的MSL值。<br>第一，保证客户端发送的最后一个ACK报文能够到达服务器，因为这个ACK报文可能丢失，站在服务器的角度看来，我已经发送了FIN+ACK报文请求断开了，客户端还没有给我回应，应该是我发送的请求断开报文它没有收到，于是服务器又会重新发送一次，而客户端就能在这个2MSL时间段内收到这个重传的报文，接着给出回应报文，并且会重启2MSL计时器。<br>第二，防止类似与“三次握手”中提到了的“已经失效的连接请求报文段”出现在本连接中。客户端发送完最后一个确认报文后，在这个2MSL时间中，就可以使本连接持续的时间内所产生的所有报文段都从网络中消失。这样新的连接中不会出现旧连接的请求报文。   </p>
+<p>2.为什么建立连接是三次握手，关闭连接确是四次挥手呢？<br>建立连接的时候， 服务器在LISTEN状态下，收到建立连接请求的SYN报文后，把ACK和SYN放在一个报文里发送给客户端。<br>而关闭连接时，服务器收到对方的FIN报文时，仅仅表示对方不再发送数据了但是还能接收数据，而自己也未必全部数据都发送给对方了，所以己方可以立即关闭，也可以发送一些数据给对方后，再发送FIN报文给对方来表示同意现在关闭连接，因此，己方ACK和FIN一般都会分开发送，从而导致多了一次。  </p>
+<h3 id="2-4-TCP的滑动窗口和拥塞控制"><a href="#2-4-TCP的滑动窗口和拥塞控制" class="headerlink" title="2.4 TCP的滑动窗口和拥塞控制"></a>2.4 TCP的滑动窗口和拥塞控制</h3><p>滑动窗口是接受数据端使用的窗口大小，用来告知发送端接收端的缓存大小，以此可以控制发送端发送数据的大小，从而达到流量控制的目的。那么对于数据的发送端就是拥塞窗口了，拥塞窗口不代表缓存，拥塞窗口指某一源端数据流在一个RTT内可以最多发送的数据包数。滑动窗口 — 表征发送端和接收端的接收能力；拥塞窗口— 表征中间设备的传输能力</p>
+<h4 id="2-4-1-滑动窗口"><a href="#2-4-1-滑动窗口" class="headerlink" title="2.4.1 滑动窗口"></a>2.4.1 滑动窗口</h4><p>TCP头里有一个字段叫Window，又叫Advertised-Window，这个字段是接收端告诉发送端自己还有多少缓冲区可以接收数据。于是发送端就可以根据这个接收端的处理能力来发送数据，而不会导致接收端处理不过来。</p>
+<h4 id="2-4-2-拥塞控制"><a href="#2-4-2-拥塞控制" class="headerlink" title="2.4.2 拥塞控制"></a>2.4.2 拥塞控制</h4><p>拥塞控制主要是四个算法：1）慢启动，2）拥塞避免，3）快重传，4）快速恢复。</p>
+<h4 id="2-4-2-拥塞窗口"><a href="#2-4-2-拥塞窗口" class="headerlink" title="2.4.2 拥塞窗口"></a>2.4.2 拥塞窗口</h4><p>发送方维护一个拥塞窗口cwind的状态变量。拥塞窗口的大小取决于网络的拥塞程度，动态变化。通过逐渐增加cwind的大小来探测可用的网络容量，防止连接开始时采用不合适的发送量导致网络拥塞。 </p>
+<p>【注】控制过程<br>1.拥塞控制<br>（1）TCP连接初始化，将拥塞窗口cwind设置为1个报文段，即cwind=1；<br>（2）执行<strong>慢开始</strong>算法，cwind按指数规律增长，直到cwind == ssthresh时，开始执行<strong>拥塞避免</strong>算法，cwind按线性规律增长；<br>（3）当网络发生拥塞，把ssthresh值更新为拥塞前ssthresh值的一半，cwind重新设置为1，再按照 [2] 执行。</p>
+<p>2.快重传 - (Fast Retransmission) 和 快恢复 - (Fast Recover)<br>（1）如果RTO(重传超时时间)超时，那么存在非常严重的拥塞的可能性；包可能已在网络中丢失。在这种情况下，TCP做出强烈的反应。<br>　　a.设置阈值为cwnd的一半。<br>　　b.重新设置cwnd为1。<br>　　c.启动慢速启动阶段。  </p>
+<p>（2）如果收到3个相同的ACK，那么存在着轻度拥塞的可能性。TCP在收到乱序到达包时就会立即发送ACK，TCP利用3个相同的ACK来判定数据包的丢失，此时进行快速重传。在这种情况下，TCP做出轻度的反应。<br>　　a.设置阈值为cwnd的一半。<br>　　b.设置cwnd为阈值（有些实现是阈值加上3）<br>　　c.启动拥塞避免阶段。  </p>
+<p>3.滑动窗口和拥塞窗口比较<br>（1）相同：提高网络性能。<br>（2）不同：<br>  [1].流量控制：在TCP连接上实现对发送流量的控制，考虑点对点之间对通信量的控制，端到端，即：控制发送端的数据发送速率，使接收端可以来得及接收，保证网络高效稳定运行。<br>  [2].拥塞控制：处理网络拥塞现象，考虑网络能够承受现有的网络负荷，全局性变量，涉及所有的路由器、主机以及与降低网络传输性能有关的因素。防止过多的数据注入到网络，使网络中的路由器或链路不致过载，确保通信子网可以有效为主机传递分组。</p>
+<h3 id="2-5-TCP的可靠性保证"><a href="#2-5-TCP的可靠性保证" class="headerlink" title="2.5 TCP的可靠性保证"></a>2.5 TCP的可靠性保证</h3><ul>
+<li>确认和重传</li>
+<li>数据校验</li>
+<li>数据合理分片和排序</li>
+<li>流量控制</li>
+<li>拥塞控制（四种算法）</li>
+</ul>
+<h2 id="3-UDP用户数据包协议"><a href="#3-UDP用户数据包协议" class="headerlink" title="3 UDP用户数据包协议"></a>3 UDP用户数据包协议</h2><h3 id="3-1-特点"><a href="#3-1-特点" class="headerlink" title="3.1 特点"></a>3.1 特点</h3><ul>
+<li>UDP是无连接的</li>
+<li>UDP使用尽最大努力交付</li>
+<li>是面向报文的</li>
+<li>没有拥塞控制</li>
+<li>支持一对一、一对多和多对多的交互通信</li>
+<li>首部开销小，只有8个字节</li>
+</ul>
+<h2 id="4-常见应用层协议端口号"><a href="#4-常见应用层协议端口号" class="headerlink" title="4 常见应用层协议端口号"></a>4 常见应用层协议端口号</h2><p><img src="/images/netport.jpg" alt=""></p>
+<p>【注】sftp<br>FTP是一种文件传输协议，一般是为了方便数据共享的。包括一个FTP服务器和多个FTP客户端。FTP客户端通过FTP协议在服务器上下载资源。而SFTP协议是在FTP的基础上对数据进行加密，使得传输的数据相对来说更安全。但是这种安全是以牺牲效率为代价的，也就是说SFTP的传输效率比FTP要低(不过现实使用当中，没有发现多大差别)。个人肤浅的认为就是：一；FTP要安装，SFTP不要安装。二；SFTP更安全，但更安全带来副作用就是的效率比FTP要低些。SFTP的默认端口是22.</p>
+<h2 id="5-HTTP超文本传输协议"><a href="#5-HTTP超文本传输协议" class="headerlink" title="5 HTTP超文本传输协议"></a>5 HTTP超文本传输协议</h2><p>HTTP—Hyper Text Transfer Protocol，超文本传输协议，是一种建立在TCP上的无状态连接，整个基本的工作流程是客户端发送一个HTTP请求，说明客户端想要访问的资源和请求的动作，服务端收到请求之后，服务端开始处理请求，并根据请求做出相应的动作访问服务器资源，最后通过发送HTTP响应把结果返回给客户端。</p>
+<h3 id="5-1-Http请求和响应"><a href="#5-1-Http请求和响应" class="headerlink" title="5.1 Http请求和响应"></a>5.1 Http请求和响应</h3><p>1.HTTP请求是客户端往服务端发送请求动作，告知服务器自己的要求。HTTP请求由状态行、请求头、请求正文三部分组成：  </p>
+<ul>
+<li>状态行：包括请求方式Method、资源路径URL、协议版本Version；</li>
+<li>请求头：包括一些访问的域名、用户代理、Cookie等信息；</li>
+<li>请求正文：就是HTTP请求的数据。</li>
+</ul>
+<p>2.服务器收到了客户端发来的HTTP请求后，根据HTTP请求中的动作要求，服务端做出具体的动作，将结果回应给客户端，称为HTTP响应。HTTP响应由三部分组成：状态行、响应头、响应正文；  </p>
+<ul>
+<li>状态行：包括协议版本Version、状态码Status Code、回应短语；</li>
+<li>响应头：包括搭建服务器的软件，发送响应的时间，回应数据的格式等信息；</li>
+<li>响应正文：就是响应的具体数据。</li>
+</ul>
+<h3 id="5-2-常见状态码的含义"><a href="#5-2-常见状态码的含义" class="headerlink" title="5.2 常见状态码的含义"></a>5.2 常见状态码的含义</h3><pre><code>200---OK/请求已经正常处理完毕
+
+301---/请求永久重定向
+
+302---/请求临时重定向
+
+304---/请求被重定向到客户端本地缓存
+
+400---/客户端请求存在语法错误
+
+401---/客户端请求没有经过授权
+
+403---/客户端的请求被服务器拒绝，一般为客户端没有访问权限
+
+404---/客户端请求的URL在服务端不存在
+
+500---/服务端永久错误
+
+503---/服务端发生临时错误
+</code></pre><h3 id="5-3-Http的历史版本差别"><a href="#5-3-Http的历史版本差别" class="headerlink" title="5.3 Http的历史版本差别"></a>5.3 Http的历史版本差别</h3><h4 id="5-3-1-Http1-0"><a href="#5-3-1-Http1-0" class="headerlink" title="5.3.1 Http1.0"></a>5.3.1 Http1.0</h4><ul>
+<li>增加了请求方式POST和HEAD；  </li>
+<li>根据Content-Type可以支持多种数据格式，即MIME多用途互联网邮件扩展；  </li>
+<li>开始支持cache，就是当客户端在规定时间内访问统一网站，直接访问cache即可。  <h4 id="5-3-1-Http1-1"><a href="#5-3-1-Http1-1" class="headerlink" title="5.3.1 Http1.1"></a>5.3.1 Http1.1</h4></li>
+<li>加入了<strong>持久连接</strong>，一个TCP连接可以允许多个HTTP请求；  </li>
+<li>加入了<strong>管道机制</strong>，一个TCP连接同时允许多个请求同时发送，增加了并发性；  </li>
+<li>新增了<strong>请求方式</strong>PUT、PATCH、DELETE等。</li>
+</ul>
+<h4 id="5-3-1-Http2-0"><a href="#5-3-1-Http2-0" class="headerlink" title="5.3.1 Http2.0"></a>5.3.1 Http2.0</h4><p>为了解决1.1版本利用率不高的问题，提出了HTTP/2.0版本。 </p>
+<ul>
+<li>增加<strong>双工模式</strong>，即不仅客户端能够同时发送多个请求，服务端也能同时处理多个请求，解决了队头堵塞的问题；  </li>
+<li>HTTP请求和响应中，状态行和请求/响应头都是些信息字段，并没有真正的数据，因此在2.0版本中将所有的信息字段建立一张表，为表中的每个字段<strong>建立索引</strong>，客户端和服务端共同使用这个表，他们之间就以索引号来表示信息字段，这样就避免了1.0旧版本的重复繁琐的字段，并以<strong>压缩的方式传输</strong>，提高利用率。  </li>
+<li>增加<strong>服务器推送</strong>的功能，即不经请求服务端主动向客户端发送数据。</li>
+</ul>
+<h3 id="5-4-Http和Https的区别"><a href="#5-4-Http和Https的区别" class="headerlink" title="5.4 Http和Https的区别"></a>5.4 Http和Https的区别</h3><p>1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。<br>2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。<br>3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。<br>4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。<br>【注】<br>（1）加密：<br>非对称加密：把密钥分为公钥和私钥，公钥是公开的所有人都可以认领，私钥是保密的只有一个人知道。发送者用私钥加密，接受者用公钥解密；<br>对称加密：加密和解密的密钥一样。</p>
+<p>（2）数字签名<br>简单地说,所谓数字签名就是附加在数据单元上的一些数据,或是对数据单元所作的密码变换。主要作用是保证信息传输的完整性、发送者的身份认证、防止交易中的抵赖发生。</p>
+<p>（3）数字证书<br>数字证书就是互联网通讯中标志通讯各方身份信息的一串数字，提供了一种在Internet上验证通信实体身份的方式，数字证书不是数字身份证，而是身份认证机构盖在数字身份证上的一个章或印（或者说加在数字身份证上的一个签名）。它是由权威机构——CA机构，又称为证书授权（Certificate Authority）中心发行的，人们可以在网上用它来识别对方的身份。</p>
+<p>（4）http的安全缺陷</p>
+<ul>
+<li>无法验证服务端的身份</li>
+<li>无法保证数据完整性</li>
+<li>无法保证数据传输不被窃听<br>而https就是专门解决这三个问题，https使用数字签名+数字证书解决了前2个问题，然后，再用SSL协议对传输通道加密，保证数据传输不被窃听。  </li>
+</ul>
+<p>（5）SSL<br>用以保障在Internet上数据传输之安全，利用数据加密(Encryption)技术，可确保数据在网络上之传输过程中不会被截取及窃听。</p>
+<h3 id="5-5-POST和GET的区别"><a href="#5-5-POST和GET的区别" class="headerlink" title="5.5 POST和GET的区别"></a>5.5 POST和GET的区别</h3><ul>
+<li>get参数通过url传递，post放在request body中。 </li>
+<li>get请求在url中传递的参数是有长度限制的，而post没有。</li>
+<li>get比post更不安全，因为参数直接暴露在url中，所以不能用来传递敏感信息。</li>
+<li>get请求只能进行url编码，而post支持多种编码方式</li>
+<li>get请求会浏览器主动cache，而post支持多种编码方式。</li>
+<li>get请求参数会被完整保留在浏览历史记录里，而post中的参数不会被保留。</li>
+</ul>
+<p>GET和POST本质上就是TCP链接，并无差别。但是由于HTTP的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。<br>GET产生一个TCP数据包；POST产生两个TCP数据包。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/lonelydreamer/p/6169469.html" target="_blank" rel="external">Session机制详解</a><br><a href="https://blog.csdn.net/sinat_36629696/article/details/80740678" target="_blank" rel="external">TCP详解</a><br><a href="https://blog.csdn.net/ligupeng7929/article/details/79597423" target="_blank" rel="external">TCP的滑动窗口与拥塞窗口</a><br><a href="https://blog.csdn.net/baidu_37964071/article/details/80914954" target="_blank" rel="external">常见应用层协议</a><br><a href="http://blog.51cto.com/13570193/2108347" target="_blank" rel="external">HTTP协议详解</a><br><a href="https://blog.csdn.net/weixin_41830501/article/details/80812307" target="_blank" rel="external">Http&amp;Https</a><br><a href="http://www.cnblogs.com/longm/p/7205318.html?utm_source=itdadao&amp;utm_medium=referral" target="_blank" rel="external">总结get和post区别</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/21/Java-Concurrent-ThreadLocal/" rel="next" title="Java并发中的ThreadLocal详解">
+                <i class="fa fa-chevron-left"></i> Java并发中的ThreadLocal详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Session-amp-Cookie"><span class="nav-text">1 Session & Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Cookie机制"><span class="nav-text">1.1 Cookie机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-cookie的分发"><span class="nav-text">1.1.1 cookie的分发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-cookie的内容"><span class="nav-text">1.1.2 cookie的内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Sesiion机制"><span class="nav-text">1.2 Sesiion机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-TCP传输控制协议"><span class="nav-text">2 TCP传输控制协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-TCP的特点"><span class="nav-text">2.1 TCP的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-TCP的三次握手"><span class="nav-text">2.2 TCP的三次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-TCP的四次握手"><span class="nav-text">2.3 TCP的四次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-TCP的滑动窗口和拥塞控制"><span class="nav-text">2.4 TCP的滑动窗口和拥塞控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-滑动窗口"><span class="nav-text">2.4.1 滑动窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-拥塞控制"><span class="nav-text">2.4.2 拥塞控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-拥塞窗口"><span class="nav-text">2.4.2 拥塞窗口</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-TCP的可靠性保证"><span class="nav-text">2.5 TCP的可靠性保证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-UDP用户数据包协议"><span class="nav-text">3 UDP用户数据包协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-特点"><span class="nav-text">3.1 特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-常见应用层协议端口号"><span class="nav-text">4 常见应用层协议端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-HTTP超文本传输协议"><span class="nav-text">5 HTTP超文本传输协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Http请求和响应"><span class="nav-text">5.1 Http请求和响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-常见状态码的含义"><span class="nav-text">5.2 常见状态码的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Http的历史版本差别"><span class="nav-text">5.3 Http的历史版本差别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-Http1-0"><span class="nav-text">5.3.1 Http1.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-Http1-1"><span class="nav-text">5.3.1 Http1.1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-Http2-0"><span class="nav-text">5.3.1 Http2.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-Http和Https的区别"><span class="nav-text">5.4 Http和Https的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-POST和GET的区别"><span class="nav-text">5.5 POST和GET的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
