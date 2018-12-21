@@ -67,16 +67,19 @@
 
 
 
-<meta name="description" content="The future you will be remorse now don&apos;t desperately own.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="1 排序1.1 选择排序找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。 123456789101112public void selectSort(int[] a) &amp;#123;    int N = a.length;    for (int i = 0; i &amp;lt; N; i++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法总结-排序和查找">
+<meta property="og:url" content="http://yoursite.com/2018/12/21/Sort-Summary/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="The future you will be remorse now don&apos;t desperately own.">
+<meta property="og:description" content="1 排序1.1 选择排序找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。 123456789101112public void selectSort(int[] a) &amp;#123;    int N = a.length;    for (int i = 0; i &amp;lt; N; i++">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/sort.png">
+<meta property="og:updated_time" content="2018-12-21T08:59:31.777Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
-<meta name="twitter:description" content="The future you will be remorse now don&apos;t desperately own.">
+<meta name="twitter:title" content="算法总结-排序和查找">
+<meta name="twitter:description" content="1 排序1.1 选择排序找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。 123456789101112public void selectSort(int[] a) &amp;#123;    int N = a.length;    for (int i = 0; i &amp;lt; N; i++">
+<meta name="twitter:image" content="http://yoursite.com/images/sort.png">
 
 
 
@@ -106,13 +109,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/21/Sort-Summary/"/>
 
 
 
 
 
-  <title>零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>算法总结-排序和查找 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -131,8 +134,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -235,9 +237,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -267,9 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/21/Sort-Summary/" itemprop="url">算法总结-排序和查找</a></h1>
+          <h1 class="post-title" itemprop="name headline">算法总结-排序和查找</h1>
         
 
         <div class="post-meta">
@@ -319,9 +319,7 @@
       
 
       
-        
-          
-            <p><img src="/images/sort.png" alt=""></p>
+        <p><img src="/images/sort.png" alt=""></p>
 <h2 id="1-排序"><a href="#1-排序" class="headerlink" title="1 排序"></a>1 排序</h2><h3 id="1-1-选择排序"><a href="#1-1-选择排序" class="headerlink" title="1.1 选择排序"></a>1.1 选择排序</h3><p>找到数组中的最小元素，将它与数组的第一个元素交换位置。再从剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。不断进行这样的操作，直到将整个数组排序。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">selectSort</span><span class="params">(<span class="keyword">int</span>[] a)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> N = a.length;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</div><div class="line">        <span class="keyword">int</span> minPos = i;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++) &#123;</div><div class="line">            <span class="keyword">if</span> ((a[j] &lt; a[minPos])) &#123;</div><div class="line">                minPos = j;</div><div class="line">            &#125;</div><div class="line">            swap(a, i, minPos);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="1-2-插入排序"><a href="#1-2-插入排序" class="headerlink" title="1.2 插入排序"></a>1.2 插入排序</h3><p>插入排序从左到右进行，每次都将当前元素插入到左部已经排序的数组中，使得插入之后左部数组依然有序。插入排序的复杂度取决于数组的初始顺序，插入排序对于部分有序数组和小规模数组特别高效。</p>
@@ -338,8 +336,6 @@
 <h3 id="2-2-递归"><a href="#2-2-递归" class="headerlink" title="2.2 递归"></a>2.2 递归</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span> []array,<span class="keyword">int</span> a,<span class="keyword">int</span> lo,<span class="keyword">int</span> hi)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(lo&lt;=hi)&#123;</div><div class="line">        <span class="keyword">int</span> mid=(lo+hi)/<span class="number">2</span>;</div><div class="line">        <span class="keyword">if</span>(a==array[mid])&#123;</div><div class="line">            <span class="keyword">return</span> mid+<span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a&gt;array[mid])&#123;</div><div class="line">            <span class="keyword">return</span> sort(array,a,mid+<span class="number">1</span>,hi);</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">return</span> sort(array,a,lo,mid-<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/wangqing_199054/article/details/20461877" target="_blank" rel="external">建堆的时间复杂度计算</a><br><a href="https://www.cnblogs.com/coderising/p/5708632.html" target="_blank" rel="external">二分查找</a></p>
 
-          
-        
       
     </div>
     
@@ -347,6 +343,12 @@
     
 
     <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
       
     </div>
 
@@ -358,160 +360,28 @@
     <footer class="post-footer">
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/Computer-Net-Summary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Panlong Xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/FitMan.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/21/Computer-Net-Summary/" itemprop="url">计算机网络总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-21T10:57:25+08:00">
-                2018-12-21
-              </time>
+              <a href="/2018/12/21/Computer-Net-Summary/" rel="next" title="计算机网络总结">
+                <i class="fa fa-chevron-left"></i> 计算机网络总结
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Computer-Net/" itemprop="url" rel="index">
-                    <span itemprop="name">Computer Net</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <h2 id="1-Session-amp-Cookie"><a href="#1-Session-amp-Cookie" class="headerlink" title="1 Session &amp; Cookie"></a>1 Session &amp; Cookie</h2><p>HTTP协议本身是无状态的，这与HTTP协议本来的目的是相符的，客户端只需要简单的向服务器请求下载某些文件，无论是客户端还是服务器都没有必要纪录彼此过去的行为，每一次请求之间都是独立的，好比一个顾客和一个自动售货机或者一个普通的（非会员制）大卖场之间的关系一样。cookie的作用就是为了解决HTTP协议无状态的缺陷所作出的努力。至于后来出现的session机制则是又一种在客户端与服务器之间保持状态的解决方案。 具体来说cookie机制采用的是在客户端保持状态的方案，而session机制采用的是在服务器端保持状态的方案。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/21/Computer-Net-Summary/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-    <footer class="post-footer">
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -521,465 +391,22 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/Java-Concurrent-ThreadLocal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Panlong Xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/FitMan.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/21/Java-Concurrent-ThreadLocal/" itemprop="url">Java并发中的ThreadLocal详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-21T09:57:40+08:00">
-                2018-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ThreadLocal/" itemprop="url" rel="index">
-                    <span itemprop="name">ThreadLocal</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="1-ThreadLocal"><a href="#1-ThreadLocal" class="headerlink" title="1 ThreadLocal"></a>1 ThreadLocal</h2><p>ThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。但是由于在每个线程中都创建了副本，所以要考虑它对资源的消耗，比如内存的占用会比不使用ThreadLocal要大。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/21/Java-Concurrent-ThreadLocal/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-    <footer class="post-footer">
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
 
 
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/Java-Collection-List/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Panlong Xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/FitMan.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/16/Java-Collection-List/" itemprop="url">Java集合总结—List</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-16T17:12:31+08:00">
-                2018-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="/images/list.jpeg" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/16/Java-Collection-List/#more" rel="contents">
-              Read more &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-    <footer class="post-footer">
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
 
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/JVM-Summary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Panlong Xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/FitMan.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/16/JVM-Summary/" itemprop="url">JVM-Java虚拟机以及垃圾回收总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-16T08:41:09+08:00">
-                2018-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JVM/" itemprop="url" rel="index">
-                    <span itemprop="name">JVM</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="/images/code.jpeg" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/16/JVM-Summary/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-    <footer class="post-footer">
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
-
-          </div>
-          
-
-
-          
 
         </div>
         
@@ -1000,8 +427,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
             <img class="site-author-image" itemprop="image"
@@ -1066,6 +502,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-排序"><span class="nav-text">1 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-选择排序"><span class="nav-text">1.1 选择排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-插入排序"><span class="nav-text">1.2 插入排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-归并排序"><span class="nav-text">1.3 归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-快速排序"><span class="nav-text">1.4 快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-堆排序"><span class="nav-text">1.5 堆排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-二分查找"><span class="nav-text">2 二分查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-非递归"><span class="nav-text">2.1 非递归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-递归"><span class="nav-text">2.2 递归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1188,7 +640,7 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -1234,26 +686,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
