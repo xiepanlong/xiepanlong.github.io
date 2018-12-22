@@ -67,19 +67,19 @@
 
 
 
-<meta name="description" content="Java并发编程(一)：初识并发一. 基本概念 并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。 线程安全性：要实现线程安全的代码，其核心在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。 原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作； 可见性：一个线程对主内存的修改可以及时的被其他线程观察到； 有序性：一个线程观察其他线程中的指令执行顺序，由于指令重">
+<meta name="description" content="Java并发编程(一)：初识并发1 基本概念 并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。 线程安全性：要实现线程安全的代码，其核心在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。 原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作； 可见性：一个线程对主内存的修改可以及时的被其他线程观察到； 有序性：一个线程观察其他线程中的指令执行顺序，由于指令重排">
 <meta name="keywords" content="Java,Concurrent,Coding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发编程(一)：初识并发">
 <meta property="og:url" content="http://yoursite.com/2018/12/13/Java-concurrent-one/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="Java并发编程(一)：初识并发一. 基本概念 并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。 线程安全性：要实现线程安全的代码，其核心在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。 原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作； 可见性：一个线程对主内存的修改可以及时的被其他线程观察到； 有序性：一个线程观察其他线程中的指令执行顺序，由于指令重">
+<meta property="og:description" content="Java并发编程(一)：初识并发1 基本概念 并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。 线程安全性：要实现线程安全的代码，其核心在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。 原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作； 可见性：一个线程对主内存的修改可以及时的被其他线程观察到； 有序性：一个线程观察其他线程中的指令执行顺序，由于指令重排">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/JMM.png">
-<meta property="og:updated_time" content="2018-12-17T01:02:11.273Z">
+<meta property="og:updated_time" content="2018-12-22T03:58:07.125Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程(一)：初识并发">
-<meta name="twitter:description" content="Java并发编程(一)：初识并发一. 基本概念 并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。 线程安全性：要实现线程安全的代码，其核心在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。 原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作； 可见性：一个线程对主内存的修改可以及时的被其他线程观察到； 有序性：一个线程观察其他线程中的指令执行顺序，由于指令重">
+<meta name="twitter:description" content="Java并发编程(一)：初识并发1 基本概念 并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。 线程安全性：要实现线程安全的代码，其核心在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。 原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作； 可见性：一个线程对主内存的修改可以及时的被其他线程观察到； 有序性：一个线程观察其他线程中的指令执行顺序，由于指令重排">
 <meta name="twitter:image" content="http://yoursite.com/images/JMM.png">
 
 
@@ -342,7 +342,7 @@
       
 
       
-        <h1 id="Java并发编程-一-：初识并发"><a href="#Java并发编程-一-：初识并发" class="headerlink" title="Java并发编程(一)：初识并发"></a>Java并发编程(一)：初识并发</h1><h2 id="一-基本概念"><a href="#一-基本概念" class="headerlink" title="一. 基本概念"></a>一. 基本概念</h2><ol>
+        <h1 id="Java并发编程-一-：初识并发"><a href="#Java并发编程-一-：初识并发" class="headerlink" title="Java并发编程(一)：初识并发"></a>Java并发编程(一)：初识并发</h1><h2 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1 基本概念"></a>1 基本概念</h2><ol>
 <li>并发：多个线程操作相同的计算机资源，并且能够保证线程安全的执行。</li>
 <li>线程安全性：要实现线程安全的代码，其<strong>核心</strong>在于要对状态访问的操作进行管理，特别是对共享的和可变的状态访问。<ul>
 <li>原子性：提供了互斥访问，同一时刻只能有一个线程来对他进行操作；</li>
@@ -359,7 +359,7 @@
 <li>Java内存模型（JMM）</li>
 </ol>
 <a id="more"></a>
-<h2 id="二-原子性——锁"><a href="#二-原子性——锁" class="headerlink" title="二. 原子性——锁"></a>二. 原子性——锁</h2><ol>
+<h2 id="2-原子性——锁"><a href="#2-原子性——锁" class="headerlink" title="2 原子性——锁"></a>2 原子性——锁</h2><ol>
 <li><p>synchronized（同步锁）：依赖于JVM，在作用对象的作用范围内能够保证只有一次一个线程访问；</p>
 <p> 四种形式：</p>
 <ul>
@@ -380,7 +380,7 @@
 <p>（1）synchronized 声明不可被继承，它是不可中断锁，适合于竞争不激烈的场景，使用它的时候代码的可读性好！</p>
 <p>（2）Lock：可中断锁，多样化同步，竞争激烈时能维持通常的性能；</p>
 <p>（3）Atomic：竞争激烈也能维持通常性能，比Lock性能稍好，但是只能同步一个值。 </p>
-<h2 id="三-可见性"><a href="#三-可见性" class="headerlink" title="三. 可见性"></a>三. 可见性</h2><p>1.导致共享变量在线程间不可见的原因：</p>
+<h2 id="3-可见性"><a href="#3-可见性" class="headerlink" title="3 可见性"></a>3 可见性</h2><p>1.导致共享变量在线程间不可见的原因：</p>
 <ul>
 <li>线程交叉执行；</li>
 <li>冲排序结合线程交叉执行；</li>
@@ -404,7 +404,7 @@
  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="keyword">synchronized</span>(Singleton.class) &#123;</div><div class="line">			<span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</div><div class="line">				instance = <span class="keyword">new</span> Singleton();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> instance;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="四-发布与逸出"><a href="#四-发布与逸出" class="headerlink" title="四. 发布与逸出"></a>四. 发布与逸出</h2><p>发布：一个对象是指使对象能够在当前作用域之外的代码中使用；</p>
+<h2 id="4-发布与逸出"><a href="#4-发布与逸出" class="headerlink" title="4 发布与逸出"></a>4 发布与逸出</h2><p>发布：一个对象是指使对象能够在当前作用域之外的代码中使用；</p>
 <p>逸出：当某个不应该发布的对象被发布时（例如对象在为构造完成之前就发布该对象）。</p>
 <ol>
 <li><p>发布对象的几种情况：</p>
@@ -420,11 +420,11 @@
 <p>  如上代码：当EscepeExample发布EventListener时，也隐含的发布了EscapeExample本身，因为在这个内部类的实例中包含了对EscapeExample实例的隐含引用。所以注意不要在构造过程中使this引用逸出。</p>
 </li>
 </ol>
-<h2 id="五-线程封闭"><a href="#五-线程封闭" class="headerlink" title="五. 线程封闭"></a>五. 线程封闭</h2><p> 一种避免使用同步的方式就是不共享数据，如果仅在单线程内访问数据，就不需要同步，这种技术就叫着线程封闭。</p>
+<h2 id="5-线程封闭"><a href="#5-线程封闭" class="headerlink" title="5 线程封闭"></a>5 线程封闭</h2><p> 一种避免使用同步的方式就是不共享数据，如果仅在单线程内访问数据，就不需要同步，这种技术就叫着线程封闭。</p>
 <pre><code>*  Ad-hoc线程封闭：维护线程的封闭性的职责完全由程序来实现；
 *  栈封闭：线程内部使用或者线程局部使用，在栈封闭中，只能通过局部变量才能访问对象，局部变量的固有属性之一就是封闭在执行线程中。
 *  ThreadLocal类：这个类使的线程中某个值与保存值的对象关联起来。
-</code></pre><h2 id="六-不可变对象"><a href="#六-不可变对象" class="headerlink" title="六. 不可变对象"></a>六. 不可变对象</h2><ol>
+</code></pre><h2 id="6-不可变对象"><a href="#6-不可变对象" class="headerlink" title="6 不可变对象"></a>6 不可变对象</h2><ol>
 <li>定义：如果某个对象在被创建之后其状态就不能被修改，那么这个对象就称为不可变对象。不可变对象一定是线程安全的。满足以下条件的推向才是不可变的：  <ul>
 <li>对象创建以后其状态就不可改变；</li>
 <li>对象的所有域都是final类型的；</li>
@@ -434,17 +434,41 @@
 <li>Final域<br>final类型的域时不可修改的（如果final域所引用的对象是可变的，那么这些引用的对象是可变的）。final域能确保初始化过程的安全性，从而可以不受限制的访问不可变对象，并在共享这些对象时无需同步。</li>
 <li>事实不可变对象：如果对象从技术上看是可变的，但其状态在发布后不会在改变，那么称这种对象为事实不可变对象。 </li>
 </ol>
-<h2 id="七-安全发布对象"><a href="#七-安全发布对象" class="headerlink" title="七. 安全发布对象"></a>七. 安全发布对象</h2><p>一个正确构造的独享可以通过以下方式来安全的发布：  </p>
+<h2 id="7-安全发布对象"><a href="#7-安全发布对象" class="headerlink" title="7 安全发布对象"></a>7 安全发布对象</h2><p>一个正确构造的独享可以通过以下方式来安全的发布：  </p>
 <ul>
 <li>在静态初始化函数中初始化一个对象引用；（静态初始化器由JVM在类的初始化阶段执行，由于JVM内部存在着同步机制，因此可以安全的发布）  </li>
 <li>将对象的引用保存到volatile类型的域或者AtomicReferance对象中；</li>
 <li>将对象的引用保存到某个正确构造对象的final域中；</li>
 <li>将对象的引用保存到一个由锁保护的域中。 </li>
 </ul>
-<h2 id="八-JAVA内存模型"><a href="#八-JAVA内存模型" class="headerlink" title="八. JAVA内存模型"></a>八. JAVA内存模型</h2><p>Java内存模型（JMM）是一个抽象的概念，不是真实存在的。其描述的是一组规范，通过这组规范定义了程序中各个变量的访问方式。</p>
+<h2 id="8-JAVA内存模型"><a href="#8-JAVA内存模型" class="headerlink" title="8 JAVA内存模型"></a>8 JAVA内存模型</h2><p>Java内存模型（JMM）是一个抽象的概念，不是真实存在的。其描述的是一组规范，通过这组规范定义了程序中各个变量的访问方式。</p>
 <p><img src="/images/JMM.png" alt=""></p>
 <p>简要访问过程如上图所示：由于JVM运行程序的实体是线程，而每个线程创建时JVM都会为其创建一个工作内存(有些地方称为栈空间)，用于存储线程私有的数据，而Java内存模型中规定所有变量都存储在主内存，主内存是共享内存区域，所有线程都可以访问，但线程对变量的操作(读取赋值等)必须在工作内存中进行，首先要将变量从主内存拷贝的自己的工作内存空间，然后对变量进行操作，操作完成后再将变量写回主内存，不能直接操作主内存中的变量，工作内存中存储着主内存中的变量副本拷贝，前面说过，工作内存是每个线程的私有数据区域，因此不同的线程间无法访问对方的工作内存，线程间的通信(传值)必须通过主内存来完成。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="[参考]"></a>[参考]</h2><p><a href="https://blog.csdn.net/javazejian/article/details/72772461" target="_blank" rel="external">全面理解Java内存模型(JMM)</a></p>
+<h2 id="9-线程安全的List"><a href="#9-线程安全的List" class="headerlink" title="9 线程安全的List"></a>9 线程安全的List</h2><ul>
+<li>Vector </li>
+<li>HashTable</li>
+<li>StringBuffer</li>
+<li>Collections.synchronizedList</li>
+<li>CopyOnWriteArrayList</li>
+</ul>
+<h2 id="10-进程和线程"><a href="#10-进程和线程" class="headerlink" title="10 进程和线程"></a>10 进程和线程</h2><h3 id="10-1-两者区别"><a href="#10-1-两者区别" class="headerlink" title="10.1 两者区别"></a>10.1 两者区别</h3><ul>
+<li>进程是资源分配的最小单位，线程是程序执行的最小单位。  </li>
+<li>地址空间：同一进程的线程共享本进程的地址空间，而进程之间则是独立的地址空间。</li>
+<li>资源拥有：同一进程内的线程共享本进程的资源如内存、I/O、cpu等，但是进程之间的资源是独立的。</li>
+<li>一个进程崩溃后，在保护模式下不会对其他进程产生影响，但是一个线程崩溃整个进程都死掉。所以多进程要比多线程健壮。</li>
+<li>进程切换时，消耗的资源大，效率高。所以涉及到频繁的切换时，使用线程要好于进程。同样如果要求同时进行并且又要共享某些变量的并发操作，只能用线程不能用进程</li>
+<li>执行过程：每个独立的进程程有一个程序运行的入口、顺序执行序列和程序入口。但是线程不能独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。</li>
+<li>线程是处理器调度的基本单位，但是进程不是。</li>
+<li>两者均可并发执行。</li>
+<li>线程执行开销小，但是不利于资源的管理和保护。进程执行开销大，但是能够很好的进行资源管理和保护。</li>
+</ul>
+<h3 id="10-2-通信方式"><a href="#10-2-通信方式" class="headerlink" title="10.2 通信方式"></a>10.2 通信方式</h3><h4 id="10-2-1-进程通信方式"><a href="#10-2-1-进程通信方式" class="headerlink" title="10.2.1 进程通信方式"></a>10.2.1 进程通信方式</h4><p>管道，信号量，消息队列，共享内存，套接字</p>
+<h4 id="10-2-2-线程通信方式"><a href="#10-2-2-线程通信方式" class="headerlink" title="10.2.2 线程通信方式"></a>10.2.2 线程通信方式</h4><ul>
+<li>同步：本质上就是“共享内存”式的通信。多个线程需要访问同一个共享变量，谁拿到了锁（获得了访问权限），谁就可以执行。</li>
+<li>while轮询的方式：</li>
+<li>wait/notify机制</li>
+<li>管道通信<h2 id="参考"><a href="#参考" class="headerlink" title="[参考]"></a>[参考]</h2><a href="https://blog.csdn.net/javazejian/article/details/72772461" target="_blank" rel="external">全面理解Java内存模型(JMM)</a></li>
+</ul>
 
       
     </div>
@@ -569,7 +593,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -591,7 +615,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -626,7 +650,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java并发编程-一-：初识并发"><span class="nav-text">Java并发编程(一)：初识并发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-基本概念"><span class="nav-text">一. 基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-原子性——锁"><span class="nav-text">二. 原子性——锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-可见性"><span class="nav-text">三. 可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-发布与逸出"><span class="nav-text">四. 发布与逸出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-线程封闭"><span class="nav-text">五. 线程封闭</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-不可变对象"><span class="nav-text">六. 不可变对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七-安全发布对象"><span class="nav-text">七. 安全发布对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-JAVA内存模型"><span class="nav-text">八. JAVA内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">[参考]</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java并发编程-一-：初识并发"><span class="nav-text">Java并发编程(一)：初识并发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-基本概念"><span class="nav-text">1 基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-原子性——锁"><span class="nav-text">2 原子性——锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-可见性"><span class="nav-text">3 可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-发布与逸出"><span class="nav-text">4 发布与逸出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-线程封闭"><span class="nav-text">5 线程封闭</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-不可变对象"><span class="nav-text">6 不可变对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-安全发布对象"><span class="nav-text">7 安全发布对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-JAVA内存模型"><span class="nav-text">8 JAVA内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-线程安全的List"><span class="nav-text">9 线程安全的List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-进程和线程"><span class="nav-text">10 进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-两者区别"><span class="nav-text">10.1 两者区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-通信方式"><span class="nav-text">10.2 通信方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-2-1-进程通信方式"><span class="nav-text">10.2.1 进程通信方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-2-2-线程通信方式"><span class="nav-text">10.2.2 线程通信方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">[参考]</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DB,Mysql," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。 优点：1.查询能力高，可以操作很复杂的查询2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围">
+<meta name="keywords" content="DB,Mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库之Mysql">
+<meta property="og:url" content="http://yoursite.com/2018/12/22/DB-Mysql/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。 优点：1.查询能力高，可以操作很复杂的查询2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-12-22T07:57:52.124Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库之Mysql">
+<meta name="twitter:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。 优点：1.查询能力高，可以操作很复杂的查询2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/22/DB-Mysql/"/>
+
+
+
+
+
+  <title>数据库之Mysql | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/DB-Mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库之Mysql</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T14:53:31+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-关系型数据库和非关系型数据库"><a href="#1-关系型数据库和非关系型数据库" class="headerlink" title="1 关系型数据库和非关系型数据库"></a>1 关系型数据库和非关系型数据库</h2><h3 id="1-1-关系型数据库"><a href="#1-1-关系型数据库" class="headerlink" title="1.1 关系型数据库"></a>1.1 关系型数据库</h3><p>代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。</p>
+<p>优点：<br>1.查询能力高，可以操作很复杂的查询<br>2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围内的数据的值。<br>3.由于表具有逻辑性，易于理解。<br>随着大数据时代的到来，关系型数据库的严谨变得有些不适用：<br>1.不适用高并发读写<br>2.不适用海量数据高效读写<br>3.层次多，扩展性低<br>4.维护一致性开销大<br>5.涉及联表查询，复杂，慢  </p>
+<h3 id="1-2-非关系型"><a href="#1-2-非关系型" class="headerlink" title="1.2 非关系型"></a>1.2 非关系型</h3><p>非关系型数据库主要是使用key-value的方式存储数据的，即是no relational，这是显然区别于关系型数据库的特点之一。由于数据间没有关联性，相对来说层级扁平。<br>优点：<br>1.由于数据之间没有关系，所以易扩展，也易于查询<br>2.数据结构灵活，每个数据都可以有不同的结构<br>3.由于降低了一致性的要求，所以查询速度更快  </p>
+<h2 id="2-数据库索引"><a href="#2-数据库索引" class="headerlink" title="2 数据库索引"></a>2 数据库索引</h2><h3 id="2-1-Mysql数据库如何创建索引"><a href="#2-1-Mysql数据库如何创建索引" class="headerlink" title="2.1 Mysql数据库如何创建索引"></a>2.1 Mysql数据库如何创建索引</h3><ol>
+<li>普通索引：<br>CREATE INDEX indexName ON mytable(username(length));如果是CHAR VARCHAR类型，length可以小于字段实际长度；如果是BLOB和TEXT类型，必须指定 length，下同。</li>
+<li>唯一索引<br>它与前面的普通索引类似，不同的就是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。 创建索引:<br>CREATE UNIQUE INDEX indexName ON mytable(username(length)); </li>
+<li>主键索引<br>它是一种特殊的唯一索引，不允许有空值。一般是在建表的时候同时创建主键索引：<br>CREATE TABLE mytable(   ID INT NOT NULL,    username VARCHAR(16) NOT NULL,   PRIMARY KEY(ID) ); </li>
+<li>组合索引 ：一个组合索引包含两个或两个以上的列，针对组合索引在使用查询的时候遵循mysql组合索引的”<strong>最左前缀匹配</strong>“（最左前缀匹配：必须按照从左到右的顺序匹配）。</li>
+</ol>
+<h3 id="2-2-建立索引的优缺点"><a href="#2-2-建立索引的优缺点" class="headerlink" title="2.2 建立索引的优缺点"></a>2.2 建立索引的优缺点</h3><h4 id="2-2-1-优点"><a href="#2-2-1-优点" class="headerlink" title="2.2.1 优点"></a>2.2.1 优点</h4><ol>
+<li>可以通过建立唯一索引或者主键索引,保证数据库表中每一行数据的唯一性.  </li>
+<li>建立索引可以大大提高检索的数据,以及减少表的检索行数  </li>
+<li>在表连接的连接条件 可以加速表与表直接的相连   </li>
+<li>在分组和排序字句进行数据检索,可以减少查询时间中 分组 和 排序时所消耗的时间(数据库的记录会重新排序)  </li>
+<li>建立索引,在查询中使用索引 可以提高性能  </li>
+</ol>
+<h4 id="2-2-2-缺点"><a href="#2-2-2-缺点" class="headerlink" title="2.2.2 缺点"></a>2.2.2 缺点</h4><ol>
+<li>在创建索引和维护索引 会耗费时间,随着数据量的增加而增加</li>
+<li>索引文件会占用物理空间,除了数据表需要占用物理空间之外,每一个索引还会占用一定的物理空间</li>
+<li>当对表的数据进行 INSERT,UPDATE,DELETE 的时候,索引也要动态的维护,这样就会降低数据的维护速度,(建立索引会占用磁盘空间的索引文件。一般情况这个问题不太严重，但如果你在一个大表上创建了多种组合索引，索引文件的会膨胀很快)。</li>
+</ol>
+<h3 id="2-3-索引的数据结构"><a href="#2-3-索引的数据结构" class="headerlink" title="2.3 索引的数据结构"></a>2.3 索引的数据结构</h3><p>一般数据库的索引是基于两类数据结构实现的，一类是Hash类型的索引，它的好处是查询单条记录很快，但是范围查询非常慢；另外一类就是基于B+树类型的索引，这类索引比较适合范围查询，接下来我们详细了解一下B+树以及基于B+树的索引。</p>
+<h4 id="2-3-1-B-树的数据结构"><a href="#2-3-1-B-树的数据结构" class="headerlink" title="2.3.1 B+树的数据结构"></a>2.3.1 B+树的数据结构</h4><p>一 定义</p>
+<ol>
+<li>B-Tree<br>B-Tree是一种多路搜索树（并不是二叉的）：  <pre><code>1.定义任意非叶子结点最多只有M个儿子；且M&gt;2；  
+2.根结点的儿子数为[2, M]；  
+3.除根结点以外的非叶子结点的儿子数为[M/2, M]；  
+4.每个结点存放至少M/2-1（取上整）和至多M-1个关键字；（至少2个关键字）  
+5.非叶子结点的关键字个数=指向儿子的指针个数-1；  
+6.非叶子结点的关键字：K[1], K[2], …, K[M-1]；且K[i] &lt; K[i+1]；  
+7.非叶子结点的指针：P[1], P[2], …, P[M]；其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其它P[i]指向关键字属于(K[i-1], K[i])的子树；  
+8.所有叶子结点位于同一层；  
+</code></pre></li>
+<li>B+Tree<br>B+树是B-树的变体，也是一种多路搜索树：    <pre><code>1.其定义基本与B-树同，除了：    
+2.非叶子结点的子树指针与关键字个数相同；  
+3.非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B-树是开区间）；  
+5.为所有叶子结点增加一个链指针；  
+6.所有关键字都在叶子结点出现；  
+</code></pre></li>
+</ol>
+<p>二 特点</p>
+<ol>
+<li>在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。  </li>
+<li>在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &lt;= n &lt;=m,根结点的取值范围为1&lt;=n&lt;=m，b树他们的取值范围分别是ceil(m/2) -1&lt;= n &lt;=m-1和1&lt;=n&lt;=m-1。  </li>
+<li>在B+树中叶子结点包含信息，并且包含了全部关键字，叶子结点引出的指针指向记录。    </li>
+<li>在B+树中的所有非叶子结点仅起到一个索引的作用，即结点中的每个索引项只含有对应子树的最大关键字和指向该子树的指针。</li>
+</ol>
+<h4 id="2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？"><a href="#2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？" class="headerlink" title="2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？"></a>2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？</h4><ol>
+<li><p>B+tree的磁盘读写代价更低<br>B+-tree的内部结点并没有指向关键字具体信息的指针。因此其内部结点相对B 树更小。如果把所有同一内部结点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读入内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。</p>
+</li>
+<li><p>B+tree的查询效率更加稳定<br>由于非终结点并不是最终指向文件内容的结点，而只是叶子结点中关键字的索引。所以任何关键字的查找必须走一条从根结点到叶子结点的路。所有关键字查询的路径长度相同，导致每一个数据的查询效率相当</p>
+</li>
+<li>由于B+树的数据都存储在叶子结点中，分支结点均为索引，方便扫库，只需要扫一遍叶子结点即可，但是B树因为其分支结点同样存储着数据，我们要找到具体的数据，需要进行一次中序遍历按序来扫，所以B+树更加适合在区间查询的情况，所以通常B+树用于数据库索引。</li>
+</ol>
+<h3 id="2-4-常用的数据库存储引擎"><a href="#2-4-常用的数据库存储引擎" class="headerlink" title="2.4 常用的数据库存储引擎"></a>2.4 常用的数据库存储引擎</h3><ol>
+<li>InnoDB 支持事务，支持行级别锁，支持B-Tree索引，不支持Hash索引</li>
+<li>MyISAM 不支持事务，支持表级别锁，支持B-Tree索引，不支持Hash索引</li>
+</ol>
+<h3 id="2-5-聚簇索引和非聚簇索引"><a href="#2-5-聚簇索引和非聚簇索引" class="headerlink" title="2.5 聚簇索引和非聚簇索引"></a>2.5 聚簇索引和非聚簇索引</h3><ol>
+<li>所谓聚簇索引，就是指主索引文件和数据文件为同一份文件，聚簇索引主要用在Innodb存储引擎中。在该索引实现方式中B+Tree的叶子节点上的data就是数据本身，key为主键。</li>
+<li>非聚簇索引就是指B+Tree的叶子节点上的data，并不是数据本身，而是数据存放的地址。主索引和辅助索引没啥区别，只是主索引中的key一定得是唯一的。主要用在MyISAM存储引擎中。</li>
+</ol>
+<h2 id="3-数据库事务的特性ACID"><a href="#3-数据库事务的特性ACID" class="headerlink" title="3 数据库事务的特性ACID"></a>3 数据库事务的特性ACID</h2><ol>
+<li>原子性(Atomic)：事务中各项操作，要么全做要么全不做，任何一项操作的失败都会导致整个事务的失败；</li>
+<li>一致性(Consistent)：事务结束后系统状态是一致的；</li>
+<li>隔离性(Isolated)：并发执行的事务彼此无法看到对方的中间状态；</li>
+<li>持久性(Durable)：事务完成后所做的改动都会被持久化，即使发生灾难性的失败。通过日志和同步备份可以在故障发生后重建数据。</li>
+</ol>
+<h2 id="4-数据库的隔离级别"><a href="#4-数据库的隔离级别" class="headerlink" title="4 数据库的隔离级别"></a>4 数据库的隔离级别</h2><ul>
+<li>脏读：一个事务会读进还没有被另一个事务提交的数据，所以你会看到一些最后被另一个事务回滚掉的数据；</li>
+<li>不可重复读：一个事务读进一条记录，另一个事务更改了这条记录并提交完毕，这时候第一个事务再次读这条记录时，它已经改变了；</li>
+<li>幻影读：一个事务用Where子句来检索一个表的数据，另一个事务插入一条新的记录，并且符合Where条件，这样，第一个事务用同一个where条件来检索数据后，就会多出一条记录。</li>
+</ul>
+<p>防止出现以上问题设计了事务的隔离级别：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">事务隔离级别</th>
+<th style="text-align:center">脏读</th>
+<th style="text-align:center">不可重复读</th>
+<th style="text-align:center">幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">读未提交(read-uncommited)</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:left">读已提交(read-commited)</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:left">可重复读(repeatable read)</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:left">串行化(Serializable)</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">否</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>【注】mysql默认的事务隔离级别为repeatable-read</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/qq_33915826/article/details/" target="_blank" rel="external">关系型数据库和非关系型数据库</a><br><a href="https://blog.csdn.net/u010727189/article/details/79399384" target="_blank" rel="external">B-tree/b+tree 原理以及聚簇索引和非聚簇索引</a><br><a href="https://www.cnblogs.com/chenshishuo/p/5030029.html" target="_blank" rel="external">细说mysql索引</a>  </p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/22/Java-Concurrent-ReentrantLock/" rel="next" title="Java-Concurrent-ReentrantLock">
+                <i class="fa fa-chevron-left"></i> Java-Concurrent-ReentrantLock
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关系型数据库和非关系型数据库"><span class="nav-text">1 关系型数据库和非关系型数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-关系型数据库"><span class="nav-text">1.1 关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-非关系型"><span class="nav-text">1.2 非关系型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库索引"><span class="nav-text">2 数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Mysql数据库如何创建索引"><span class="nav-text">2.1 Mysql数据库如何创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-建立索引的优缺点"><span class="nav-text">2.2 建立索引的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-优点"><span class="nav-text">2.2.1 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-缺点"><span class="nav-text">2.2.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-索引的数据结构"><span class="nav-text">2.3 索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-B-树的数据结构"><span class="nav-text">2.3.1 B+树的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？"><span class="nav-text">2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-常用的数据库存储引擎"><span class="nav-text">2.4 常用的数据库存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-聚簇索引和非聚簇索引"><span class="nav-text">2.5 聚簇索引和非聚簇索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-数据库事务的特性ACID"><span class="nav-text">3 数据库事务的特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数据库的隔离级别"><span class="nav-text">4 数据库的隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
