@@ -78,7 +78,7 @@
 <meta property="og:image" content="http://yoursite.com/images/classtointerface.png">
 <meta property="og:image" content="http://yoursite.com/images/exception.png">
 <meta property="og:image" content="http://yoursite.com/images/throwable.png">
-<meta property="og:updated_time" content="2018-12-22T08:33:47.492Z">
+<meta property="og:updated_time" content="2018-12-22T08:39:01.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java语言基础总结">
 <meta name="twitter:description" content="1 面向对象1.1 封装首先是抽象，把事物抽象成一个类，其次才是封装，将事物拥有的属性和动作隐藏起来，只保留特定的方法与外界联系。封装符合面向对象设计原则的第一条：单一性原则，一个类把自己该做的事情封装起来，而不是暴露给其他类去处理，当内部的逻辑发生变化时，外部调用不用因此而修改，他们只调用开放的接口，而不用去关心内部的实现。">
@@ -397,15 +397,11 @@
 <li>在运行时判断任意一个类所具有的成员变量和方法（通过反射甚至可以调用private方法）；</li>
 <li>在运行时调用任意一个对象的方法；<br><strong>重点：是运行时而不是编译时</strong></li>
 </ul>
-<h2 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h2><p><img src="/images/exception.png" alt=""></p>
-<p>Java标准库内建了一些通用的异常，这些类都以Throwable为顶层父类；Throwable又派生出Error和Exception。</p>
-<p><img src="/images/throwable.png" alt=""></p>
+<h2 id="4-Java异常"><a href="#4-Java异常" class="headerlink" title="4 Java异常"></a>4 Java异常</h2><p>Java标准库内建了一些通用的异常，这些类都以Throwable为顶层父类；Throwable又派生出Error和Exception。<br><img src="/images/exception.png" alt=""></p>
 <ol>
 <li>错误：Error类以及他的子类的实例，代表了JVM本身的错误。错误不能被程序员通过代码处理，Error很少出现。因此，程序员应该关注Exception为父类的分支下的各种异常类。</li>
-<li>异常：Exception以及他的子类，代表程序运行时发送的各种不期望发生的事件。可以被Java异常处理机制使用，是异常处理的核心。</li>
-</ol>
-<p>【注】  </p>
-<ol>
+<li><p>异常：Exception以及他的子类，代表程序运行时发送的各种不期望发生的事件。可以被Java异常处理机制使用，是异常处理的核心。<br><img src="/images/throwable.png" alt=""><br>【注】  </p>
+</li>
 <li><p>非检查异常（unckecked exception）<br>Error 和 RuntimeException 以及他们的子类。javac在编译时，不会提示和发现这样的异常，不要求在程序处理这些异常。所以如果愿意，我们可以编写代码处理（使用try…catch…finally）这样的异常，也可以不处理。对于这些异常，我们应该修正代码，而不是去通过异常处理器处理 。这样的异常发生的原因多半是代码写的有问题。如除0错误ArithmeticException，错误的强制类型转换错误ClassCastException，数组索引越界ArrayIndexOutOfBoundsException，使用了空对象NullPointerException等等。</p>
 </li>
 <li><p>检查异常（checked exception）<br>除了Error 和 RuntimeException的其它异常。javac强制要求程序员为这样的异常做预备处理工作（使用try…catch…finally或者throws）。在方法中要么用try-catch语句捕获它并处理，要么用throws子句声明抛出它，否则编译不会通过。这样的异常一般是由程序的运行环境导致的。因为程序可能被运行在各种未知的环境下，而程序员无法干预用户如何使用他编写的程序，于是程序员就应该为这样的异常时刻准备着。如SQLException , IOException,ClassNotFoundException 等。</p>
@@ -593,7 +589,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-面向对象"><span class="nav-text">1 面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-封装"><span class="nav-text">1.1 封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-继承"><span class="nav-text">1.2 继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-多态"><span class="nav-text">1.3 多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-抽象类和接口的区别"><span class="nav-text">1.3 抽象类和接口的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-泛型"><span class="nav-text">1.3 泛型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-关键字"><span class="nav-text">2 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-final关键字"><span class="nav-text">2.1 final关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-static关键字"><span class="nav-text">2.2 static关键字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-反射"><span class="nav-text">3 反射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-概念"><span class="nav-text">3.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-反射的功能"><span class="nav-text">3.2 反射的功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java异常"><span class="nav-text">Java异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-面向对象"><span class="nav-text">1 面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-封装"><span class="nav-text">1.1 封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-继承"><span class="nav-text">1.2 继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-多态"><span class="nav-text">1.3 多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-抽象类和接口的区别"><span class="nav-text">1.3 抽象类和接口的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-泛型"><span class="nav-text">1.3 泛型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-关键字"><span class="nav-text">2 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-final关键字"><span class="nav-text">2.1 final关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-static关键字"><span class="nav-text">2.2 static关键字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-反射"><span class="nav-text">3 反射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-概念"><span class="nav-text">3.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-反射的功能"><span class="nav-text">3.2 反射的功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Java异常"><span class="nav-text">4 Java异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
