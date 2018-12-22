@@ -67,18 +67,18 @@
 
 
 
-<meta name="description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。 优点：1.查询能力高，可以操作很复杂的查询2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围">
+<meta name="description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
 <meta name="keywords" content="DB,Mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库之Mysql">
 <meta property="og:url" content="http://yoursite.com/2018/12/22/DB-Mysql/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。 优点：1.查询能力高，可以操作很复杂的查询2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围">
+<meta property="og:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-22T07:57:52.124Z">
+<meta property="og:updated_time" content="2018-12-22T07:59:19.472Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库之Mysql">
-<meta name="twitter:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。 优点：1.查询能力高，可以操作很复杂的查询2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围">
+<meta name="twitter:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
 
 
 
@@ -340,8 +340,7 @@
       
 
       
-        <h2 id="1-关系型数据库和非关系型数据库"><a href="#1-关系型数据库和非关系型数据库" class="headerlink" title="1 关系型数据库和非关系型数据库"></a>1 关系型数据库和非关系型数据库</h2><h3 id="1-1-关系型数据库"><a href="#1-1-关系型数据库" class="headerlink" title="1.1 关系型数据库"></a>1.1 关系型数据库</h3><p>代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。</p>
-<p>优点：<br>1.查询能力高，可以操作很复杂的查询<br>2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围内的数据的值。<br>3.由于表具有逻辑性，易于理解。<br>随着大数据时代的到来，关系型数据库的严谨变得有些不适用：<br>1.不适用高并发读写<br>2.不适用海量数据高效读写<br>3.层次多，扩展性低<br>4.维护一致性开销大<br>5.涉及联表查询，复杂，慢  </p>
+        <h2 id="1-关系型数据库和非关系型数据库"><a href="#1-关系型数据库和非关系型数据库" class="headerlink" title="1 关系型数据库和非关系型数据库"></a>1 关系型数据库和非关系型数据库</h2><h3 id="1-1-关系型数据库"><a href="#1-1-关系型数据库" class="headerlink" title="1.1 关系型数据库"></a>1.1 关系型数据库</h3><p>代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。<br><a id="more"></a><br>优点：<br>1.查询能力高，可以操作很复杂的查询<br>2.一致性高。由于并发高，在数据同步的时候一般采用锁来保证数据的可靠性（还有时间戳什么的方法），在处理数据的时候对表进行封锁来保证操作的时候其他的操作不能改变当前查询范围内的数据的值。<br>3.由于表具有逻辑性，易于理解。<br>随着大数据时代的到来，关系型数据库的严谨变得有些不适用：<br>1.不适用高并发读写<br>2.不适用海量数据高效读写<br>3.层次多，扩展性低<br>4.维护一致性开销大<br>5.涉及联表查询，复杂，慢  </p>
 <h3 id="1-2-非关系型"><a href="#1-2-非关系型" class="headerlink" title="1.2 非关系型"></a>1.2 非关系型</h3><p>非关系型数据库主要是使用key-value的方式存储数据的，即是no relational，这是显然区别于关系型数据库的特点之一。由于数据间没有关联性，相对来说层级扁平。<br>优点：<br>1.由于数据之间没有关系，所以易扩展，也易于查询<br>2.数据结构灵活，每个数据都可以有不同的结构<br>3.由于降低了一致性的要求，所以查询速度更快  </p>
 <h2 id="2-数据库索引"><a href="#2-数据库索引" class="headerlink" title="2 数据库索引"></a>2 数据库索引</h2><h3 id="2-1-Mysql数据库如何创建索引"><a href="#2-1-Mysql数据库如何创建索引" class="headerlink" title="2.1 Mysql数据库如何创建索引"></a>2.1 Mysql数据库如何创建索引</h3><ol>
 <li>普通索引：<br>CREATE INDEX indexName ON mytable(username(length));如果是CHAR VARCHAR类型，length可以小于字段实际长度；如果是BLOB和TEXT类型，必须指定 length，下同。</li>
