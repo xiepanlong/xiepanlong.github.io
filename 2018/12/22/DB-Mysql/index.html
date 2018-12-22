@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-22T07:59:19.472Z">
+<meta property="og:updated_time" content="2018-12-22T13:55:20.119Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库之Mysql">
 <meta name="twitter:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
@@ -452,7 +452,19 @@
 </table>
 </div>
 <p>【注】mysql默认的事务隔离级别为repeatable-read</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/qq_33915826/article/details/" target="_blank" rel="external">关系型数据库和非关系型数据库</a><br><a href="https://blog.csdn.net/u010727189/article/details/79399384" target="_blank" rel="external">B-tree/b+tree 原理以及聚簇索引和非聚簇索引</a><br><a href="https://www.cnblogs.com/chenshishuo/p/5030029.html" target="_blank" rel="external">细说mysql索引</a>  </p>
+<h2 id="5-mysql的锁"><a href="#5-mysql的锁" class="headerlink" title="5 mysql的锁"></a>5 mysql的锁</h2><p>MyISAM和MEMORY存储引擎采用的是表级锁（table-level locking）。InnoDB存储引擎既支持行级锁（row-level locking），也支持表级锁，但默认情况下是采用行级锁。表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。<br>行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低,并发度也最高。</p>
+<ol>
+<li><p>InnoDB实现了以下两种类型的行锁：<br>共享锁（S）：允许一个事务去读一行，阻止其他事务获得相同数据集的排他锁。<br>排他锁（X)：允许获得排他锁的事务更新数据，阻止其他事务取得相同数据集的共享读锁和排他写锁。  </p>
+</li>
+<li><p>另外，为了允许行锁和表锁共存，实现多粒度锁机制，InnoDB还有两种内部使用的意向锁（Intention Locks），这两种意向锁都是表锁：<br>意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先取得该表的IS锁。<br>意向排他锁（IX）：事务打算给数据行加行排他锁，事务在给一个数据行加排他锁前必须先取得该表的IX锁。  </p>
+</li>
+</ol>
+<p>Next-key Lock 临键锁 默认级别<br>解决幻读的问题一定需要使用Next-key Lock锁住下一个左开右闭的区间，一共锁住两个区间。<br>当查询记录不存在的时候，退化为间隙锁：范围查询或等值查询且记录不存在</p>
+<p>Gap Lock 间隙锁 锁住左开右开的区间，Gap锁之间不冲突， Gap Lock只在RR隔离级别的事务中存在。</p>
+<p>记录锁 Record Lock<br>当使用唯一性索引（主键/唯一索引），用=进行精准匹配时，退化成Record锁，只锁着这一个记录。</p>
+<p>利用锁解决脏读的问题-&gt;加上排它锁<br>不可重复读的问题-&gt; 加共享锁<br>幻读的问题 -&gt; 加上Next-key Lock</p>
+<p>全值匹配我最爱,最左前缀要遵守;<br>带头大哥不能死,中间兄弟不能断;<br>索引列上少计算,范围之后全失效;<br>LIKE百分写最右,覆盖索引不写星;<br>不等空值还有or,索引失效要少用;</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/qq_33915826/article/details/" target="_blank" rel="external">关系型数据库和非关系型数据库</a><br><a href="https://blog.csdn.net/u010727189/article/details/79399384" target="_blank" rel="external">B-tree/b+tree 原理以及聚簇索引和非聚簇索引</a><br><a href="https://www.cnblogs.com/chenshishuo/p/5030029.html" target="_blank" rel="external">细说mysql索引</a><br><a href="https://blog.csdn.net/bigtree_3721/article/details/77417518" target="_blank" rel="external"></a></p>
 
       
     </div>
@@ -630,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关系型数据库和非关系型数据库"><span class="nav-text">1 关系型数据库和非关系型数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-关系型数据库"><span class="nav-text">1.1 关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-非关系型"><span class="nav-text">1.2 非关系型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库索引"><span class="nav-text">2 数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Mysql数据库如何创建索引"><span class="nav-text">2.1 Mysql数据库如何创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-建立索引的优缺点"><span class="nav-text">2.2 建立索引的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-优点"><span class="nav-text">2.2.1 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-缺点"><span class="nav-text">2.2.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-索引的数据结构"><span class="nav-text">2.3 索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-B-树的数据结构"><span class="nav-text">2.3.1 B+树的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？"><span class="nav-text">2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-常用的数据库存储引擎"><span class="nav-text">2.4 常用的数据库存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-聚簇索引和非聚簇索引"><span class="nav-text">2.5 聚簇索引和非聚簇索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-数据库事务的特性ACID"><span class="nav-text">3 数据库事务的特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数据库的隔离级别"><span class="nav-text">4 数据库的隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关系型数据库和非关系型数据库"><span class="nav-text">1 关系型数据库和非关系型数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-关系型数据库"><span class="nav-text">1.1 关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-非关系型"><span class="nav-text">1.2 非关系型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库索引"><span class="nav-text">2 数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Mysql数据库如何创建索引"><span class="nav-text">2.1 Mysql数据库如何创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-建立索引的优缺点"><span class="nav-text">2.2 建立索引的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-优点"><span class="nav-text">2.2.1 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-缺点"><span class="nav-text">2.2.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-索引的数据结构"><span class="nav-text">2.3 索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-B-树的数据结构"><span class="nav-text">2.3.1 B+树的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？"><span class="nav-text">2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-常用的数据库存储引擎"><span class="nav-text">2.4 常用的数据库存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-聚簇索引和非聚簇索引"><span class="nav-text">2.5 聚簇索引和非聚簇索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-数据库事务的特性ACID"><span class="nav-text">3 数据库事务的特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数据库的隔离级别"><span class="nav-text">4 数据库的隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-mysql的锁"><span class="nav-text">5 mysql的锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
