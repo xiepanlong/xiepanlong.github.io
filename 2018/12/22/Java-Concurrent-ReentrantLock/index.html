@@ -51,7 +51,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Welcome,Blog," />
+  <meta name="keywords" content="Java,ReentrantLock," />
 
 
 
@@ -67,18 +67,18 @@
 
 
 
-<meta name="description" content="Welcome to Xie’s blog! This is my very first post. This blog focuses on technology in CS and my life and learning.">
-<meta name="keywords" content="Welcome,Blog">
+<meta name="description" content="1 Unsafe与CAS1.1 UnsafeJava无法直接访问底层操作系统，而是通过本地（native）方法来访问。不过尽管如此，JVM还是开了一个后门，JDK中有一个类Unsafe，它提供了硬件级别的原子操作。Unsafe提供了硬件级别的操作，比如说获取某个属性在内存中的位置，比如说修改对象的字段值，即使它是私有的。不过Java本身就是为了屏蔽底层的差异，对于一般的开发而言也很少会有这样的需求">
+<meta name="keywords" content="Java,ReentrantLock">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello Blog">
-<meta property="og:url" content="http://yoursite.com/2017/09/17/hello-world/index.html">
+<meta property="og:title" content="Java-Concurrent-ReentrantLock">
+<meta property="og:url" content="http://yoursite.com/2018/12/22/Java-Concurrent-ReentrantLock/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="Welcome to Xie’s blog! This is my very first post. This blog focuses on technology in CS and my life and learning.">
+<meta property="og:description" content="1 Unsafe与CAS1.1 UnsafeJava无法直接访问底层操作系统，而是通过本地（native）方法来访问。不过尽管如此，JVM还是开了一个后门，JDK中有一个类Unsafe，它提供了硬件级别的原子操作。Unsafe提供了硬件级别的操作，比如说获取某个属性在内存中的位置，比如说修改对象的字段值，即使它是私有的。不过Java本身就是为了屏蔽底层的差异，对于一般的开发而言也很少会有这样的需求">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-13T05:20:47.278Z">
+<meta property="og:updated_time" content="2018-12-22T03:15:45.626Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello Blog">
-<meta name="twitter:description" content="Welcome to Xie’s blog! This is my very first post. This blog focuses on technology in CS and my life and learning.">
+<meta name="twitter:title" content="Java-Concurrent-ReentrantLock">
+<meta name="twitter:description" content="1 Unsafe与CAS1.1 UnsafeJava无法直接访问底层操作系统，而是通过本地（native）方法来访问。不过尽管如此，JVM还是开了一个后门，JDK中有一个类Unsafe，它提供了硬件级别的原子操作。Unsafe提供了硬件级别的操作，比如说获取某个属性在内存中的位置，比如说修改对象的字段值，即使它是私有的。不过Java本身就是为了屏蔽底层的差异，对于一般的开发而言也很少会有这样的需求">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/17/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/22/Java-Concurrent-ReentrantLock/"/>
 
 
 
 
 
-  <title>Hello Blog | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Java-Concurrent-ReentrantLock | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -251,7 +251,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/Java-Concurrent-ReentrantLock/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Panlong Xie">
@@ -268,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello Blog</h1>
+          <h1 class="post-title" itemprop="name headline">Java-Concurrent-ReentrantLock</h1>
         
 
         <div class="post-meta">
@@ -280,8 +280,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T00:00:00+08:00">
-                2017-09-17
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T10:53:10+08:00">
+                2018-12-22
               </time>
             
 
@@ -303,8 +303,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Essay/" itemprop="url" rel="index">
-                    <span itemprop="name">Essay</span>
+                  <a href="/categories/Concurrent/" itemprop="url" rel="index">
+                    <span itemprop="name">Concurrent</span>
                   </a>
                 </span>
 
@@ -340,10 +340,34 @@
       
 
       
-        <p>Welcome to <a href="https://xiepanlong.github.io/" target="_blank" rel="external">Xie’s blog</a>! This is my very first post. This blog focuses on technology in CS and my life and learning.<br><a id="more"></a></p>
-<p>【附】Hexo 发布流程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure>
-<p>Thanks for <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a> and NexT.</p>
+        <h2 id="1-Unsafe与CAS"><a href="#1-Unsafe与CAS" class="headerlink" title="1 Unsafe与CAS"></a>1 Unsafe与CAS</h2><h3 id="1-1-Unsafe"><a href="#1-1-Unsafe" class="headerlink" title="1.1 Unsafe"></a>1.1 Unsafe</h3><p>Java无法直接访问底层操作系统，而是通过本地（native）方法来访问。不过尽管如此，JVM还是开了一个后门，JDK中有一个类Unsafe，它提供了硬件级别的原子操作。Unsafe提供了硬件级别的操作，比如说获取某个属性在内存中的位置，比如说修改对象的字段值，即使它是私有的。不过Java本身就是为了屏蔽底层的差异，对于一般的开发而言也很少会有这样的需求。</p>
+<h2 id="1-2-CAS"><a href="#1-2-CAS" class="headerlink" title="1.2 CAS"></a>1.2 CAS</h2><p>CAS，Compare and Swap即比较并交换，设计并发算法时常用到的一种技术，java.util.concurrent包完全建立在CAS之上，没有CAS也就没有此包，可见CAS的重要性。<strong>CAS有三个操作数：内存值V、旧的预期值A、要修改的值B，当且仅当预期值A和内存值V相同时，将内存值修改为B并返回true，否则什么都不做并返回false</strong>。CAS也是通过Unsafe实现的，看下Unsafe下的三个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapObject</span><span class="params">(Object paramObject1, <span class="keyword">long</span> paramLong, Object paramObject2, Object paramObject3)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapInt</span><span class="params">(Object paramObject, <span class="keyword">long</span> paramLong, <span class="keyword">int</span> paramInt1, <span class="keyword">int</span> paramInt2)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">compareAndSwapLong</span><span class="params">(Object paramObject, <span class="keyword">long</span> paramLong1, <span class="keyword">long</span> paramLong2, <span class="keyword">long</span> paramLong3)</span></span>;</div></pre></td></tr></table></figure>
+<p>【注】CAS的比较、交换也是一组原子操作，不会被外部打断，先根据paramLong/paramLong1获取到内存当中当前的内存值V，在将内存值V和原值A作比较，要是相等就修改为要修改的值B，由于CAS都是硬件级别的操作，因此效率会高一些。java.util.concurrent.atomic包下的原子操作类都是基于CAS实现的。</p>
+<h3 id="CAS的缺点"><a href="#CAS的缺点" class="headerlink" title="CAS的缺点"></a>CAS的缺点</h3><p>CAS看起来很美，但这种操作显然无法涵盖并发下的所有场景，并且CAS从语义上来说也不是完美的，存在这样一个逻辑漏洞：如果一个变量V初次读取的时候是A值，并且在准备赋值的时候检查到它仍然是A值，那我们就能说明它的值没有被其他线程修改过了吗？如果在这段期间它的值曾经被改成了B，然后又改回A，那CAS操作就会误认为它从来没有被修改过。这个漏洞称为CAS操作的”ABA”问题。java.util.concurrent包为了解决这个问题，提供了一个带有标记的原子引用类”AtomicStampedReference”，它可以通过控制变量值的版本来保证CAS的正确性。</p>
+<h2 id="2-ReentrantLock"><a href="#2-ReentrantLock" class="headerlink" title="2 ReentrantLock"></a>2 ReentrantLock</h2><p>ReentrantLock是基于AQS（AbstractQueueSynchronizer），而AQS的基础是CAS。</p>
+<h3 id="2-1-AQS"><a href="#2-1-AQS" class="headerlink" title="2.1 AQS"></a>2.1 AQS</h3><ul>
+<li>使用Node实现FIFO队列，可以用于建锁或者其他同步装置的基础框架</li>
+<li>利用一个int类型表示状态</li>
+<li>使用方法是继承</li>
+<li>子类通过继承并通过实现它的方法管理其状态（acquire()和release()）的方法操纵状态</li>
+<li>可以同时实现排他锁和共享锁模式</li>
+</ul>
+<h3 id="2-2-ReentrantLock"><a href="#2-2-ReentrantLock" class="headerlink" title="2.2 ReentrantLock"></a>2.2 ReentrantLock</h3><p>与synchronized对比而言：</p>
+<ul>
+<li>两者都是可重入；</li>
+<li>其实现是基于JDK，而synchronized锁是基于JVM；</li>
+<li>在性能方面，synchronized在优化之后和其两者差不多；</li>
+<li>功能上来说，synchronized使用更加方便；</li>
+<li>锁的粒度上来说，ReentrantLock &gt; synchronized</li>
+</ul>
+<p>ReentrantLock独有的属性如下  </p>
+<ul>
+<li>可自定义是公平锁还是非公平锁（synchronized只是非公平锁）；</li>
+<li>提供了Condition类，可以用来实现分组唤醒需要唤醒的线程；</li>
+<li>提供了能够中断等待锁的线程的机制（lock.lockInterruptibility()） ;</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.cnblogs.com/xrq730/p/4976007.html" target="_blank" rel="external">Unsafe与CAS</a></p>
 
       
     </div>
@@ -376,15 +400,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/12/21/Java-Concurrent-Synchronized/" rel="next" title="Java并发编程之synchronized">
+                <i class="fa fa-chevron-left"></i> Java并发编程之synchronized
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/22/Binary-Tree/" rel="prev" title="Binary Tree">
-                Binary Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -436,8 +460,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
             <img class="site-author-image" itemprop="image"
@@ -502,6 +535,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Unsafe与CAS"><span class="nav-text">1 Unsafe与CAS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Unsafe"><span class="nav-text">1.1 Unsafe</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-CAS"><span class="nav-text">1.2 CAS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAS的缺点"><span class="nav-text">CAS的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ReentrantLock"><span class="nav-text">2 ReentrantLock</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-AQS"><span class="nav-text">2.1 AQS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-ReentrantLock"><span class="nav-text">2.2 ReentrantLock</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
