@@ -51,7 +51,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java,Concurrent," />
+  <meta name="keywords" content="Java,ThreadLocal," />
 
 
 
@@ -68,14 +68,14 @@
 
 
 <meta name="description" content="1 ThreadLocalThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。">
-<meta name="keywords" content="Java,Concurrent">
+<meta name="keywords" content="Java,ThreadLocal">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发中的ThreadLocal详解">
 <meta property="og:url" content="http://yoursite.com/2018/12/21/Java-Concurrent-ThreadLocal/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 ThreadLocalThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-21T07:12:52.223Z">
+<meta property="og:updated_time" content="2018-12-23T09:36:21.580Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发中的ThreadLocal详解">
 <meta name="twitter:description" content="1 ThreadLocalThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储，ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。">
@@ -303,8 +303,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ThreadLocal/" itemprop="url" rel="index">
-                    <span itemprop="name">ThreadLocal</span>
+                  <a href="/categories/Concurrent/" itemprop="url" rel="index">
+                    <span itemprop="name">Concurrent</span>
                   </a>
                 </span>
 
@@ -494,7 +494,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -505,7 +505,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
