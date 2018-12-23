@@ -51,7 +51,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ML,Math," />
+  <meta name="keywords" content="Design Pattern， JDK," />
 
 
 
@@ -67,30 +67,18 @@
 
 
 
-<meta name="description" content="This article is divided into three parts, namely linear algebra, probability theory, differential learning">
-<meta name="keywords" content="ML,Math">
+<meta name="description" content="绪言本文主要针对在JDK中使用的设计模式进行总结。首先我们需要知道设计模式到底是用来做什么的。设计模式是主要针对解决以下问题：第一反复出现问题的解决方案，第二增加软件的灵活性，第三适应软件的不断变化。主要有以下设计模式：">
+<meta name="keywords" content="Design Pattern， JDK">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mathematical Basis of ML">
-<meta property="og:url" content="http://yoursite.com/2017/09/30/Mathematical-Basis-of-ML/index.html">
+<meta property="og:title" content="JDK中的设计模式简介">
+<meta property="og:url" content="http://yoursite.com/2018/12/23/JDK-Design-Patterns/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="This article is divided into three parts, namely linear algebra, probability theory, differential learning">
+<meta property="og:description" content="绪言本文主要针对在JDK中使用的设计模式进行总结。首先我们需要知道设计模式到底是用来做什么的。设计模式是主要针对解决以下问题：第一反复出现问题的解决方案，第二增加软件的灵活性，第三适应软件的不断变化。主要有以下设计模式：">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/images/math1.png">
-<meta property="og:image" content="http://yoursite.com/images/math2.png">
-<meta property="og:image" content="http://yoursite.com/images/math3.png">
-<meta property="og:image" content="http://yoursite.com/images/math4.png">
-<meta property="og:image" content="http://yoursite.com/images/math5.png">
-<meta property="og:image" content="http://yoursite.com/images/math6.png">
-<meta property="og:image" content="http://yoursite.com/images/math7.png">
-<meta property="og:image" content="http://yoursite.com/images/math8.png">
-<meta property="og:image" content="http://yoursite.com/images/math9.png">
-<meta property="og:image" content="http://yoursite.com/images/math10.png">
-<meta property="og:image" content="http://yoursite.com/images/math11.png">
-<meta property="og:updated_time" content="2017-09-30T07:57:43.000Z">
+<meta property="og:updated_time" content="2018-12-23T07:20:55.238Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mathematical Basis of ML">
-<meta name="twitter:description" content="This article is divided into three parts, namely linear algebra, probability theory, differential learning">
-<meta name="twitter:image" content="http://yoursite.com/images/math1.png">
+<meta name="twitter:title" content="JDK中的设计模式简介">
+<meta name="twitter:description" content="绪言本文主要针对在JDK中使用的设计模式进行总结。首先我们需要知道设计模式到底是用来做什么的。设计模式是主要针对解决以下问题：第一反复出现问题的解决方案，第二增加软件的灵活性，第三适应软件的不断变化。主要有以下设计模式：">
 
 
 
@@ -120,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/30/Mathematical-Basis-of-ML/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/23/JDK-Design-Patterns/"/>
 
 
 
 
 
-  <title>Mathematical Basis of ML | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>JDK中的设计模式简介 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -263,7 +251,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/30/Mathematical-Basis-of-ML/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/23/JDK-Design-Patterns/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Panlong Xie">
@@ -280,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mathematical Basis of ML</h1>
+          <h1 class="post-title" itemprop="name headline">JDK中的设计模式简介</h1>
         
 
         <div class="post-meta">
@@ -292,8 +280,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-30T12:40:21+08:00">
-                2017-09-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-23T14:54:11+08:00">
+                2018-12-23
               </time>
             
 
@@ -315,8 +303,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ML/" itemprop="url" rel="index">
-                    <span itemprop="name">ML</span>
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design Pattern</span>
                   </a>
                 </span>
 
@@ -352,47 +340,23 @@
       
 
       
-        <p>This article is divided into three parts, namely linear algebra, probability theory, differential learning</p>
-<a id="more"></a>
-<h1 id="1-Linear-Algebra-Review"><a href="#1-Linear-Algebra-Review" class="headerlink" title="1. Linear Algebra Review"></a>1. Linear Algebra Review</h1><h2 id="Matrix-multiplication"><a href="#Matrix-multiplication" class="headerlink" title="Matrix multiplication"></a>Matrix multiplication</h2><ul>
-<li>(AB)C = A(BC)</li>
-<li>A(B + C) = AB + AC</li>
-<li>[Note] : AB != BA</li>
-</ul>
-<h2 id="Transpose-Matix"><a href="#Transpose-Matix" class="headerlink" title="Transpose Matix"></a>Transpose Matix</h2><ul>
-<li>$(A^T)^T = A$</li>
-<li>$(AB)^T = B^TA^T$</li>
-<li>$(A + B)^T = A^T + B^T$</li>
-</ul>
-<p>[Note] : $A \in \mathbb{R} $ is symmetric if $A^T = A$</p>
-<h2 id="Trace"><a href="#Trace" class="headerlink" title="Trace"></a>Trace</h2><ul>
-<li>$trA = trA^T$</li>
-<li>$tr(A + B) = trA + trB$</li>
-<li>$tr(tA) = t trA$</li>
-<li>$trAB = trBA$</li>
-<li>$trABC = trBCA = trCAB$</li>
-</ul>
-<p>[Note] : $A, B, C \in \mathbb{R^2}$</p>
-<h2 id="Inverse"><a href="#Inverse" class="headerlink" title="Inverse"></a>Inverse</h2><ul>
-<li>$(A^{-1})^{-1} = A$</li>
-<li>$(AB)^{-1} = B^{-1}A^{-1}$</li>
-<li>$(A^{-1})^T = (A^T)^{-1} = A^{-T}$</li>
-</ul>
-<h2 id="Determinant"><a href="#Determinant" class="headerlink" title="Determinant"></a>Determinant</h2><ul>
-<li>$|A| = |A^T|$</li>
-<li>$|AB| = |A||B|$</li>
-<li>$|A|^{-1} = \frac{1}{|A|}$<h2 id="Gradient"><a href="#Gradient" class="headerlink" title="Gradient"></a>Gradient</h2></li>
-</ul>
-<p><img src="/images/math1.png" alt="gradient"></p>
-<h2 id="Hessian"><a href="#Hessian" class="headerlink" title="Hessian"></a>Hessian</h2><p><img src="/images/math2.png" alt=""><br><img src="/images/math3.png" alt=""></p>
-<h2 id="Complement"><a href="#Complement" class="headerlink" title="Complement"></a>Complement</h2><p><img src="/images/math4.png" alt=""><br><img src="/images/math5.png" alt=""></p>
-<h1 id="2-Probability-Theory"><a href="#2-Probability-Theory" class="headerlink" title="2. Probability Theory"></a>2. Probability Theory</h1><h2 id="Random-Variables"><a href="#Random-Variables" class="headerlink" title="Random Variables"></a>Random Variables</h2><p>Random variables play an important role in probability theory. The most important fact about random variables is that they are not variables. They are actually functions that map outcomes (in the outcome space) to real values. In terms of notation, we usually denote random variables by a capital letter. </p>
-<h2 id="Independence"><a href="#Independence" class="headerlink" title="Independence"></a>Independence</h2><p><img src="/images/math6.png" alt=""><br>[Node] : </p>
-<p>Independence =&gt; Cov = 0 And p(X)p(Y) = P(XY);<br>Irrelevant =&gt; Cov = 0 and p(X)p(Y) != P(XY);</p>
-<h2 id="Expectations"><a href="#Expectations" class="headerlink" title="Expectations"></a>Expectations</h2><p><img src="/images/math7.png" alt=""><br><img src="/images/math8.png" alt=""></p>
-<h2 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h2><p><img src="/images/math9.png" alt=""></p>
-<h2 id="Important-Distributions"><a href="#Important-Distributions" class="headerlink" title="Important Distributions"></a>Important Distributions</h2><p><img src="/images/math10.png" alt=""><br><img src="/images/math11.png" alt=""></p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="[参考]"></a>[参考]</h4><p><a href="http://cs229.stanford.edu/materials.html" target="_blank" rel="external">CS 229 Machine Learning Course Materials</a></p>
+        <h2 id="绪言"><a href="#绪言" class="headerlink" title="绪言"></a>绪言</h2><p>本文主要针对在JDK中使用的设计模式进行总结。首先我们需要知道设计模式到底是用来做什么的。设计模式是主要针对解决以下问题：第一反复出现问题的解决方案，第二增加软件的灵活性，第三适应软件的不断变化。主要有以下设计模式：<br><a id="more"></a></p>
+<h2 id="1-单例模式"><a href="#1-单例模式" class="headerlink" title="1 单例模式"></a>1 单例模式</h2><p>作用： 保证类只有一个实例</p>
+<h2 id="2-静态工厂模式"><a href="#2-静态工厂模式" class="headerlink" title="2 静态工厂模式"></a>2 静态工厂模式</h2><p>作用：代替构造函数创建对象，方法名比构造函数更加清晰形象</p>
+<h2 id="3-工厂方法"><a href="#3-工厂方法" class="headerlink" title="3 工厂方法"></a>3 工厂方法</h2><p>作用：子类决定哪一个类实例化</p>
+<h2 id="4-抽象工厂"><a href="#4-抽象工厂" class="headerlink" title="4 抽象工厂"></a>4 抽象工厂</h2><p>作用：创建某一类的对象</p>
+<h2 id="5-Builder构造者"><a href="#5-Builder构造者" class="headerlink" title="5 Builder构造者"></a>5 Builder构造者</h2><p>作用：将构造逻辑提到单独的类中，分离类的构造逻辑和表现</p>
+<h2 id="6-Prototype原型"><a href="#6-Prototype原型" class="headerlink" title="6 Prototype原型"></a>6 Prototype原型</h2><p>作用：复制对象，分为浅复制和深复制</p>
+<h2 id="7-Adapter适配器模式"><a href="#7-Adapter适配器模式" class="headerlink" title="7 Adapter适配器模式"></a>7 Adapter适配器模式</h2><p>作用：使不兼容的借口相容</p>
+<h2 id="8-Decorator装饰器模式"><a href="#8-Decorator装饰器模式" class="headerlink" title="8 Decorator装饰器模式"></a>8 Decorator装饰器模式</h2><p>作用：为类添加新的功能，防止类继承带来的爆炸式增长</p>
+<h2 id="9-Proxy代理"><a href="#9-Proxy代理" class="headerlink" title="9 Proxy代理"></a>9 Proxy代理</h2><p>作用：透明调用被代理对象，无须知道复杂的实现细节；与此同时增加被代理类的功能</p>
+<h2 id="10-Observer观察者模式"><a href="#10-Observer观察者模式" class="headerlink" title="10 Observer观察者模式"></a>10 Observer观察者模式</h2><p>作用：通知对象状态改变</p>
+<h2 id="11-Mediator-协调者"><a href="#11-Mediator-协调者" class="headerlink" title="11 Mediator 协调者"></a>11 Mediator 协调者</h2><p>作用：用于协调多个类的操作</p>
+<h2 id="12-Template-method模板方法"><a href="#12-Template-method模板方法" class="headerlink" title="12 Template method模板方法"></a>12 Template method模板方法</h2><p>作用： 定义算法的结构，子类只实现不同的部分<br>Example：ThreadPoolExecutor.Worker</p>
+<h2 id="13-策略"><a href="#13-策略" class="headerlink" title="13 策略"></a>13 策略</h2><p>作用：提供不同的算法<br>Example：ThreadPoolExecutor中的四种拒绝策略</p>
+<h2 id="14-Chain-of-Responsibility（责任链）"><a href="#14-Chain-of-Responsibility（责任链）" class="headerlink" title="14 Chain of Responsibility（责任链）"></a>14 Chain of Responsibility（责任链）</h2><p>作用：请求会被链上的对象处理，但是客户端不知道请求会被哪些对象处理<br>Example：ClassLoader的委托模型</p>
+<h2 id="15-Command（命令）"><a href="#15-Command（命令）" class="headerlink" title="15 Command（命令）"></a>15 Command（命令）</h2><p>作用：<br>（1）封装操作，使接口一致<br>（2）将调用者和接收者在空间和时间上解耦合<br>JDK中体现：Runnable；Callable；ThreadPoolExecutor</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/zhousysu/p/5483862.html" target="_blank" rel="external">JDK中的设计模式</a><br><a href="http://www.cnblogs.com/geek6/p/3951677.html" target="_blank" rel="external">23种设计模式全解析</a></p>
 
       
     </div>
@@ -425,8 +389,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/24/Latex-Formula-Grammar/" rel="next" title="Latex Formula Grammar">
-                <i class="fa fa-chevron-left"></i> Latex Formula Grammar
+              <a href="/2018/12/22/DB-Mysql/" rel="next" title="数据库之Mysql">
+                <i class="fa fa-chevron-left"></i> 数据库之Mysql
               </a>
             
           </div>
@@ -434,10 +398,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/01/Python-Learning-Note/" rel="prev" title="Python Learning Note">
-                Python Learning Note <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -574,7 +534,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Linear-Algebra-Review"><span class="nav-text">1. Linear Algebra Review</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Matrix-multiplication"><span class="nav-text">Matrix multiplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transpose-Matix"><span class="nav-text">Transpose Matix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trace"><span class="nav-text">Trace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inverse"><span class="nav-text">Inverse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Determinant"><span class="nav-text">Determinant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient"><span class="nav-text">Gradient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hessian"><span class="nav-text">Hessian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Complement"><span class="nav-text">Complement</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Probability-Theory"><span class="nav-text">2. Probability Theory</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-Variables"><span class="nav-text">Random Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Independence"><span class="nav-text">Independence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Expectations"><span class="nav-text">Expectations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Variance"><span class="nav-text">Variance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Important-Distributions"><span class="nav-text">Important Distributions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-text">[参考]</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#绪言"><span class="nav-text">绪言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-单例模式"><span class="nav-text">1 单例模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-静态工厂模式"><span class="nav-text">2 静态工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-工厂方法"><span class="nav-text">3 工厂方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-抽象工厂"><span class="nav-text">4 抽象工厂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Builder构造者"><span class="nav-text">5 Builder构造者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Prototype原型"><span class="nav-text">6 Prototype原型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Adapter适配器模式"><span class="nav-text">7 Adapter适配器模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Decorator装饰器模式"><span class="nav-text">8 Decorator装饰器模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Proxy代理"><span class="nav-text">9 Proxy代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Observer观察者模式"><span class="nav-text">10 Observer观察者模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Mediator-协调者"><span class="nav-text">11 Mediator 协调者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Template-method模板方法"><span class="nav-text">12 Template method模板方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-策略"><span class="nav-text">13 策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Chain-of-Responsibility（责任链）"><span class="nav-text">14 Chain of Responsibility（责任链）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-Command（命令）"><span class="nav-text">15 Command（命令）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -702,7 +662,7 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -748,26 +708,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
