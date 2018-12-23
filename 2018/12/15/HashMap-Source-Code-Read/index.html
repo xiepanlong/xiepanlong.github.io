@@ -67,18 +67,17 @@
 
 
 
-<meta name="description" content="HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。">
 <meta name="keywords" content="Java,List">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap源码解读">
 <meta property="og:url" content="http://yoursite.com/2018/12/15/HashMap-Source-Code-Read/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-17T00:24:37.301Z">
+<meta property="og:image" content="http://yoursite.com/images/map.jpeg">
+<meta property="og:updated_time" content="2018-12-23T08:09:22.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap源码解读">
-<meta name="twitter:description" content="HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。">
+<meta name="twitter:image" content="http://yoursite.com/images/map.jpeg">
 
 
 
@@ -340,7 +339,9 @@
       
 
       
-        <p>HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。</p>
+        <p><img src="/images/map.jpeg" alt=""></p>
+<a id="more"></a>
+<p>HashMap在JDK1.8及以后的版本中引入了红黑树结构，若桶中链表元素个数大于等于8时，链表转换成树结构；若桶中链表元素个数小于等于6时，树结构还原成链表。因为红黑树的平均查找长度是log(n)，长度为8的时候，平均查找长度为3，如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。链表长度如果是小于等于6，6/2=3，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。</p>
 <p>还有选择6和8，中间有个差值7可以有效防止链表和树频繁转换。假设一下，如果设计成链表个数超过8则链表转换成树结构，链表个数小于8则树结构转换成链表，如果一个HashMap不停的插入、删除元素，链表个数在8左右徘徊，就会频繁的发生树转链表、链表转树，效率会很低。</p>
 
       
