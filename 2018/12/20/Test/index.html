@@ -75,7 +75,7 @@
 <meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-24T08:26:57.643Z">
+<meta property="og:updated_time" content="2018-12-24T08:44:17.604Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
 <meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
@@ -350,9 +350,11 @@
 <p>concurrenthashmap1.8的改动。<br><a href="https://blog.csdn.net/qiaoqiao0609/article/details/79082860" target="_blank" rel="external">ConcurrentHashMap在jdk1.8中的改进</a><br>ConcurrentHashMap在jdk1.8中做了两方面的改进</p>
 <p>改进一：取消segments字段，直接采用transient volatile HashEntry<k,v>[] table保存数据，采用table数组元素作为锁，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</k,v></p>
 <p>改进二：将原先table数组＋单向链表的数据结构，变更为table数组＋单向链表＋红黑树的结构。对于hash表来说，最核心的能力在于将key hash之后能均匀的分布在数组中。如果hash之后散列的很均匀，那么table数组中的每个队列长度主要为0或者1。但实际情况并非总是如此理想，虽然ConcurrentHashMap类默认的加载因子为0.75，但是在数据量过大或者运气不佳的情况下，还是会存在一些队列长度过长的情况，如果还是采用单向列表方式，那么查询某个节点的时间复杂度为O(n)；因此，对于个数超过8(默认值)的列表，jdk1.8中采用了红黑树的结构，那么查询的时间复杂度可以降低到O(logN)，以此改进性能。</p>
-<p>9 Java的网络编程，比如NIO和Socket了解么。</p>
+<p>9 Java的网络编程，比如NIO和Socket了解么。<br>1 BIO：阻塞IO ：就是线程会阻塞在系统调用recevfrom上，并且等待数据准备就绪以后才会返回。</p>
+<p>2 NIO 非阻塞IO : 不阻塞在系统调用recevfrom，而是通过自旋忙等的方式不断询问缓冲区数据是否准备就绪，避免线程阻塞的开销。</p>
+<p>3 IO多路复用 ：使用IO多路复用器管理socket，由于每个socket是一个文件描述符，操作系统可以维护socket和它的连接状态，一般分为可连接，可读和可写等状态。</p>
 <p><a href="https://blog.csdn.net/a724888/article/details/80856584" target="_blank" rel="external">Java网络编程与NIO学习总结</a>  </p>
-<p>说下BIO和NIO的区别把。<br>我说了BIO的阻塞用法，以及NIO的IO多路复用用法，说了selector，seletedkey，channel等类的使用流程，以及单线程处理连接，多线程处理IO请求的好处。</p>
+<p>select、epoll、poll<br> <a href="https://www.cnblogs.com/diegodu/p/6823855.html" target="_blank" rel="external">java BIO/NIO/AIO 学习</a>  </p>
 <p>10说一下NIO的类库或框架<br>讲了netty，写过服务端和客户端的demo，没有在生产中实践。<br>1 channelhandler负责请求就绪时的io响应。<br>2 bytebuf支持零拷贝，通过逻辑buff合并实际buff。<br>3 eventloop线程组负责实现线程池，任务队列里就是io请求任务，类似线程池调度执行。<br>4 acceptor接收线程负责接收tcp请求，并且注册任务到队列里。</p>
 <p>11 倒排索引了解么，我说不了解。<br><a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="external">倒排索引原理和实现</a><br>其实就是搜索引擎的基础索引，根据关键字到文档的映射关系建立索引，中文关键字可以使用中文分词，查询时通过关键字来定位索引，并且进行排序后得到文档结果集。</p>
 <p>12 索引什么时候会失效变成全表扫描<br><a href="https://www.cnblogs.com/HoverM/p/9204767.html" target="_blank" rel="external">会引起 sql语句全表扫描的几种情况</a><br>说了联合索引的前缀匹配，跳跃索引，聚合函数，判空和&lt;&gt;这些情况。</p>
@@ -478,7 +480,6 @@
 <p><a href="https://www.aliyun.com/jiaocheng/1106559.html" target="_blank" rel="external">缓存更新模式（策略）</a>  </p>
 <p><a href="https://blog.csdn.net/championhengyi/article/details/53490549" target="_blank" rel="external">Java—什么时候需要重写equals方法？为什么重写equals方法，一定要重写HashCode方法？</a>  </p>
 <p>Object类的方法，逐个解释一下（clone,hashCode,equals,wait,finalize,notify）<br><a href="https://blog.csdn.net/yx0628/article/details/79397140?utm_source=blogxgwz1" target="_blank" rel="external">Java.lang.Object类方法分析</a><br><a href="https://www.cnblogs.com/myseries/p/7435395.html" target="_blank" rel="external">java.lang包【Object类】</a>  </p>
-<p>select、epoll、poll<br> <a href="https://www.cnblogs.com/diegodu/p/6823855.html" target="_blank" rel="external">java BIO/NIO/AIO 学习</a>  </p>
 <p> <a href="https://www.cnblogs.com/sunddenly/p/4106562.html" target="_blank" rel="external">线程的生命周期</a>  </p>
 <p> <a href="https://www.cnblogs.com/Downtime/p/7806261.html" target="_blank" rel="external">Python和Java的区别</a>  </p>
 <p> <a href="https://www.cnblogs.com/cxrz/p/8529587.html" target="_blank" rel="external">分布式Session的几种实现方式</a>  </p>
