@@ -75,7 +75,7 @@
 <meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-24T11:11:46.279Z">
+<meta property="og:updated_time" content="2018-12-24T11:17:41.148Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
 <meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
@@ -347,6 +347,8 @@
 <p><a href="https://blog.csdn.net/u011974987/article/details/51027795" target="_blank" rel="external">Java 四种线程池的用法分析</a>  </p>
 <p>线程池常用的几种类型？<br>答：Java通过Executors提供四种线程池，分别为：<br>１　newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。Executors.newCachedThreadPool(); 缺点：大家一般不用是因为newCachedThreadPool 可以无线的新建线程，容易造成堆外内存溢出，因为它的最大值是在初始化的时候设置为 Integer.MAX_VALUE，一般来说机器都没那么大内存给它不断使用。当然知道可能出问题的点，就可以去重写一个方法限制一下这个最大值<br>２　newFixedThreadPool  Executors.newFixedThreadPool(3);创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。定长线程池的大小最好根据系统资源进行设置。如Runtime.getRuntime().availableProcessors()。可参考PreloadDataCache。其实newFixedThreadPool()在严格上说并不会复用线程，每运行一个Runnable都会通过ThreadFactory创建一个线程<br>３　newScheduledThreadPool 创建一个定长线程池，支持定时及周期性任务执行。  Executors.newScheduledThreadPool(5);与Timer 对比：Timer 的优点在于简单易用，但由于所有任务都是由同一个线程来调度，因此所有任务都是串行执行的，同一时间只能有一个任务在执行，前一个任务的延迟或异常都将会影响到之后的任务（比如：一个任务出错，以后的任务都无法继续）。<br>ScheduledThreadPoolExecutor的设计思想是，每一个被调度的任务都会由线程池中一个线程去执行，因此任务是并发执行的，相互之间不会受到干扰。需要注意的是，只有当任务的执行时间到来时，ScheduedExecutor 才会真正启动一个线程，其余时间 ScheduledExecutor 都是在轮询任务的状态。<br>通过对比可以发现ScheduledExecutorService比Timer更安全，功能更强大，在以后的开发中尽可能使用ScheduledExecutorService(JDK1.5以后)替代Timer<br>４　newSingleThreadExecutor Executors.newSingleThreadExecutor()　创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。现行大多数GUI程序都是单线程的。Android中单线程可用于数据库操作，文件操作，应用批量安装，应用批量删除等不适合并发但可能IO阻塞性及影响UI线程响应的操作。</p>
 <p>6 并发juc了解么，有哪些线程安全的list。<br>Vector<br>HashTable<br>StringBuffer<br>Collections.synchronizedList<br>CopyOnWriteArrayList</p>
+<p>HashMap&amp;ConcurrentHashMap<br> <a href="http://www.importnew.com/28263.html" target="_blank" rel="external">Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析</a>  </p>
+<p> <a href="https://www.jianshu.com/p/487d00afe6ca" target="_blank" rel="external">ConcurrentHashMap源码分析（JDK8） 扩容实现机制</a><br><a href="http://www.cnblogs.com/morethink/p/7762168.html" target="_blank" rel="external">JDK8 HashMap 源码解析</a></p>
 <p>concurrenthashmap1.8的改动。<br><a href="https://blog.csdn.net/qiaoqiao0609/article/details/79082860" target="_blank" rel="external">ConcurrentHashMap在jdk1.8中的改进</a><br>ConcurrentHashMap在jdk1.8中做了两方面的改进</p>
 <p>改进一：取消segments字段，直接采用transient volatile HashEntry<k,v>[] table保存数据，采用table数组元素作为锁，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</k,v></p>
 <p>改进二：将原先table数组＋单向链表的数据结构，变更为table数组＋单向链表＋红黑树的结构。对于hash表来说，最核心的能力在于将key hash之后能均匀的分布在数组中。如果hash之后散列的很均匀，那么table数组中的每个队列长度主要为0或者1。但实际情况并非总是如此理想，虽然ConcurrentHashMap类默认的加载因子为0.75，但是在数据量过大或者运气不佳的情况下，还是会存在一些队列长度过长的情况，如果还是采用单向列表方式，那么查询某个节点的时间复杂度为O(n)；因此，对于个数超过8(默认值)的列表，jdk1.8中采用了红黑树的结构，那么查询的时间复杂度可以降低到O(logN)，以此改进性能。</p>
@@ -425,8 +427,6 @@
 <p>类加载过程<br><a href="https://www.cnblogs.com/xiaoxian1369/p/5498817.html" target="_blank" rel="external">Java类加载过程</a>  </p>
 <p>JVM字节码优化<br><a href="https://blog.csdn.net/tfnew21/article/details/3999974" target="_blank" rel="external">JVM虚拟机中对字节码优化的策略</a>  </p>
 <p>实现面向切面有哪些方法 具体怎么实现的<br><a href="http://www.cnblogs.com/jiaweit/p/9986390.html" target="_blank" rel="external">详解Spring面向切面编程（AOP)三种实现</a>  </p>
-<p>1、HashMap&amp;ConcurrentHashMap  </p>
-<p> <a href="http://www.importnew.com/28263.html" target="_blank" rel="external">Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析</a>  </p>
 <p>3、乐观锁&amp;悲观锁，可重入锁&amp;Synchronize<br> <a href="https://blog.csdn.net/nalanmingdian/article/details/77800355" target="_blank" rel="external">JAVA锁有哪些种类</a><br> <a href="https://blog.csdn.net/sinat_33087001/article/details/77644441#t27" target="_blank" rel="external">线程安全与锁优化</a>  </p>
 <p>6、事务的二段提交机制？<br> <a href="https://www.cnblogs.com/binyue/p/3678390.html" target="_blank" rel="external">对分布式事务及两阶段提交、三阶段提交的理解</a>  </p>
 <p>7、聚簇索引&amp;非聚簇索引<br><a href="https://blog.csdn.net/u010727189/article/details/79399384" target="_blank" rel="external">B-tree/b+tree 原理以及聚簇索引和非聚簇索引</a>  </p>
@@ -452,7 +452,6 @@
 <p>分布式系统 微服务架构下，如果有一个订单系统，一个库存系统，怎么保证事务？<br>答： 1 如果是Mysql类型的，利用XA接口，java使用JTA事务。2 可以使用第三方协调者，采用二阶段提交的方法去解决分布式事务， 协调者先发信息给两个数据库，叫他们锁定资源，进行本地事务操作，发送结果回协调者，如果都OK，则commit，如果不行，就回滚。 追问，二阶段提交有什么缺点？ 答：效率不够高，因为在资源锁定的时候，订单系统不能接受其他请求，业界采用三阶段提交。  </p>
 <p>讲解Raft算法<br>有三个角色，follower，candidate，leader。Raft最多能容忍(n-1)/2 的错误，假设系统有三个节点，A B C 一开始都是follower的状态，每一个节点都会倒计时，当倒计时完，就给各个节点发送 信号，争取当 leader。假设A节点最快完成，成为了leader，剩余两个节点就会变成Follower状态，从leader节点读取log文件。   </p>
 <p>电梯调度算法<br><a href="https://blog.csdn.net/sunshinetan/article/details/80305096" target="_blank" rel="external">【算法】电梯调度算法/磁盘扫描算法</a>    </p>
-<p><a href="https://www.jianshu.com/p/487d00afe6ca" target="_blank" rel="external">ConcurrentHashMap源码分析（JDK8） 扩容实现机制</a><br><a href="http://www.cnblogs.com/morethink/p/7762168.html" target="_blank" rel="external">JDK8 HashMap 源码解析</a></p>
 <p><a href="https://blog.csdn.net/u010601183/article/details/56481868/" target="_blank" rel="external">怎么在海量数据中找出重复次数最多的一个</a>  </p>
 <p><a href="https://blog.csdn.net/kingcat666/article/details/78577079" target="_blank" rel="external">RPC入门总结（一）RPC定义和原理</a></p>
 <ol>
