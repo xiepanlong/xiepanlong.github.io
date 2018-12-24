@@ -75,7 +75,7 @@
 <meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-24T08:44:17.604Z">
+<meta property="og:updated_time" content="2018-12-24T10:44:27.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
 <meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
@@ -350,8 +350,8 @@
 <p>concurrenthashmap1.8的改动。<br><a href="https://blog.csdn.net/qiaoqiao0609/article/details/79082860" target="_blank" rel="external">ConcurrentHashMap在jdk1.8中的改进</a><br>ConcurrentHashMap在jdk1.8中做了两方面的改进</p>
 <p>改进一：取消segments字段，直接采用transient volatile HashEntry<k,v>[] table保存数据，采用table数组元素作为锁，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</k,v></p>
 <p>改进二：将原先table数组＋单向链表的数据结构，变更为table数组＋单向链表＋红黑树的结构。对于hash表来说，最核心的能力在于将key hash之后能均匀的分布在数组中。如果hash之后散列的很均匀，那么table数组中的每个队列长度主要为0或者1。但实际情况并非总是如此理想，虽然ConcurrentHashMap类默认的加载因子为0.75，但是在数据量过大或者运气不佳的情况下，还是会存在一些队列长度过长的情况，如果还是采用单向列表方式，那么查询某个节点的时间复杂度为O(n)；因此，对于个数超过8(默认值)的列表，jdk1.8中采用了红黑树的结构，那么查询的时间复杂度可以降低到O(logN)，以此改进性能。</p>
-<p>9 Java的网络编程，比如NIO和Socket了解么。<br>1 BIO：阻塞IO ：就是线程会阻塞在系统调用recevfrom上，并且等待数据准备就绪以后才会返回。</p>
-<p>2 NIO 非阻塞IO : 不阻塞在系统调用recevfrom，而是通过自旋忙等的方式不断询问缓冲区数据是否准备就绪，避免线程阻塞的开销。</p>
+<p>9 Java的网络编程，比如NIO和Socket了解么。<br>1 阻塞IO ：就是线程会阻塞在系统调用recevfrom上，并且等待数据准备就绪以后才会返回。</p>
+<p>2 非阻塞IO : 不阻塞在系统调用recevfrom，而是通过自旋忙等的方式不断询问缓冲区数据是否准备就绪，避免线程阻塞的开销。</p>
 <p>3 IO多路复用 ：使用IO多路复用器管理socket，由于每个socket是一个文件描述符，操作系统可以维护socket和它的连接状态，一般分为可连接，可读和可写等状态。</p>
 <p><a href="https://blog.csdn.net/a724888/article/details/80856584" target="_blank" rel="external">Java网络编程与NIO学习总结</a>  </p>
 <p>select、epoll、poll<br> <a href="https://www.cnblogs.com/diegodu/p/6823855.html" target="_blank" rel="external">java BIO/NIO/AIO 学习</a>  </p>
@@ -361,14 +361,18 @@
 <p>13分布式的paxos和raft算法了解么<br><a href="https://www.jdon.com/artichect/paxos.html" target="_blank" rel="external">分布式系统Paxos算法</a><br><a href="https://www.jdon.com/artichect/raft.html" target="_blank" rel="external">分布式系统的Raft算法</a><br>了解过，但是讲不清楚。<br>paxos：多个proposer发请提议（每个提议有id+value），acceptor接受最新id的提议并把之前保留的提议返回。当超过半数的accetor返回某个提议时，此时要求value修改为propeser历史上最大值，propeser认为可以接受该提议，于是广播给每个acceptor，acceptor发现该提议和自己保存的一致，于是接受该提议并且learner同步该提议。</p>
 <p>raft：raft要求每个节点有一个选主的时间间隔，每过一个时间间隔向master发送心跳包，当心跳失败，该节点重新发起选主，当过半节点响应时则该节点当选主机，广播状态，然后以后继续下一轮选主。</p>
 <p>14中间件知道哪些，阿里的dubbo，rocketmq的事务消息，问了TCC回答说这个之前没看明白。<br>说了mycat实现分表分库，消息队列kafka和rabbitmq等。</p>
-<p>15平时看什么书，怎么学习的。还跟我说他们部门3个华科的，校友多多。</p>
-<p>16Spring和Springmvc讲一下。讲了Spring的ioc和aop，Springmvc的基本架构，请求流程。 </p>
+<p>Spring和Springmvc讲一下。讲了Spring的ioc和aop，Springmvc的基本架构，请求流程。 </p>
 <p><a href="https://blog.csdn.net/qq_32575047/article/details/80416015" target="_blank" rel="external">简单讲一下 SpringMVC的执行流程?</a>  </p>
 <p>2 讲一下ArrayList和linkedlist的区别，ArrayList的扩容方式，扩容时机。<br><a href="https://blog.csdn.net/yz972641975/article/details/78662617" target="_blank" rel="external">JDK1.8 ArrayList 扩容详解</a>  </p>
 <p>5 你说了解分布式服务，那么你怎么理解分布式服务。<br><a href="https://blog.csdn.net/u012547613/article/details/79283196" target="_blank" rel="external">谈谈自己对分布式的理解</a>  </p>
-<p>2 说一下Spring源码把，它的架构，流程。<br>Spring的整体架构<br>Spring 总共有十几个组件，其中核心组件只有三个：Core、Context 和 Beans。以下是 Spring3的总体架构图。<br>组成 Spring 框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：  </p>
+<p>2 说一下Spring源码把，它的架构，流程。</p>
+<p><a href="https://www.cnblogs.com/redcool/p/6413461.html" target="_blank" rel="external">Spring BeanFactory与FactoryBean的区别及其各自的详细介绍于用法</a>   </p>
+<p>Spring的整体架构<br>Spring 总共有十几个组件，其中核心组件只有三个：Core、Context 和 Beans。组成 Spring 框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：  </p>
 <p>核心容器：核心容器提供 Spring 框架的基本功能。核心容器的主要组件是 BeanFactory，它是工厂模式的实现。BeanFactory 使用控制反转 （IOC） 模式将应用程序的配置和依赖性规范与实际的应用程序代码分开。<br>Spring 上下文：Spring 上下文是一个配置文件，向 Spring 框架提供上下文信息。Spring 上下文包括企业服务，例如：JNDI、EJB、电子邮件、国际化、校验和调度功能。<br>Spring AOP：通过配置管理特性，Spring AOP 模块直接将面向方面的编程功能集成到了 Spring 框架中。所以，可以很容易地使 Spring 框架管理的任何对象支持 AOP。Spring AOP 模块为基于 Spring 的应用程序中的对象提供了事务管理服务。通过使用 Spring AOP，不用依赖 EJB 组件，就可以将声明性事务管理集成到应用程序中。<br>Spring DAO：JDBC DAO 抽象层提供了有意义的异常层次结构，可用该结构来管理异常处理和不同数据库供应商抛出的错误消息。异常层次结构简化了错误处理，并且极大地降低了需要编写的异常代码数量（例如打开和关闭连接）。Spring DAO 的面向 JDBC 的异常遵从通用的 DAO 异常层次结构。<br>Spring ORM：Spring 框架插入了若干个 ORM 框架，从而提供了 ORM 的对象关系工具，其中包括 JDO、Hibernate 和 iBatis SQL Map。所有这些都遵从 Spring 的通用事务和 DAO 异常层次结构。<br>Spring Web 模块：Web 上下文模块建立在应用程序上下文模块之上，为基于 Web 的应用程序提供了上下文。所以，Spring 框架支持与 Jakarta Struts 的集成。Web 模块还简化了处理多部分请求以及将请求参数绑定到域对象的工作。<br>Spring MVC 框架：MVC 框架是一个全功能的构建 Web 应用程序的 MVC 实现。通过策略接口，MVC 框架变成为高度可配置的，MVC 容纳了大量视图技术，其中包括 JSP、Velocity、Tiles、iText 和 POI。   </p>
 <p><strong>3 Spring的bean如果要在实例化过程中修改其某一个成员变量，应该怎么做呢。不通过构造方法，并且AOP也并不能实现。</strong><br>4 Tomcat的类加载器了解么，回答不了解只了解Java的类加载器。<br><a href="https://blog.csdn.net/fuzhongmin05/article/details/57404890" target="_blank" rel="external">Java类加载机制与Tomcat类加载器架构</a>  </p>
+<p><a href="https://www.cnblogs.com/louistz/p/6295917.html" target="_blank" rel="external">类的加载和双亲委派模型</a> </p>
+<p>双亲委派模型的过程：如果一个类加载器收到了类加载的请求，首先不会自己去加载，而是把请求为派给自己的父类加载器去完成，每一个层次的类加载器都是如此。因此所有的加载请求最终都应该传送到顶层的启动类加载器中。只有当父类反馈自己无法完成这个加载请求时，子类加载器才会尝试自己完成。</p>
+<p>好处就是：Object类在程序的各种类加载器环境中都是同一个类。不会造成混乱。</p>
 <p>5 自定义类加载器怎么实现，其中哪个方法走双亲委派模型，哪个不走，不走的话怎么加载类（实现findclass方法，一般用defineclass加载外部类），如何才能不走双亲委派。（重写loadclass方法）<br><a href="https://www.cnblogs.com/szlbm/p/5504631.html" target="_blank" rel="external">自定义一个类加载器</a></p>
 <p>6 布隆过滤器了解么，讲了ip地址过滤的布隆过滤器实现。<br><a href="https://blog.csdn.net/yinjing8435/article/details/70537046" target="_blank" rel="external">布隆过滤器(Bloom Filter)的原理和实现</a>  </p>
 <p>2 排序算法和适用场景<br><img src="/images/sort.png" alt=""><br><a href="https://blog.csdn.net/mbuger/article/details/67643185" target="_blank" rel="external">各类排序算法比较和应用场景</a>  </p>
@@ -442,7 +446,7 @@
 <p>7.讲讲jdk1.7和1.8的区别？<br><a href="https://www.cnblogs.com/aspirant/p/8617201.html" target="_blank" rel="external">Jdk1.7 与 jdk1.8的区别，最新的特征有哪些</a>  </p>
 <p>8.Jdbc要查询一条语句讲一下流程？用完JDBC关闭流程介绍一下？</p>
 <p>//1，创建对象,也可以直接new出来<br>        Class.forName(“com.mysql.jdbc.Driver”);<br>        //2，创建连接<br>        Connection conn = DriverManager.getConnection(“jdbc:mysql://localhost:3306/person”,”root”,”mz123zm”);<br>        //3，创建一个sql语句，即陈述，陈述对象是conn<br>        Statement stmt = conn.createStatement();<br>        //4，陈述的语句类型是查询，因此使用executeQuery，返回一个结果集,Query是询问的意思，换成Update执行的是更新删除等语句<br>        ResultSet rs = stmt.executeQuery(“select * from person”);<br>        //5,循环遍历<br>        while(rs.next()){<br>            System.out.println(rs.getString(“name”)+” : “+rs.getInt(“age”));<br>        }<br>        //6,不管打开了什么都关掉，后打开的先关掉，有点像鞋袜原理<br>        rs.close();<br>        stmt.close();<br>        conn.close();  </p>
-<p>5、RPC过程<br><a href="https://www.cnblogs.com/fqfanqi/p/6140877.html" target="_blank" rel="external">RPC远程过程调用概念及实现</a>  </p>
+<p>5、RPC过程<br><a href="https://blog.csdn.net/KingCat666/article/details/78577079" target="_blank" rel="external">RPC入门总结（一）RPC定义和原理</a><br><a href="https://www.cnblogs.com/fqfanqi/p/6140877.html" target="_blank" rel="external">RPC远程过程调用概念及实现</a>  </p>
 <p>java基础 JVM模型，答stack 区， heap 区 有什么区别，新生代 老生代， 垃圾回收算法，G2,parallel 回收， 线性回收，还有JDK11的ZGC。  </p>
 <p>Java 线程 Java 有什么锁类型?答: 自旋锁，读写锁，CAS操作，CAS的ABA问题，锁膨胀问题。   </p>
 <p>分布式系统 微服务架构下，如果有一个订单系统，一个库存系统，怎么保证事务？<br>答： 1 如果是Mysql类型的，利用XA接口，java使用JTA事务。2 可以使用第三方协调者，采用二阶段提交的方法去解决分布式事务， 协调者先发信息给两个数据库，叫他们锁定资源，进行本地事务操作，发送结果回协调者，如果都OK，则commit，如果不行，就回滚。 追问，二阶段提交有什么缺点？ 答：效率不够高，因为在资源锁定的时候，订单系统不能接受其他请求，业界采用三阶段提交。  </p>
@@ -495,11 +499,7 @@
  private修饰的成员，只能在同类中被访问，而在同包、子类和其他包中是不能访问的。
 
     另外需要说明的是，public和default一样都可以修饰任何类而且类名必须和文件名相同。而protected和private都不可以修饰类。  
-</code></pre><p><a href="https://www.cnblogs.com/redcool/p/6413461.html" target="_blank" rel="external">Spring BeanFactory与FactoryBean的区别及其各自的详细介绍于用法</a>  </p>
-<p><a href="https://blog.csdn.net/qingtian211/article/details/81316067" target="_blank" rel="external">AQS工作原理分析</a><br><a href="https://blog.csdn.net/ym123456677/article/details/80381354" target="_blank" rel="external">AQS实现原理 </a>  </p>
-<p>双亲委派模型的过程：如果一个类加载器收到了类加载的请求，首先不会自己去加载，而是把请求为派给自己的父类加载器去完成，每一个层次的类加载器都是如此。因此所有的加载请求最终都应该传送到顶层的启动类加载器中。只有当父类反馈自己无法完成这个加载请求时，子类加载器才会尝试自己完成。</p>
-<p>好处就是：Object类在程序的各种类加载器环境中都是同一个类。不会造成混乱。</p>
-<p><a href="https://www.cnblogs.com/louistz/p/6295917.html" target="_blank" rel="external">类的加载和双亲委派模型</a>  </p>
+</code></pre><p><a href="https://blog.csdn.net/qingtian211/article/details/81316067" target="_blank" rel="external">AQS工作原理分析</a><br><a href="https://blog.csdn.net/ym123456677/article/details/80381354" target="_blank" rel="external">AQS实现原理 </a>   </p>
 <ol>
 <li>高并发系统，海量数据分库分表的策略<br><a href="https://825635381.iteye.com/blog/2368838" target="_blank" rel="external">海量数据存储—分库分表策略详解</a>  </li>
 <li>数据库前面的Redis缓存，如何实现查询的负载均衡（这里扯出了布隆过滤器及其哈希函数冗余）<br><a href="https://blog.csdn.net/u013699800/article/details/38850095" target="_blank" rel="external">redis缓存集群及集群负载均衡方案设计</a>  </li>
