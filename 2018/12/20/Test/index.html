@@ -75,7 +75,7 @@
 <meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay   B+ 树的原理1）在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。2）在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &amp;lt;= n &amp;lt;=m,根结点的取值范围为1&amp;">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-24T06:30:28.848Z">
+<meta property="og:updated_time" content="2018-12-24T07:00:23.796Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
 <meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay   B+ 树的原理1）在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。2）在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &amp;lt;= n &amp;lt;=m,根结点的取值范围为1&amp;">
@@ -524,7 +524,32 @@
 <p><a href="https://blog.csdn.net/championhengyi/article/details/53490549" target="_blank" rel="external">Java—什么时候需要重写equals方法？为什么重写equals方法，一定要重写HashCode方法？</a>  </p>
 <p>select、epoll、poll<br> <a href="https://www.cnblogs.com/diegodu/p/6823855.html" target="_blank" rel="external">java BIO/NIO/AIO 学习</a>  </p>
 <p> <a href="https://www.cnblogs.com/sunddenly/p/4106562.html" target="_blank" rel="external">线程的生命周期</a>  </p>
-<p> <a href="https://www.cnblogs.com/Downtime/p/7806261.html" target="_blank" rel="external">Python和Java的区别</a></p>
+<p> <a href="https://www.cnblogs.com/Downtime/p/7806261.html" target="_blank" rel="external">Python和Java的区别</a>  </p>
+<p> <a href="https://www.cnblogs.com/cxrz/p/8529587.html" target="_blank" rel="external">分布式Session的几种实现方式</a>  </p>
+<p>悲观锁：总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。再比如Java里面的同步原语synchronized关键字的实现也是悲观锁。</p>
+<p>　　乐观锁：顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库提供的类似于write_condition机制，其实都是提供的乐观锁。在Java中java.util.concurrent.atomic包下面的原子变量类就是使用了乐观锁的一种实现方式CAS实现的。</p>
+<p>java有四个修饰符，分别为public/protected/default/private，这四个修饰符的权限范围是不一样的。</p>
+<pre><code> public修饰的成员，在同类、同包、子类（继承自本类）、其他包中都可以访问。
+
+ protected修饰的成员，在同类、同包、子类中可以访问，但是在其他包中不能访问。
+
+ default修饰的成员，在同类、同包中可以访问，但是在其他包中不管是不是子类都不能够访问。
+
+ private修饰的成员，只能在同类中被访问，而在同包、子类和其他包中是不能访问的。
+
+    另外需要说明的是，public和default一样都可以修饰任何类而且类名必须和文件名相同。而protected和private都不可以修饰类。  
+</code></pre><p><a href="https://www.cnblogs.com/redcool/p/6413461.html" target="_blank" rel="external">Spring BeanFactory与FactoryBean的区别及其各自的详细介绍于用法</a>  </p>
+<p><a href="https://blog.csdn.net/qingtian211/article/details/81316067" target="_blank" rel="external">AQS工作原理分析</a><br><a href="https://blog.csdn.net/ym123456677/article/details/80381354" target="_blank" rel="external">AQS实现原理 </a>  </p>
+<p>双亲委派模型的过程：如果一个类加载器收到了类加载的请求，首先不会自己去加载，而是把请求为派给自己的父类加载器去完成，每一个层次的类加载器都是如此。因此所有的加载请求最终都应该传送到顶层的启动类加载器中。只有当父类反馈自己无法完成这个加载请求时，子类加载器才会尝试自己完成。</p>
+<p>好处就是：Object类在程序的各种类加载器环境中都是同一个类。不会造成混乱。</p>
+<p><a href="https://www.cnblogs.com/louistz/p/6295917.html" target="_blank" rel="external">类的加载和双亲委派模型</a>  </p>
+<ol>
+<li>高并发系统，海量数据分库分表的策略<br><a href="https://825635381.iteye.com/blog/2368838" target="_blank" rel="external">海量数据存储—分库分表策略详解</a>  </li>
+<li>数据库前面的Redis缓存，如何实现查询的负载均衡（这里扯出了布隆过滤器及其哈希函数冗余）<br><a href="https://blog.csdn.net/u013699800/article/details/38850095" target="_blank" rel="external">redis缓存集群及集群负载均衡方案设计</a>  </li>
+</ol>
+<p><a href="https://www.cnblogs.com/ityouknow/p/5714703.html" target="_blank" rel="external">jvm系列(四):jvm调优-命令大全</a>  </p>
+<p>出现死锁怎么排查？<br>如果查看堆内存信息？<br>出现OOM怎么排查问题？  </p>
+<p>.讲下跳表怎么实现的<br>16.哈夫曼编码是怎么回事<br>17.非递归且不用额外空间（不用栈），如何遍历二叉树  </p>
 
       
     </div>
