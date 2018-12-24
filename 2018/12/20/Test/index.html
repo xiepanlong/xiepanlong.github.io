@@ -75,7 +75,7 @@
 <meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-24T11:17:41.148Z">
+<meta property="og:updated_time" content="2018-12-24T11:20:41.108Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
 <meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
@@ -375,6 +375,7 @@
 <p><a href="https://www.cnblogs.com/louistz/p/6295917.html" target="_blank" rel="external">类的加载和双亲委派模型</a> </p>
 <p>双亲委派模型的过程：如果一个类加载器收到了类加载的请求，首先不会自己去加载，而是把请求为派给自己的父类加载器去完成，每一个层次的类加载器都是如此。因此所有的加载请求最终都应该传送到顶层的启动类加载器中。只有当父类反馈自己无法完成这个加载请求时，子类加载器才会尝试自己完成。</p>
 <p>好处就是：Object类在程序的各种类加载器环境中都是同一个类。不会造成混乱。</p>
+<p>类加载<strong>过程</strong><br><a href="https://www.cnblogs.com/xiaoxian1369/p/5498817.html" target="_blank" rel="external">Java类加载过程</a>  </p>
 <p>5 自定义类加载器怎么实现，其中哪个方法走双亲委派模型，哪个不走，不走的话怎么加载类（实现findclass方法，一般用defineclass加载外部类），如何才能不走双亲委派。（重写loadclass方法）<br><a href="https://www.cnblogs.com/szlbm/p/5504631.html" target="_blank" rel="external">自定义一个类加载器</a></p>
 <p>6 布隆过滤器了解么，讲了ip地址过滤的布隆过滤器实现。<br><a href="https://blog.csdn.net/yinjing8435/article/details/70537046" target="_blank" rel="external">布隆过滤器(Bloom Filter)的原理和实现</a>  </p>
 <p>2 排序算法和适用场景<br><img src="/images/sort.png" alt=""><br><a href="https://blog.csdn.net/mbuger/article/details/67643185" target="_blank" rel="external">各类排序算法比较和应用场景</a>  </p>
@@ -424,7 +425,6 @@
 <p>数据库主从复制、分库分表  </p>
 <p>分库分表后如何保证主键唯一性<br><a href="https://blog.csdn.net/xiao__jia__jia/article/details/81150112" target="_blank" rel="external">分库分表之后分布式如何保证ID全局唯一性</a><br><a href="https://www.cnblogs.com/aigongsi/archive/2013/01/25/2875731.html" target="_blank" rel="external">分库分表带来的完整性和一致性问题</a></p>
 <p>Java容器是如何启动的 ？  </p>
-<p>类加载过程<br><a href="https://www.cnblogs.com/xiaoxian1369/p/5498817.html" target="_blank" rel="external">Java类加载过程</a>  </p>
 <p>JVM字节码优化<br><a href="https://blog.csdn.net/tfnew21/article/details/3999974" target="_blank" rel="external">JVM虚拟机中对字节码优化的策略</a>  </p>
 <p>实现面向切面有哪些方法 具体怎么实现的<br><a href="http://www.cnblogs.com/jiaweit/p/9986390.html" target="_blank" rel="external">详解Spring面向切面编程（AOP)三种实现</a>  </p>
 <p>3、乐观锁&amp;悲观锁，可重入锁&amp;Synchronize<br> <a href="https://blog.csdn.net/nalanmingdian/article/details/77800355" target="_blank" rel="external">JAVA锁有哪些种类</a><br> <a href="https://blog.csdn.net/sinat_33087001/article/details/77644441#t27" target="_blank" rel="external">线程安全与锁优化</a>  </p>
