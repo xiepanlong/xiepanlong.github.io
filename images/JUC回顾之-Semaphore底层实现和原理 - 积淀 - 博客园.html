@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园         var currentBlogApp = &apos;200911&apos;, cb_enable_mathjax=false;var isLogined=false;         	 				 		  积淀 一点一滴的积累，一点一滴的沉淀！    		 	    	 	 		 			  	博客园 	首页 	新随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园         var currentBlogApp = &apos;200911&apos;, cb_enable_mathjax=false;var isLogined=false;         	 				 		  积淀 一点一滴的积累，一点一滴的沉淀！    		 	    	 	 		 			  	博客园 	首页 	新随笔">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/logo.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/xml.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/167213-20161113230515858-1694158959.png">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/copycode.gif">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/icon_weibo_24.png">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/wechat.png">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/20140515221744.png">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/24442-20181129113406214-695115565.jpg">
+<meta property="og:updated_time" content="2018-12-25T08:55:37.887Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
+<meta name="twitter:description" content="JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园         var currentBlogApp = &apos;200911&apos;, cb_enable_mathjax=false;var isLogined=false;         	 				 		  积淀 一点一滴的积累，一点一滴的沉淀！    		 	    	 	 		 			  	博客园 	首页 	新随笔">
+<meta name="twitter:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/logo.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园.html"/>
+
+
+
+
+
+  <title> | 零柒 - Panlong Xie's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/200911/p/6060359.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<title>JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园</title>
+<meta property="og:description" content="1.控制并发线程数的Semaphore Semaphore（信号量）是用来控制同时访问特定资源的线程数量，它通过协调各个线程，保证合理的使用公共资源。 线程可以通过acquire()方法来获取信号量的">
+<link type="text/css" rel="stylesheet" href="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/bundle-coffee.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/bundle-coffee-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/200911/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/200911/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/200911/wlwmanifest.xml">
+<script src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/f.txt"></script><script src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/amp4ads-host-v0.js"></script><script src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/pubads_impl_rendering_285.js"></script><script async src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/analytics.js"></script><script type="text/javascript" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/encoder.js"></script><script src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = '200911', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/blog-common.js" type="text/javascript"></script>
+<link rel="preload" href="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/f(1).txt" as="script"><script type="text/javascript" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/f(1).txt"></script><script src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/pubads_impl_285.js" async></script><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-31/html/container.html"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<body>
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/200911/" target="_blank" rel="external"><img id="blogLogo" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/200911/" target="_blank" rel="external">积淀</a></h1>
+<h2>一点一滴的积累，一点一滴的沉淀！</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="navigator">
+			
+<ul id="navList">
+	<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/" target="_blank" rel="external">博客园</a></li>
+	<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/200911/" target="_blank" rel="external">首页</a></li>
+	<li><a id="blog_nav_newpost" class="menu" rel="external" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" target="_blank">新随笔</a></li>
+	<li><a id="blog_nav_contact" accesskey="9" class="menu" rel="external" href="https://msg.cnblogs.com/send/%E7%A7%AF%E6%B7%80" target="_blank">联系</a></li>
+	<li><a id="blog_nav_admin" class="menu" rel="external" href="https://i.cnblogs.com/" target="_blank">管理</a></li>
+	<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/200911/rss" target="_blank" rel="external">订阅</a>
+	<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/200911/rss" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/xml.gif" alt="订阅"></a></li>
+</ul>
+
+
+			<div class="blogStats">
+				
+				<div id="blog_stats">
+<!--done-->
+随笔- 410&nbsp;
+文章- 49&nbsp;
+评论- 25&nbsp;
+</div>
+				
+			</div><!--end: blogStats -->
+		</div><!--end: navigator 博客导航栏 -->
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/200911/p/6060359.html" target="_blank" rel="external">JUC回顾之-Semaphore底层实现和原理</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><strong>1.控制并发线程数的Semaphore</strong></p>
+<p>&nbsp; &nbsp;Semaphore（信号量）是用来控制同时访问特定资源的线程数量，它通过协调各个线程，保证合理的使用公共资源。</p>
+<p>&nbsp; &nbsp;线程可以通过acquire()方法来获取信号量的许可，当信号量中没有可用的许可的时候，线程阻塞，直到有可用的许可为止。线程可以通过release()方法释放它持有</p>
+<p>&nbsp; &nbsp;的信号量的许可。</p>
+<p>2.<strong>Semaphore的方法列表：</strong></p>
+<div class="cnblogs_code"><div>按 Ctrl+C 复制代码</div><textarea style="width: 687px; height: 600px; font-family: &quot;Courier New&quot;; font-size: 12px; line-height: 1.5;"></textarea><div>按 Ctrl+C 复制代码</div></div>
+<p>3.<strong>Semaphore的内部结构</strong></p>
+<p><strong><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/167213-20161113230515858-1694158959.png" alt=""></strong></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>4.<strong>Semaphore的源码：</strong></strong></p>
+<p><strong>"公平信号量"和"非公平信号量"的区别</strong></p>
+<p>"公平信号量"和"非公平信号量"的释放信号量的机制是一样的！不同的是它们获取信号量的机制：线程在尝试获取信号量许可时，对于公平信号量而言，如果当前线程不在CLH队列的头部，则排队等候；而对于非公平信号量而言，无论当前线程是不是在CLH队列的头部，它都会直接获取信号量。该差异具体的体现在，它们的tryAcquireShared()函数的实现不同。</p>
+<p><strong>公平信号量tryAcquireShared源码如下：</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008000;">/**</span><span style="color: #008000;">
+     * Fair version
+     </span><span style="color: #008000;">*/</span>
+    <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">final</span> <span style="color: #0000ff;">class</span> FairSync <span style="color: #0000ff;">extends</span><span style="color: #000000;"> Sync {
+        </span><span style="color: #0000ff;">private</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">final</span> <span style="color: #0000ff;">long</span> serialVersionUID = 2014338818796000944L<span style="color: #000000;">;
+
+        FairSync(</span><span style="color: #0000ff;">int</span><span style="color: #000000;"> permits) {
+            </span><span style="color: #0000ff;">super</span><span style="color: #000000;">(permits);
+        }
+
+        </span><span style="color: #0000ff;">protected</span> <span style="color: #0000ff;">int</span> tryAcquireShared(<span style="color: #0000ff;">int</span><span style="color: #000000;"> acquires) {
+            </span><span style="color: #0000ff;">for</span><span style="color: #000000;"> (;;) {
+                </span><span style="color: #0000ff;">if</span><span style="color: #000000;"> (hasQueuedPredecessors())
+                    </span><span style="color: #0000ff;">return</span> -1<span style="color: #000000;">;
+                </span><span style="color: #0000ff;">int</span> available =<span style="color: #000000;"> getState();
+                </span><span style="color: #0000ff;">int</span> remaining = available -<span style="color: #000000;"> acquires;
+                </span><span style="color: #0000ff;">if</span> (remaining &lt; 0 ||<span style="color: #000000;">
+                    compareAndSetState(available, remaining))
+                    </span><span style="color: #0000ff;">return</span><span style="color: #000000;"> remaining;
+            }
+        }
+    }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p><strong><strong>非公平信号量tryAcquireShared源码如下：</strong></strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008000;">/**</span><span style="color: #008000;">
+     * NonFair version
+     </span><span style="color: #008000;">*/</span>
+    <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">final</span> <span style="color: #0000ff;">class</span> NonfairSync <span style="color: #0000ff;">extends</span><span style="color: #000000;"> Sync {
+        </span><span style="color: #0000ff;">private</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">final</span> <span style="color: #0000ff;">long</span> serialVersionUID = -2694183684443567898L<span style="color: #000000;">;
+
+        NonfairSync(</span><span style="color: #0000ff;">int</span><span style="color: #000000;"> permits) {
+            </span><span style="color: #0000ff;">super</span><span style="color: #000000;">(permits);
+        }
+
+        </span><span style="color: #0000ff;">protected</span> <span style="color: #0000ff;">int</span> tryAcquireShared(<span style="color: #0000ff;">int</span><span style="color: #000000;"> acquires) {
+            </span><span style="color: #0000ff;">return</span><span style="color: #000000;"> nonfairTryAcquireShared(acquires);
+        }
+    }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>&nbsp;实例：</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> SemaphoreTest {
+    </span><span style="color: #0000ff;">private</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">final</span> <span style="color: #0000ff;">int</span> THREAD_COUNT = 10<span style="color: #000000;">;<br>    
+    </span><span style="color: #0000ff;">private</span> <span style="color: #0000ff;">static</span> ExecutorService executorService =<span style="color: #000000;"> Executors.newFixedThreadPool(THREAD_COUNT);
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> 创建5个许可，允许5个并发执行</span>
+    <span style="color: #0000ff;">private</span> <span style="color: #0000ff;">static</span> Semaphore s = <span style="color: #0000ff;">new</span> Semaphore(5<span style="color: #000000;">);
+
+    </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> main(String[] args) {<br>        <span style="color: #008000;">//创建10个线程执行任务
+        </span></span><span style="color: #0000ff;">for</span> (<span style="color: #0000ff;">int</span> i = 0; i &lt; THREAD_COUNT; i++<span style="color: #000000;">) {
+            executorService.execute(</span><span style="color: #0000ff;">new</span><span style="color: #000000;"> Runnable() {
+
+                @Override
+                </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> run() {
+                    </span><span style="color: #0000ff;">try</span><span style="color: #000000;"> {<br>                        <span style="color: #008000;">//同时只能有5个线程并发执行保存数据的任务</span>
+                        s.acquire();
+                        System.out.println(</span>"线程" + Thread.currentThread().getName() + " 保存数据"<span style="color: #000000;">);
+                        Thread.sleep(</span>2000<span style="color: #000000;">);<br>                       <span style="color: #008000;"> //5个线程保存完数据，释放1个许可，其他的线程才能获取许可，继续执行保存数据的任务</span>
+                        s.release();
+                        System.out.println(</span>"线程" + Thread.currentThread().getName() + " 释放许可"<span style="color: #000000;">);
+                    } </span><span style="color: #0000ff;">catch</span><span style="color: #000000;"> (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        executorService.shutdown();
+
+    }
+
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>结果：10个线程保存数据，但是只允许5个线程并发的执行，当5个线程都保存完数据以后，释放许可，其他线程才能拿到许可继续保存数据，直到10个线程都保存完数据释放许可为止。</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>线程pool-1-thread-2<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-3<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-1<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-4<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-5<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-2<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-6<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-1<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-3<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-4<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-9<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-10<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-5<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-8<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-7<span style="color: #000000;"> 保存数据
+线程pool</span>-1-thread-10<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-9<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-6<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-8<span style="color: #000000;"> 释放许可
+线程pool</span>-1-thread-7 释放许可</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<style><!--
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Monaco; color: #4f76cb}
+--></style></div><div id="MySignature" style="display: block;">Face your past without regret. Handle your present with confidence.Prepare for future without fear. keep the faith and drop the fear.
+
+面对过去无怨无悔，把握现在充满信心，备战未来无所畏惧。保持信念，克服恐惧！一点一滴的积累，一点一滴的沉淀，学技术需要不断的积淀！</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/200911/category/901837.html" target="_blank">java并发包-底层实现和原理研究</a>,<a href="https://www.cnblogs.com/200911/category/391532.html" target="_blank">java基础</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(6060359,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);" target="_blank" rel="external">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;1638b2ba-88d6-df11-ac81-842b2b196315&#39;);" href="javascript:void(0);" target="_blank" rel="external">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);" target="_blank" rel="external">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()" target="_blank" rel="external"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/200911/" target="_blank"><img src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/20140515221744.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/200911/" target="_blank" rel="external">积淀</a><br>
+            <a href="http://home.cnblogs.com/u/200911/followees" target="_blank" rel="external">关注 - 34</a><br>
+            <a href="http://home.cnblogs.com/u/200911/followers" target="_blank" rel="external">粉丝 - 171</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;1638b2ba-88d6-df11-ac81-842b2b196315&#39;);return false;" target="_blank" rel="external">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(6060359,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(6060359,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/200911/p/6060195.html" class="p_n_p_prefix" target="_blank" rel="external">« </a> 上一篇：<a href="https://www.cnblogs.com/200911/p/6060195.html" title="发布于2016-11-13 22:30" target="_blank" rel="external">JUC回顾之-CyclicBarrier底层实现和原理</a><br><a href="https://www.cnblogs.com/200911/p/6547529.html" class="p_n_p_prefix" target="_blank" rel="external">» </a> 下一篇：<a href="https://www.cnblogs.com/200911/p/6547529.html" title="发布于2017-03-14 11:16" target="_blank" rel="external">Joda-Time 简介</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2016-11-13 23:16</span> <a href="https://www.cnblogs.com/200911/" target="_blank" rel="external">积淀</a> 阅读(<span id="post_view_count">1774</span>) 评论(<span id="post_comment_count">0</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=6060359" rel="external" target="_blank">编辑</a> <a href="https://www.cnblogs.com/200911/p/6060359.html#" onclick="AddToWz(6060359);return false;" target="_blank" rel="external">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=77263,cb_entryId=6060359,cb_blogApp=currentBlogApp,cb_blogUserGuid='1638b2ba-88d6-df11-ac81-842b2b196315',cb_entryCreatedDate='2016/11/13 23:16:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static" target="_blank" rel="external">刷新评论</a><a href="https://www.cnblogs.com/200911/p/6060359.html#" onclick="return RefreshPage();" target="_blank" rel="external">刷新页面</a><a href="https://www.cnblogs.com/200911/p/6060359.html#top" target="_blank" rel="external">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="external" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);" target="_blank">登录</a> 或 <a rel="external" href="javascript:void(0);" class="underline" onclick="return register();" target="_blank">注册</a>，<a href="http://www.cnblogs.com/" target="_blank" rel="external">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a><br><a href="http://clickc.admaster.com.cn/c/a116493,b2949399,c1705,i0,m101,8a1,8b3,h" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-会员节&#39;)">【活动】华为云12.12会员节 云产品1折起 满额送Mate20 点击抢购</a><br><a href="https://cloud.tencent.com/act/southwest?fromSource=gwzcw.2017844.2017844.2017844" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-腾讯云&#39;)">【推荐】服务器100%基准CPU性能，1核1G首年168元，限时特惠！</a><br></div>
+<div id="opt_under_post"></div>
+<div id="cnblogs_c1" class="c_ad_block"><a href="https://cloud.tencent.com/act/special/amd?fromSource=gwzcw.1351353.1351353.1351353" target="_blank"><img width="300" height="250" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/24442-20181129113406214-695115565.jpg" alt="腾讯云1129" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;C1&#39;);"></a></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/200911/p/6059719.html" target="_blank" onclick="clickRecomItmem(6059719,&#39;0V+HL4WUNVX3DpNGUfxzQ/A96nECS/ACVcACn+KfCkaqtkfFYgODutOOKQOSc6LK3kUlPMKIEhKtRSeSPxZ2NevgG+3SquzxOqeI+KzsFvpXtipvOUgqgd8HkAc9k8IR2PNOjfoMcDUNm4qZ4XQ=&#39;)">JUC系列回顾之-CountDownLatch底层原理和示例</a><br>·  <a href="https://www.cnblogs.com/200911/p/6060195.html" target="_blank" onclick="clickRecomItmem(6060195,&#39;KjcM+VVAhDDLNmsHFTICtnq/hwppRtvIUD+B2lUR3G/vAJXj3XEpseMzHihMBRvZDAqJgZnvf0cPpVDw1YUefE1Q5s9i9MRpiDadB02y+ro4QNM2DcX0Fub5LR+XDNlxRcCojJHgH5+bJZIxNcM=&#39;)">JUC回顾之-CyclicBarrier底层实现和原理</a><br>·  <a href="https://www.cnblogs.com/200911/p/6031350.html" target="_blank" onclick="clickRecomItmem(6031350,&#39;PNRKfiE/84FSHaG4nAs9tI3mBGvDB350KzaPBuJBo4/OzVf2GlFM2KXRU4lGca67RABAULQVDj+/WSiz5ImgvyKGKwh3nFD8ePhko8DPrEUA+heTmteTkn3uFVHJlYViUWL0zVIEvwW6CDpv8pw=&#39;)">JUC回顾之-AQS同步器的实现原理</a><br>·  <a href="https://www.cnblogs.com/cz123/p/7500900.html" target="_blank" onclick="clickRecomItmem(7500900,&#39;H0Ul2WiLJt7ZVUuauoKeAoWaPyyd8czWyZH1tgLbvfbvaaUx2NoBXnJ6AhqZWtsKk6UUsY0ozsSOmahWNXXykbpiSENfgy8mUXcefLg7ED5NrT+FYaCdUAzEKTmb7ccmUHpDpai+SpJYA9hs670=&#39;)">Semaphore实现原理分析</a><br>·  <a href="https://www.cnblogs.com/200911/p/6010777.html" target="_blank" onclick="clickRecomItmem(6010777,&#39;LEIQo2+iKDfult09S8GhiMvKTSWtOndcyeLtz990W0YPm/F0bby1hxb6mSHyXW15oCKhyttb7Yiem5h5Mvuz9p4sd41melUCGe8fM1I6w2EJvYKdlip3/RB9FY648jPr3EZavLILhE4XgWFtzHM=&#39;)">JUC回顾之-volatile的原理和使用</a><br></div></div>
+<script async="async" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CMSfsszMut8CFcJyvQodSiwL0w">
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    <div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/saved_resource.html"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/615768/" target="_blank">图解2018年度十大科技事件</a><br> ·  <a href="https://news.cnblogs.com/n/615767/" target="_blank">ofo：吸了资本的毒，戴威何“苦”？</a><br> ·  <a href="https://news.cnblogs.com/n/615766/" target="_blank">斥资140亿，康佳要打造什么样的家电制造基地？</a><br> ·  <a href="https://news.cnblogs.com/n/615763/" target="_blank">官方个税app上线，明年1月起可线上办理个税专项扣除申报</a><br> ·  <a href="https://news.cnblogs.com/n/615765/" target="_blank">HTC天猫旗舰店手机全部下架，仅剩一根数据线</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/200911/" target="_blank" rel="external">积淀</a><br>园龄：<a href="https://home.cnblogs.com/u/200911/" title="入园时间：2010-10-13" target="_blank" rel="external">8年2个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/200911/followers/" target="_blank" rel="external">171</a><br>关注：<a href="https://home.cnblogs.com/u/200911/followees/" target="_blank" rel="external">34</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;1638b2ba-88d6-df11-ac81-842b2b196315&#39;)" target="_blank" rel="external">+加关注</a></div><script>getFollowStatus('1638b2ba-88d6-df11-ac81-842b2b196315')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2018/11/01&#39;);return false;" target="_blank" rel="external">&lt;</a></td><td align="center">2018年12月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/01/01&#39;);return false;" target="_blank" rel="external">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">25</td><td class="CalOtherMonthDay" align="center">26</td><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalWeekendDay" align="center">1</td></tr><tr><td class="CalWeekendDay" align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td align="center">6</td><td align="center">7</td><td class="CalWeekendDay" align="center">8</td></tr><tr><td class="CalWeekendDay" align="center">9</td><td align="center">10</td><td align="center"><a href="https://www.cnblogs.com/200911/archive/2018/12/11.html" target="_blank" rel="external"><u>11</u></a></td><td align="center">12</td><td align="center">13</td><td align="center">14</td><td class="CalWeekendDay" align="center">15</td></tr><tr><td class="CalWeekendDay" align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td align="center">20</td><td align="center">21</td><td class="CalWeekendDay" align="center">22</td></tr><tr><td class="CalWeekendDay" align="center">23</td><td align="center">24</td><td class="CalTodayDay" align="center">25</td><td align="center">26</td><td align="center">27</td><td align="center">28</td><td class="CalWeekendDay" align="center">29</td></tr><tr><td class="CalWeekendDay" align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/200911/p/" title="我的博客的随笔列表" target="_blank" rel="external">我的随笔</a></li><li><a href="https://www.cnblogs.com/200911/MyComments.html" title="我发表过的评论列表" target="_blank" rel="external">我的评论</a></li><li><a href="https://www.cnblogs.com/200911/OtherPosts.html" title="我评论过的随笔列表" target="_blank" rel="external">我的参与</a></li><li><a href="https://www.cnblogs.com/200911/RecentComments.html" title="我的博客的评论列表" target="_blank" rel="external">最新评论</a></li><li><a href="https://www.cnblogs.com/200911/tag/" title="我的博客的标签列表" target="_blank" rel="external">我的标签</a></li>
+<li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="https://www.cnblogs.com/200911/p/6060359.html#" target="_blank" rel="external">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block"></div><div id="sidebar_categories">
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/200911/category/364637.html" target="_blank" rel="external">Android开发(34)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/200911/category/486820.html" target="_blank" rel="external">BI(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/200911/category/391537.html" target="_blank" rel="external">Engilish Learnning(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/200911/category/750586.html" target="_blank" rel="external">flume(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="https://www.cnblogs.com/200911/category/763610.html" target="_blank" rel="external">git使用(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="https://www.cnblogs.com/200911/category/756061.html" target="_blank" rel="external">hadoop+hbase(8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="https://www.cnblogs.com/200911/category/729148.html" target="_blank" rel="external">java IO 与 NIO(19)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="https://www.cnblogs.com/200911/category/729157.html" target="_blank" rel="external">java String类(14)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="https://www.cnblogs.com/200911/category/729149.html" target="_blank" rel="external">java 多线程-原理和使用(15)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="https://www.cnblogs.com/200911/category/729158.html" target="_blank" rel="external">java 集合原理和使用(5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="https://www.cnblogs.com/200911/category/729159.html" target="_blank" rel="external">java 面向对象(5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="https://www.cnblogs.com/200911/category/901837.html" target="_blank" rel="external">java并发包-底层实现和原理研究(16)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_12" href="https://www.cnblogs.com/200911/category/892392.html" target="_blank" rel="external">java反射和动态代理(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_13" href="https://www.cnblogs.com/200911/category/391532.html" target="_blank" rel="external">java基础(99)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_14" href="https://www.cnblogs.com/200911/category/729156.html" target="_blank" rel="external">java网络编程(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_15" href="https://www.cnblogs.com/200911/category/639872.html" target="_blank" rel="external">Jmeter(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_16" href="https://www.cnblogs.com/200911/category/496981.html" target="_blank" rel="external">JS学习(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_17" href="https://www.cnblogs.com/200911/category/729164.html" target="_blank" rel="external">jvm(14)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_18" href="https://www.cnblogs.com/200911/category/750587.html" target="_blank" rel="external">kafka(11)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_19" href="https://www.cnblogs.com/200911/category/664806.html" target="_blank" rel="external">kafka+Storm+flume学习(12)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_20" href="https://www.cnblogs.com/200911/category/524310.html" target="_blank" rel="external">linux学习(21)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_21" href="https://www.cnblogs.com/200911/category/746103.html" target="_blank" rel="external">mongoDB(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_22" href="https://www.cnblogs.com/200911/category/728351.html" target="_blank" rel="external">rabitMq(10)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_23" href="https://www.cnblogs.com/200911/category/1221416.html" target="_blank" rel="external">redis(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_24" href="https://www.cnblogs.com/200911/category/729424.html" target="_blank" rel="external">springmvc+mybatis+maven+junit(8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_25" href="https://www.cnblogs.com/200911/category/750588.html" target="_blank" rel="external">storm(8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_26" href="https://www.cnblogs.com/200911/category/391533.html" target="_blank" rel="external">struts+hibernate+Spring(32)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_27" href="https://www.cnblogs.com/200911/category/766747.html" target="_blank" rel="external">zookeeper(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_28" href="https://www.cnblogs.com/200911/category/400757.html" target="_blank" rel="external">产品经理(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_29" href="https://www.cnblogs.com/200911/category/604101.html" target="_blank" rel="external">计算机网络知识(6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_30" href="https://www.cnblogs.com/200911/category/394359.html" target="_blank" rel="external">面试笔试(6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_31" href="https://www.cnblogs.com/200911/category/392428.html" target="_blank" rel="external">其他(13)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_32" href="https://www.cnblogs.com/200911/category/410145.html" target="_blank" rel="external">软件项目(10)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_33" href="https://www.cnblogs.com/200911/category/417418.html" target="_blank" rel="external">设计模式(14)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_34" href="https://www.cnblogs.com/200911/category/391534.html" target="_blank" rel="external">数据库(31)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_35" href="https://www.cnblogs.com/200911/category/391536.html" target="_blank" rel="external">算法(6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_36" href="https://www.cnblogs.com/200911/category/986883.html" target="_blank" rel="external">性能指标(1)</a> </li>
+
+</ul>
+
+</div>
+
+<div class="catListPostArchive">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="https://www.cnblogs.com/200911/archive/2018/12.html" target="_blank" rel="external">2018年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="https://www.cnblogs.com/200911/archive/2018/10.html" target="_blank" rel="external">2018年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="https://www.cnblogs.com/200911/archive/2018/05.html" target="_blank" rel="external">2018年5月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="https://www.cnblogs.com/200911/archive/2018/04.html" target="_blank" rel="external">2018年4月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="https://www.cnblogs.com/200911/archive/2018/02.html" target="_blank" rel="external">2018年2月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="https://www.cnblogs.com/200911/archive/2018/01.html" target="_blank" rel="external">2018年1月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="https://www.cnblogs.com/200911/archive/2017/12.html" target="_blank" rel="external">2017年12月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="https://www.cnblogs.com/200911/archive/2017/11.html" target="_blank" rel="external">2017年11月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="https://www.cnblogs.com/200911/archive/2017/09.html" target="_blank" rel="external">2017年9月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="https://www.cnblogs.com/200911/archive/2017/08.html" target="_blank" rel="external">2017年8月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="https://www.cnblogs.com/200911/archive/2017/06.html" target="_blank" rel="external">2017年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="https://www.cnblogs.com/200911/archive/2017/04.html" target="_blank" rel="external">2017年4月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="https://www.cnblogs.com/200911/archive/2017/03.html" target="_blank" rel="external">2017年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="https://www.cnblogs.com/200911/archive/2016/11.html" target="_blank" rel="external">2016年11月 (9)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_14" href="https://www.cnblogs.com/200911/archive/2016/10.html" target="_blank" rel="external">2016年10月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_15" href="https://www.cnblogs.com/200911/archive/2016/09.html" target="_blank" rel="external">2016年9月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_16" href="https://www.cnblogs.com/200911/archive/2016/08.html" target="_blank" rel="external">2016年8月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_17" href="https://www.cnblogs.com/200911/archive/2016/06.html" target="_blank" rel="external">2016年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_18" href="https://www.cnblogs.com/200911/archive/2016/05.html" target="_blank" rel="external">2016年5月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_19" href="https://www.cnblogs.com/200911/archive/2016/04.html" target="_blank" rel="external">2016年4月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_20" href="https://www.cnblogs.com/200911/archive/2016/03.html" target="_blank" rel="external">2016年3月 (11)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_21" href="https://www.cnblogs.com/200911/archive/2016/02.html" target="_blank" rel="external">2016年2月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_22" href="https://www.cnblogs.com/200911/archive/2016/01.html" target="_blank" rel="external">2016年1月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_23" href="https://www.cnblogs.com/200911/archive/2015/12.html" target="_blank" rel="external">2015年12月 (22)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_24" href="https://www.cnblogs.com/200911/archive/2015/11.html" target="_blank" rel="external">2015年11月 (30)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_25" href="https://www.cnblogs.com/200911/archive/2015/10.html" target="_blank" rel="external">2015年10月 (15)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_26" href="https://www.cnblogs.com/200911/archive/2015/09.html" target="_blank" rel="external">2015年9月 (17)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_27" href="https://www.cnblogs.com/200911/archive/2015/08.html" target="_blank" rel="external">2015年8月 (9)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_28" href="https://www.cnblogs.com/200911/archive/2015/07.html" target="_blank" rel="external">2015年7月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_29" href="https://www.cnblogs.com/200911/archive/2015/06.html" target="_blank" rel="external">2015年6月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_30" href="https://www.cnblogs.com/200911/archive/2015/05.html" target="_blank" rel="external">2015年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_31" href="https://www.cnblogs.com/200911/archive/2015/04.html" target="_blank" rel="external">2015年4月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_32" href="https://www.cnblogs.com/200911/archive/2015/03.html" target="_blank" rel="external">2015年3月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_33" href="https://www.cnblogs.com/200911/archive/2015/02.html" target="_blank" rel="external">2015年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_34" href="https://www.cnblogs.com/200911/archive/2014/12.html" target="_blank" rel="external">2014年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_35" href="https://www.cnblogs.com/200911/archive/2014/10.html" target="_blank" rel="external">2014年10月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_36" href="https://www.cnblogs.com/200911/archive/2014/09.html" target="_blank" rel="external">2014年9月 (23)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_37" href="https://www.cnblogs.com/200911/archive/2014/08.html" target="_blank" rel="external">2014年8月 (41)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_38" href="https://www.cnblogs.com/200911/archive/2014/07.html" target="_blank" rel="external">2014年7月 (14)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_39" href="https://www.cnblogs.com/200911/archive/2014/06.html" target="_blank" rel="external">2014年6月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_40" href="https://www.cnblogs.com/200911/archive/2014/05.html" target="_blank" rel="external">2014年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_41" href="https://www.cnblogs.com/200911/archive/2013/12.html" target="_blank" rel="external">2013年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_42" href="https://www.cnblogs.com/200911/archive/2013/10.html" target="_blank" rel="external">2013年10月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_43" href="https://www.cnblogs.com/200911/archive/2013/09.html" target="_blank" rel="external">2013年9月 (30)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_44" href="https://www.cnblogs.com/200911/archive/2013/07.html" target="_blank" rel="external">2013年7月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_45" href="https://www.cnblogs.com/200911/archive/2013/06.html" target="_blank" rel="external">2013年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_46" href="https://www.cnblogs.com/200911/archive/2013/03.html" target="_blank" rel="external">2013年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_47" href="https://www.cnblogs.com/200911/archive/2013/02.html" target="_blank" rel="external">2013年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_48" href="https://www.cnblogs.com/200911/archive/2012/11.html" target="_blank" rel="external">2012年11月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_49" href="https://www.cnblogs.com/200911/archive/2012/10.html" target="_blank" rel="external">2012年10月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_50" href="https://www.cnblogs.com/200911/archive/2012/09.html" target="_blank" rel="external">2012年9月 (20)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_51" href="https://www.cnblogs.com/200911/archive/2012/08.html" target="_blank" rel="external">2012年8月 (18)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_52" href="https://www.cnblogs.com/200911/archive/2012/07.html" target="_blank" rel="external">2012年7月 (24)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_53" href="https://www.cnblogs.com/200911/archive/2012/06.html" target="_blank" rel="external">2012年6月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_54" href="https://www.cnblogs.com/200911/archive/2012/05.html" target="_blank" rel="external">2012年5月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_55" href="https://www.cnblogs.com/200911/archive/2012/04.html" target="_blank" rel="external">2012年4月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_56" href="https://www.cnblogs.com/200911/archive/2012/03.html" target="_blank" rel="external">2012年3月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+<div class="catList">
+<h3 class="catListTitle">Andriod开发</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_2_Link_0" href="http://www.oschina.net/android?gclid=CL25gvXR8K4CFaGt4godPR4rHw" rel="external" target="_blank">Andriod开发</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_1" href="https://www.cnblogs.com/jasoncc/archive/2011/12/28/2303826.html" target="_blank" rel="external">Android开发</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_2" href="https://www.cnblogs.com/hanyonglu/archive/2012/09/24/2693465.html" target="_blank" rel="external">HarHar 文章----SQLite存储</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_3" href="http://blog.csdn.net/qjyong/article/details/4824179" rel="external" target="_blank">http://blog.csdn.net/qjyong/article/details/4824179</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_4" href="https://hoojo.cnblogs.com/" rel="external" target="_blank">http://hoojo.cnblogs.com/</a> </li>
+<li class="c_b_p_link_desc">Java学习博客</li>
+<li><a id="CatList_LinkList_2_Link_5" href="https://www.cnblogs.com/bingoidea/archive/2011/03/29/1998923.html" target="_blank" rel="external">http://www.cnblogs.com/bingoidea/archive/2011/03/29/1998923.html</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_6" href="http://snowolf.iteye.com/blog/379860" rel="external" target="_blank">java加密技术</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_7" href="http://blog.csdn.net/column/details/datastructureinjava.html" rel="external" target="_blank">java算法</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_8" href="http://blog.csdn.net/ant_yan/article/details/5468992" rel="external" target="_blank">java学习博客</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_9" href="http://my.csdn.net/v_july_v" rel="external" target="_blank">July</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_10" href="http://blog.csdn.net/dlutbrucezhang/article/details/9251831" rel="external" target="_blank">linux shell脚本攻略+Linux内核设计与实现+linux内核设计的艺术+linux系统编程+TCP/IP详解</a> </li>
+<li class="c_b_p_link_desc">牛人博客BruceZhang</li>
+<li><a id="CatList_LinkList_2_Link_11" href="http://www.codinglabs.org/html/theory-of-mysql-index.html" rel="external" target="_blank">MySQL索引背后的数据结构及算法原理</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_12" href="https://www.cnblogs.com/riky/archive/2007/04/07/704298.html" target="_blank" rel="external">uml</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_13" href="https://www.cnblogs.com/leipei2352/archive/2011/08/01/2124333.html" target="_blank" rel="external">安卓</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_14" href="http://blog.yufeng.info/" rel="external" target="_blank">霸爷的系统技术非业余研究</a> </li>
+<li class="c_b_p_link_desc">博客</li>
+<li><a id="CatList_LinkList_2_Link_15" href="http://ifeve.com/" rel="external" target="_blank">并发编程</a> </li>
+<li class="c_b_p_link_desc">并发编程</li>
+<li><a id="CatList_LinkList_2_Link_16" href="http://lavasoft.blog.51cto.com/62575/27069" rel="external" target="_blank">多线程</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_17" href="http://blog.csdn.net/u011225629/article/details/47720277" rel="external" target="_blank">疯狂Java学习笔记+Spring学习笔记+ MySQL数据库学习+MySQL详解+Spring详解+MongoDB学习+算法速成+ 	数据结构+Java设计模式</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_18" href="http://hedengcheng.com/?p=910" rel="external" target="_blank">何登成的技术博客</a> </li>
+<li class="c_b_p_link_desc">技术大牛的博客，mysql</li>
+<li><a id="CatList_LinkList_2_Link_19" href="http://www.osforce.cn/?from=yufeng" rel="external" target="_blank">开源力量</a> </li>
+<li class="c_b_p_link_desc">学习视频</li>
+<li><a id="CatList_LinkList_2_Link_20" href="http://blog.csdn.net/justjavac/article/details/7069971" rel="external" target="_blank">算法</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_21" href="http://wenda60.com/leaderboard/index.html" rel="external" target="_blank">一问一答</a> </li>
+<li class="c_b_p_link_desc">一问一答</li>
+<li><a id="CatList_LinkList_2_Link_22" href="http://coolshell.cn/" rel="external" target="_blank">左耳朵耗子的酷壳</a> </li>
+<li class="c_b_p_link_desc">博客</li>
+</ul>
+
+</div>
+
+<div class="catList">
+<h3 class="catListTitle">Hibernate</h3>
+
+<ul>
+
+</ul>
+
+</div>
+
+<div class="catList">
+<h3 class="catListTitle">java学习</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_4_Link_0" href="http://blog.csdn.net/iter_zc/article/details/46351331" rel="external" target="_blank">Flume NG源码+	计算机底层知识拾遗+聊聊高并发+聊聊JVM</a> </li>
+
+<li><a id="CatList_LinkList_4_Link_1" href="http://qifuguang.me/2015/09/02/[Java%E5%B9%B6%E5%8F%91%E5%8C%85%E5%AD%A6%E4%B9%A0%E4%B8%83]%E8%A7%A3%E5%AF%86ThreadLocal/" rel="external" target="_blank">java并发包研究</a> </li>
+
+<li><a id="CatList_LinkList_4_Link_2" href="http://www.blogjava.net/xylz/archive/2010/07/08/325587.html" target="_blank">java并发编程</a> </li>
+<li class="c_b_p_link_desc">java并发编程大神博客</li>
+<li><a id="CatList_LinkList_4_Link_3" href="http://blog.csdn.net/thestoryoftony/article/details/7101359" rel="external" target="_blank">JVM内核研究+spring源码研读+大数据架构设计+牛逼人</a> </li>
+
+<li><a id="CatList_LinkList_4_Link_4" href="http://shiyanjun.cn/archives/934.html" rel="external" target="_blank">kafka+stom_hdfs</a> </li>
+
+<li><a id="CatList_LinkList_4_Link_5" href="http://blog.csdn.net/bluishglc/article/details/44276607" rel="external" target="_blank">shell系列+数据库分库分表系列+大数据专题</a> </li>
+<li class="c_b_p_link_desc">牛人博客</li>
+<li><a id="CatList_LinkList_4_Link_6" href="http://tech.meituan.com/mt-log-system-arch.html" rel="external" target="_blank">美团技术团队博客</a> </li>
+
+<li><a id="CatList_LinkList_4_Link_7" href="http://blog.csdn.net/wzhg0508/article/details/17954375" rel="external" target="_blank">一些算法的MapReduce实现+Storm 杂谈+Storm-kafka源码浅谈</a> </li>
+
+<li><a id="CatList_LinkList_4_Link_8" href="http://blog.csdn.net/poechant/article/details/7289093" rel="external" target="_blank">钟超-jvm博客系列+Memcached系列+FastDFS系列学习+Nginx高性能web服务器序列</a> </li>
+<li class="c_b_p_link_desc">牛人博客</li>
+</ul>
+
+</div>
+
+<div class="catList">
+<h3 class="catListTitle">jsp+servlet+javabean</h3>
+
+<ul>
+
+</ul>
+
+</div>
+
+<div class="catList">
+<h3 class="catListTitle">RabbitMq学习</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_6_Link_0" href="http://blog.csdn.net/anzhsoft/article/details/19607841" rel="external" target="_blank">anzhsoft博客专家CSDN</a> </li>
+
+<li><a id="CatList_LinkList_6_Link_1" href="http://blog.csdn.net/zhu_tianwei/article/details/40835555" rel="external" target="_blank">RabbitMq+mongoDB+Redis专栏牛人博客</a> </li>
+
+<li><a id="CatList_LinkList_6_Link_2" href="http://m.blog.csdn.net/blog/xiaoyatouvsanan" rel="external" target="_blank">RabbitMq参考学习博客</a> </li>
+
+<li><a id="CatList_LinkList_6_Link_3" href="http://blog.csdn.net/lmj623565791/article/details/37620057" rel="external" target="_blank">鸿洋_博客+rabbitMq系列学习</a> </li>
+<li class="c_b_p_link_desc">牛人博客</li>
+</ul>
+
+</div>
+
+<div class="catListSpring学习">
+<h3 class="catListTitle">Spring</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_7_Link_0" href="http://www.blogjava.net/DLevin/archive/2011/11/23/364599.html" target="_blank" rel="external">java深入理解源码</a> </li>
+
+<li><a id="CatList_LinkList_7_Link_1" href="https://www.cnblogs.com/shinings/archive/2009/02/06/1384984.html" target="_blank" rel="external">java学习</a> </li>
+
+<li><a id="CatList_LinkList_7_Link_2" href="http://blog.csdn.net/youlingqishi11/article/category/828621" target="_blank" rel="external">Spring blog</a> </li>
+
+<li><a id="CatList_LinkList_7_Link_3" href="https://www.cnblogs.com/kebin/archive/2012/06/18/2553016.html" target="_blank" rel="external">Spring原理</a> </li>
+<li class="c_b_p_link_desc">三大框架</li>
+</ul>
+
+</div>
+
+<div class="catList">
+<h3 class="catListTitle">structs</h3>
+
+<ul>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/200911/p/5869097.html#4125997" target="_blank" rel="external">1. Re:MyBatis如何防止SQL注入</a></li>
+        <li class="recent_comment_body">原来如此，是这么回事，今天面试问到了，我一愣，虽然我说mysql好像不用去特意，用自带的#取值就行，不过说的很含糊，貌似说到了这一块了，可是好像我也不是很懂，也只是用而已。</li>
+        <li class="recent_comment_author">--命运的绯色结局</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/200911/p/5043768.html#4082163" target="_blank" rel="external">2. Re:Kafka学习之一深度解析</a></li>
+        <li class="recent_comment_body">666</li>
+        <li class="recent_comment_author">--规格严格-功夫到家</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/200911/p/4310203.html#4074929" target="_blank" rel="external">3. Re:Shell实现跳板机，为什么用跳板机</a></li>
+        <li class="recent_comment_body">这个脚本是不是也要在远程机放一份，不然怎么记录远程机的命令呢</li>
+        <li class="recent_comment_author">--wilikeit</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/200911/p/6059719.html#4013696" target="_blank" rel="external">4. Re:JUC系列回顾之-CountDownLatch底层原理和示例</a></li>
+        <li class="recent_comment_body">请问一下实例中，class MyTask 为什么要加一个ReentrantLock呢？</li>
+        <li class="recent_comment_author">--lovely_yang</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/200911/p/6059719.html#4003282" target="_blank" rel="external">5. Re:JUC系列回顾之-CountDownLatch底层原理和示例</a></li>
+        <li class="recent_comment_body">@平林新袖 恩，多谢指正，已修改...</li>
+        <li class="recent_comment_author">--积淀</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/200911/p/5869097.html" target="_blank" rel="external">1. MyBatis如何防止SQL注入(37326)</a></li><li><a href="https://www.cnblogs.com/200911/archive/2012/10/09/2716873.html" target="_blank" rel="external">2. hibernate缓存：一级缓存和二级缓存(31440)</a></li><li><a href="https://www.cnblogs.com/200911/p/3965108.html" target="_blank" rel="external">3. 内存溢出的解决思路(29810)</a></li><li><a href="https://www.cnblogs.com/200911/archive/2012/07/16/2594143.html" target="_blank" rel="external">4. java 进程与线程的区别(10489)</a></li><li><a href="https://www.cnblogs.com/200911/archive/2012/10/09/2716882.html" target="_blank" rel="external">5. Spring AOP实现原理自己总结：(10372)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/200911/archive/2012/10/09/2716873.html" target="_blank" rel="external">1. hibernate缓存：一级缓存和二级缓存(5)</a></li><li><a href="https://www.cnblogs.com/200911/p/6059719.html" target="_blank" rel="external">2. JUC系列回顾之-CountDownLatch底层原理和示例(3)</a></li><li><a href="https://www.cnblogs.com/200911/p/5869097.html" target="_blank" rel="external">3. MyBatis如何防止SQL注入(2)</a></li><li><a href="https://www.cnblogs.com/200911/p/5800493.html" target="_blank" rel="external">4. JUC回顾之-ConcurrentHashMap源码解读及原理理解(2)</a></li><li><a href="https://www.cnblogs.com/200911/p/4814311.html" target="_blank" rel="external">5. TCP 的那些事儿（上）(2)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/200911/p/5869097.html" target="_blank" rel="external">1. MyBatis如何防止SQL注入(14)</a></li><li><a href="https://www.cnblogs.com/200911/p/3965108.html" target="_blank" rel="external">2. 内存溢出的解决思路(9)</a></li><li><a href="https://www.cnblogs.com/200911/archive/2012/10/09/2716873.html" target="_blank" rel="external">3. hibernate缓存：一级缓存和二级缓存(8)</a></li><li><a href="https://www.cnblogs.com/200911/archive/2012/08/11/2633353.html" target="_blank" rel="external">4. Spring整合hibernate的事务属性介绍以及声明式事务管理 （使用Annotation和xml）(3)</a></li><li><a href="https://www.cnblogs.com/200911/archive/2012/07/26/2610018.html" target="_blank" rel="external">5. SQl多表查询优化 高效率SQL语句(2)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2018 积淀
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+<iframe id="google_osd_static_frame_6437987736314" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/saved_resource(1).html"></iframe><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-text">积淀</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-text">一点一滴的积累，一点一滴的沉淀！</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-text">
+			JUC回顾之-Semaphore底层实现和原理
+		</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">公告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">常用链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">随笔分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">随笔档案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">Andriod开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">Hibernate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">java学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">jsp+servlet+javabean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">RabbitMq学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">Spring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">structs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">最新评论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">阅读排行榜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">评论排行榜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-text">推荐排行榜</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

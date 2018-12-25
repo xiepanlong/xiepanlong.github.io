@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="html{overflow-x:hidden!important}body,html{height:auto!important}html.i-amphtml-fie{height:100%!important;width:100%!important}body{margin:0!important;-webkit-text-size-adjust:100%;-moz-text-size-ad">
+<meta property="og:type" content="website">
+<meta property="og:title" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/saved_resource.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="html{overflow-x:hidden!important}body,html{height:auto!important}html.i-amphtml-fie{height:100%!important;width:100%!important}body{margin:0!important;-webkit-text-size-adjust:100%;-moz-text-size-ad">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/24442-20181121172348687-968725998.jpg">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/B21990959.233795560">
+<meta property="og:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/view">
+<meta property="og:updated_time" content="2018-12-25T08:55:37.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
+<meta name="twitter:description" content="html{overflow-x:hidden!important}body,html{height:auto!important}html.i-amphtml-fie{height:100%!important;width:100%!important}body{margin:0!important;-webkit-text-size-adjust:100%;-moz-text-size-ad">
+<meta name="twitter:image" content="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理%20-%20积淀%20-%20博客园_files/24442-20181121172348687-968725998.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/images/JUC回顾之-Semaphore底层实现和原理 - 积淀 - 博客园_files/saved_resource.html"/>
+
+
+
+
+
+  <title> | 零柒 - Panlong Xie's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/200911/p/6060359.html -->
+<html amp4ads="" class="i-amphtml-inabox i-amphtml-singledoc i-amphtml-standalone i-amphtml-iframed" i-amphtml-layout="" i-amphtml-no-boilerplate="" amp-version="1812051624460"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style amp-runtime="" i-amphtml-version="011812051624460">html{overflow-x:hidden!important}body,html{height:auto!important}html.i-amphtml-fie{height:100%!important;width:100%!important}body{margin:0!important;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;-ms-text-size-adjust:100%;text-size-adjust:100%}[hidden]{display:none!important}html.i-amphtml-singledoc.i-amphtml-embedded{-ms-touch-action:pan-y;touch-action:pan-y}html.i-amphtml-fie>body,html.i-amphtml-singledoc>body{overflow:visible!important}html.i-amphtml-fie:not(.i-amphtml-inabox)>body,html.i-amphtml-singledoc:not(.i-amphtml-inabox)>body{position:relative!important}html.i-amphtml-webview>body{overflow-x:hidden!important;overflow-y:visible!important;min-height:100vh!important}html.i-amphtml-ios-embed-legacy>body{overflow-x:hidden!important;overflow-y:auto!important;position:absolute!important}html.i-amphtml-ios-embed{overflow-y:auto!important;position:static}#i-amphtml-wrapper{overflow-x:hidden!important;overflow-y:auto!important;position:absolute!important;top:0!important;left:0!important;right:0!important;bottom:0!important;margin:0!important;display:block!important}html.i-amphtml-ios-embed.i-amphtml-ios-overscroll,html.i-amphtml-ios-embed.i-amphtml-ios-overscroll>#i-amphtml-wrapper{-webkit-overflow-scrolling:touch!important}#i-amphtml-wrapper>body{position:relative!important;border-top:1px solid transparent!important}html.i-amphtml-ios-embed-sd{overflow:hidden!important;position:static!important}html.i-amphtml-ios-embed-sd>body,html.i-amphtml-singledoc.i-amphtml-ios-embed-sd>body{position:absolute!important;top:0!important;left:0!important;right:0!important;bottom:0!important;overflow:hidden!important}.i-amphtml-body-minheight>body{min-height:calc(100vh + 1px)}.i-amphtml-element{display:inline-block}.i-amphtml-blurry-placeholder{-webkit-transition:opacity 0.3s cubic-bezier(0.0,0.0,0.2,1)!important;transition:opacity 0.3s cubic-bezier(0.0,0.0,0.2,1)!important}[layout=nodisplay]:not(.i-amphtml-element){display:none!important}.i-amphtml-layout-fixed,[layout=fixed][width][height]:not(.i-amphtml-layout-fixed){display:inline-block;position:relative}.i-amphtml-layout-responsive,[layout=responsive][width][height]:not(.i-amphtml-layout-responsive),[width][height][sizes]:not(.i-amphtml-layout-responsive){display:block;position:relative}.i-amphtml-layout-intrinsic{display:inline-block;position:relative;max-width:100%}.i-amphtml-intrinsic-sizer{max-width:100%;display:block!important}.i-amphtml-layout-container,.i-amphtml-layout-fixed-height,[layout=container],[layout=fixed-height][height]{display:block;position:relative}.i-amphtml-layout-fill,[layout=fill]:not(.i-amphtml-layout-fill){display:block;overflow:hidden!important;position:absolute;top:0;left:0;bottom:0;right:0}.i-amphtml-layout-flex-item,[layout=flex-item]:not(.i-amphtml-layout-flex-item){display:block;position:relative;-webkit-box-flex:1;-ms-flex:1 1 auto;flex:1 1 auto}.i-amphtml-layout-fluid{position:relative}.i-amphtml-layout-size-defined{overflow:hidden!important}.i-amphtml-layout-awaiting-size{position:absolute!important;top:auto!important;bottom:auto!important}i-amphtml-sizer{display:block!important}.i-amphtml-blurry-placeholder,.i-amphtml-fill-content{display:block;height:0;max-height:100%;max-width:100%;min-height:100%;min-width:100%;width:0;margin:auto}.i-amphtml-layout-size-defined .i-amphtml-fill-content{position:absolute;top:0;left:0;bottom:0;right:0}.i-amphtml-layout-intrinsic .i-amphtml-sizer{max-width:100%}.i-amphtml-replaced-content,.i-amphtml-screen-reader{padding:0!important;border:none!important}.i-amphtml-screen-reader{position:fixed!important;top:0px!important;left:0px!important;width:4px!important;height:4px!important;opacity:0!important;overflow:hidden!important;margin:0!important;display:block!important;visibility:visible!important}.i-amphtml-screen-reader~.i-amphtml-screen-reader{left:8px!important}.i-amphtml-screen-reader~.i-amphtml-screen-reader~.i-amphtml-screen-reader{left:12px!important}.i-amphtml-screen-reader~.i-amphtml-screen-reader~.i-amphtml-screen-reader~.i-amphtml-screen-reader{left:16px!important}.i-amphtml-unresolved{position:relative;overflow:hidden!important}#i-amphtml-wrapper.i-amphtml-scroll-disabled,.i-amphtml-scroll-disabled{overflow-x:hidden!important;overflow-y:hidden!important}.i-amphtml-select-disabled{-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important}.i-amphtml-notbuilt,[layout]:not(.i-amphtml-element){position:relative;overflow:hidden!important;color:transparent!important}.i-amphtml-notbuilt:not(.i-amphtml-layout-container)>*,[layout]:not([layout=container]):not(.i-amphtml-element)>*{display:none}.i-amphtml-ghost{visibility:hidden!important}.i-amphtml-element>[placeholder],[layout]:not(.i-amphtml-element)>[placeholder]{display:block}.i-amphtml-element>[placeholder].amp-hidden,.i-amphtml-element>[placeholder].hidden{visibility:hidden}.i-amphtml-element:not(.amp-notsupported)>[fallback],.i-amphtml-layout-container>[placeholder].amp-hidden,.i-amphtml-layout-container>[placeholder].hidden{display:none}.i-amphtml-layout-size-defined>[fallback],.i-amphtml-layout-size-defined>[placeholder]{position:absolute!important;top:0!important;left:0!important;right:0!important;bottom:0!important;z-index:1}.i-amphtml-notbuilt>[placeholder]{display:block!important}.i-amphtml-hidden-by-media-query{display:none!important}.i-amphtml-element-error{background:red!important;color:#fff!important;position:relative!important}.i-amphtml-element-error:before{content:attr(error-message)}i-amp-scroll-container,i-amphtml-scroll-container{position:absolute;top:0;left:0;right:0;bottom:0;display:block}i-amp-scroll-container.amp-active,i-amphtml-scroll-container.amp-active{overflow:auto;-webkit-overflow-scrolling:touch}.i-amphtml-loading-container{display:block!important;z-index:1}.i-amphtml-notbuilt>.i-amphtml-loading-container{display:block!important}.i-amphtml-loading-container.amp-hidden{visibility:hidden}.i-amphtml-loader-line{position:absolute;top:0;left:0;right:0;height:1px;overflow:hidden!important;background-color:hsla(0,0%,59.2%,0.2);display:block}.i-amphtml-loader-moving-line{display:block;position:absolute;width:100%;height:100%!important;background-color:hsla(0,0%,59.2%,0.65);z-index:2}@-webkit-keyframes i-amphtml-loader-line-moving{0%{-webkit-transform:translateX(-100%);transform:translateX(-100%)}to{-webkit-transform:translateX(100%);transform:translateX(100%)}}@keyframes i-amphtml-loader-line-moving{0%{-webkit-transform:translateX(-100%);transform:translateX(-100%)}to{-webkit-transform:translateX(100%);transform:translateX(100%)}}.i-amphtml-loader-line.amp-active .i-amphtml-loader-moving-line{-webkit-animation:i-amphtml-loader-line-moving 4s ease infinite;animation:i-amphtml-loader-line-moving 4s ease infinite}.i-amphtml-loader{position:absolute;display:block;height:10px;top:50%;left:50%;-webkit-transform:translateX(-50%) translateY(-50%);transform:translateX(-50%) translateY(-50%);-webkit-transform-origin:50% 50%;transform-origin:50% 50%;white-space:nowrap}.i-amphtml-loader.amp-active .i-amphtml-loader-dot{-webkit-animation:i-amphtml-loader-dots 2s infinite;animation:i-amphtml-loader-dots 2s infinite}.i-amphtml-loader-dot{position:relative;display:inline-block;height:10px;width:10px;margin:2px;border-radius:100%;background-color:rgba(0,0,0,0.3);box-shadow:2px 2px 2px 1px rgba(0,0,0,0.2);will-change:transform}.i-amphtml-loader .i-amphtml-loader-dot:first-child{-webkit-animation-delay:0s;animation-delay:0s}.i-amphtml-loader .i-amphtml-loader-dot:nth-child(2){-webkit-animation-delay:.1s;animation-delay:.1s}.i-amphtml-loader .i-amphtml-loader-dot:nth-child(3){-webkit-animation-delay:.2s;animation-delay:.2s}@-webkit-keyframes i-amphtml-loader-dots{0%,to{-webkit-transform:scale(.7);transform:scale(.7);background-color:rgba(0,0,0,0.3)}50%{-webkit-transform:scale(.8);transform:scale(.8);background-color:rgba(0,0,0,0.5)}}@keyframes i-amphtml-loader-dots{0%,to{-webkit-transform:scale(.7);transform:scale(.7);background-color:rgba(0,0,0,0.3)}50%{-webkit-transform:scale(.8);transform:scale(.8);background-color:rgba(0,0,0,0.5)}}.i-amphtml-element>[overflow]{cursor:pointer;position:relative;z-index:2;visibility:hidden}.i-amphtml-element>[overflow].amp-visible{visibility:visible}template{display:none!important}.amp-border-box,.amp-border-box *,.amp-border-box :after,.amp-border-box :before{box-sizing:border-box}amp-pixel{display:none!important}amp-instagram{padding:64px 0px 0px!important;background-color:#fff}amp-analytics,amp-story-auto-ads{position:fixed!important;top:0!important;width:1px!important;height:1px!important;overflow:hidden!important;visibility:hidden}amp-iframe iframe{box-sizing:border-box!important}[amp-access][amp-access-hide]{display:none}[subscriptions-dialog],body:not(.i-amphtml-subs-ready) [subscriptions-action],body:not(.i-amphtml-subs-ready) [subscriptions-section]{display:none!important}[visible-when-invalid]:not(.visible),amp-experiment,amp-live-list>[update],amp-share-tracking,form [submit-error],form [submit-success],form [submitting]{display:none}.i-amphtml-jank-meter{position:fixed;background-color:rgba(232,72,95,0.5);bottom:0;right:0;color:#fff;font-size:16px;z-index:1000;padding:5px}amp-accordion{display:block!important}amp-accordion>section{float:none!important}amp-accordion>section>*{float:none!important;display:block!important;overflow:hidden!important;position:relative!important}.i-amphtml-accordion-content,.i-amphtml-accordion-header,amp-accordion,amp-accordion>section{margin:0}.i-amphtml-accordion-header{cursor:pointer;background-color:#efefef;padding-right:20px;border:1px solid #dfdfdf}amp-accordion>section>:last-child{display:none!important}amp-accordion>section[expanded]>:last-child{display:block!important}amp-list[resizable-children]>.i-amphtml-loading-container.amp-hidden{display:none!important}amp-list[load-more]>[load-more-button],amp-list[load-more]>[load-more-button]>.i-amphtml-loader,amp-list[load-more]>[load-more-end],amp-list[load-more]>[load-more-failed],amp-list[load-more]>[load-more-loading]{visibility:hidden}amp-story-page,amp-story[standalone]{display:block!important;height:100%!important;margin:0!important;padding:0!important;overflow:hidden!important;width:100%!important}amp-story[standalone]{background-color:#fff!important;position:relative!important}amp-story-page{background-color:#757575}amp-story .i-amphtml-loader{display:none!important}[amp-fx^=fly-in]{visibility:hidden}amp-addthis[data-widget-type=floating]{position:fixed!important;width:100%!important;height:50px;bottom:0}
+/*# sourceURL=/css/amp.css*/html.i-amphtml-inabox{width:100%!important;height:100%!important}</style><meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport"><meta content="vendor=doubleclick,type=impression-id,value=CMSfsszMut8CFcJyvQodSiwL0w" name="amp4ads-id"><meta content="noindex" name="robots"><link as="script" href="./amp4ads-v0.js" rel="preload"><script async src="./amp4ads-v0.js"></script><script async custom-element="amp-analytics" src="./amp-analytics-0.1.js"></script><style amp-custom="">a {color:#000000}body {line-height:0;margin:0;background:transparent;}#google_image_div {overflow: hidden;position: absolute;}</style></head><body marginwidth="0" marginheight="0" class="amp-mode-mouse" style="opacity: 1; visibility: visible; animation: none 0s ease 0s 1 normal none running;"><div id="google_image_div"><a href="https://googleads.g.doubleclick.net/pcs/click?xai=AKAOjsuoK7FjXY14t3aDIhMbMiRWB0DLJ9JMzt1FlglOuIPCroXL5Q66d2-rD99XtgG4BU3ngIvERG_JlJ7_OPv5pmTunlGoFySX7pTFWza6F2aD0S96wlQpI6tV-5WD5R6_gGwZvuCKcH8rkwMEnA3eSff6G4fsMZjpa4PRxlxwbWEx12ViYFocDxRvu_z5sTJcb_WYLVIsaw7e4t7MW2-ShVSpw5BD8AKGdthy1A&amp;sai=AMfl-YTmjFhp31pGbLVQgjjUdqSS2lW_p0nBf3OLXb5mp5J6LQ_-2Q0CO-OBVXRGwOTkaiXojoGOUeYcFXZe-dsEnqElsc64najI8Miy2584TzwUp3xV9EVmg5Tpi4_d&amp;sig=Cg0ArKJSzH39mTniIJAE&amp;adurl=https://ad.doubleclick.net/ddm/trackclk/N5751.3388919CNBLOGS/B21990959.233795557%3Bdc_trk_aid%3D431519443%3Bdc_trk_cid%3D108683596%3Bdc_lat%3D%3Bdc_rdid%3D%3Btag_for_child_directed_treatment%3D%3Btfua%3D%3Fhttp://clickc.admaster.com.cn/c/a118936,b3057614,c1705,i0,m101,8a1,8b3,0k10038,h,uhttps://www.intel.cn/content/www/cn/zh/technology-innovation/artificial-intelligence-dong-bei-hu.html%3Futm_campaign%3D2018_q4_na_cn_na_na_Master_Brand_AI_WWF%26utm_source%3DCnblogs%26utm_content%3Do_dss_hmp_cn_bus_custom_18_q4_28_banner_tracking_Cnblogs_HomepageB2%26utm_medium%3Ddisplay%26cid%3D2018_q4_na_china-prc_na_Master_Brand_AI_WWF&amp;nx=CLICK_X&amp;ny=CLICK_Y" id="aw0" target="_blank"><amp-img alt="" class="img_ad i-amphtml-layout-fixed i-amphtml-layout-size-defined i-amphtml-element i-amphtml-layout" height="60" i-amphtml-layout="fixed" i-amphtml-ssr="" src="https://img2018.cnblogs.com/news/24442/201811/24442-20181121172348687-968725998.jpg" style="width:468px;height:60px;" width="468"><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" src="./24442-20181121172348687-968725998.jpg"></amp-img></a></div><amp-pixel allow-ssr-img="" class="i-amphtml-layout-fixed i-amphtml-layout-size-defined i-amphtml-element" i-amphtml-layout="fixed" i-amphtml-ssr="" src="https://ad.doubleclick.net/ddm/trackimp/N5751.3388919CNBLOGS/B21990959.233795560;dc_trk_aid=431517073;dc_trk_cid=108683596;ord=[timestamp];dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=?http://v.admaster.com.cn/i/a118936,b3057615,c1705,i0,m202,8a1,8b3,0k10038,1c03_01_02,h" style="width:1px;height:1px;" aria-hidden="true"><img src="./B21990959.233795560"></amp-pixel><amp-pixel allow-ssr-img="" class="i-amphtml-layout-fixed i-amphtml-layout-size-defined i-amphtml-element" i-amphtml-layout="fixed" i-amphtml-ssr="" src="https://securepubads.g.doubleclick.net/pcs/view?xai=AKAOjsvCPaSJg95nf0esv6gvjGy76WZvXDUBDsaXbzLNH9xLo3Ut9nYXJP38U8mO3mNTSdnTxuKqzG7PpEqGKdJ_JRemJY23mJ26CEOpixFfUwTrB5dn_Doh4Doc02cC0EF1jqvumMXebDoLbX8HCYcf5QN6a7yKn07S2Y9lZ8hYCrCvxVoRNJ92sXACwdApJ1HbKaKvBj2hQe8XJuYU_1p3RzOOZ-LEO43dnxwf8zoaDA&amp;sai=AMfl-YRmZZTSS35wYbAbAUJ_Rg9getFyIBPVZYtAufJ47649NFop5OkPg6CInJlDR6V0XA6f4jDXswtafqsah71p_DabUv2Vusw9uVN8W9XgaRh79i4TwNiSJdD90tBh&amp;sig=Cg0ArKJSzO9psCpamML_EAE&amp;adurl=" style="width:1px;height:1px;" aria-hidden="true"><img src="./view"></amp-pixel><amp-analytics class="i-amphtml-layout-fixed i-amphtml-layout-size-defined i-amphtml-element" i-amphtml-layout="fixed" style="width:1px;height:1px;" trigger="immediate" aria-hidden="true" hidden><script type="application/json">{"transport": {"beacon": false, "xhrpost": false},"requests": {"visibility1": "https://pagead2.googlesyndication.com/pcs/activeview?xai=AKAOjsuqlyCqWMKGGCaZxHfNp1Qb_UIZvMCs-BRks1Gocaj-HTAt_YmOFiQ1fOqUElsXxpaF6xlbtdfCjK-chq98Oiw-gcgoJcA-zNs5hi8&sig=Cg0ArKJSzGo76WcCYzHUEAE&id=ampim&o=${elementX},${elementY}&d=${elementWidth},${elementHeight}&ss=${screenWidth},${screenHeight}&bs=${viewportWidth},${viewportHeight}&mcvt=${maxContinuousVisibleTime}&mtos=0,0,${maxContinuousVisibleTime},${maxContinuousVisibleTime},${maxContinuousVisibleTime}&tos=0,0,${totalVisibleTime},0,0&tfs=${firstSeenTime}&tls=${lastSeenTime}&g=${minVisiblePercentage}&h=${maxVisiblePercentage}&pt=${pageLoadTime}&tt=${totalTime}&rpt=${pageLoadTime}&rst=${navTiming(navigationStart)}&r=v&adk=450443218&avms=ampa"},"triggers": {"continuousVisible": {"on": "visible","request": ["visibility1"],"visibilitySpec": {"selector": ":root","visiblePercentageMin": 50,"continuousTimeMin": 1000}}}}</script></amp-analytics><div style="bottom:0;right:0;width:468px;height:60px;background:initial;position:absolute;max-width:100%;max-height:100%;pointer-events:none;image-rendering:pixelated;z-index:2147483647;background-image:url(&#39;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAWBAMAAACrl3iAAAAABlBMVEUAAAD+AciWmZzWAAAAAnRSTlMAApidrBQAAAB6SURBVBjTbZABCkAxCELdDbz/aT/lcgY/WBBz7iXwX0eFPp4A9i3jVLcOpZmpbkh2L+lMy3Wp4R7ex7pF4pJ5cMNa2LtUIzPNvIBEcj2jEDb7Yfexv3v2qknCQGKSOsncq4mM5RTG/H7gBG/e4ngJ4sUe3uKW9U4QFn/iKAVtA06kNAAAAABJRU5ErkJggg==&#39;);"></div></body></html>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
