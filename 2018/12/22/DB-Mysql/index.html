@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-23T11:02:10.736Z">
+<meta property="og:updated_time" content="2018-12-25T08:11:32.592Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库之Mysql">
 <meta name="twitter:description" content="1 关系型数据库和非关系型数据库1.1 关系型数据库代表数据库系统：MySQL， SQL Server， Oracle， 关系型数据库的表是二维表，结构稳定，修改不易。经常需要联表查询。">
@@ -495,6 +495,7 @@
 <p>记录锁 Record Lock<br>当使用唯一性索引（主键/唯一索引），用=进行精准匹配时，退化成Record锁，只锁着这一个记录。</p>
 <p>利用锁解决脏读的问题-&gt;加上排它锁<br>不可重复读的问题-&gt; 加共享锁<br>幻读的问题 -&gt; 加上Next-key Lock</p>
 <p>全值匹配我最爱,最左前缀要遵守;<br>带头大哥不能死,中间兄弟不能断;<br>索引列上少计算,范围之后全失效;<br>LIKE百分写最右,覆盖索引不写星;<br>不等空值还有or,索引失效要少用;</p>
+<h2 id="7-JDBC要查询一条语句的流程"><a href="#7-JDBC要查询一条语句的流程" class="headerlink" title="7 JDBC要查询一条语句的流程"></a>7 JDBC要查询一条语句的流程</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//1，创建对象,也可以直接new出来</span></div><div class="line">Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</div><div class="line"><span class="comment">//2，创建连接</span></div><div class="line">Connection conn = DriverManager.getConnection(<span class="string">"jdbc:mysql://localhost:3306/person"</span>,<span class="string">"root"</span>,<span class="string">"mz123zm"</span>);</div><div class="line"><span class="comment">//3，创建一个sql语句，即陈述，陈述对象是conn</span></div><div class="line">Statement stmt = conn.createStatement();</div><div class="line"><span class="comment">//4，陈述的语句类型是查询，因此使用executeQuery，返回一个结果集,Query是询问的意思，换成Update执行的是更新删除等语句</span></div><div class="line">ResultSet rs = stmt.executeQuery(<span class="string">"select * from person"</span>);</div><div class="line"><span class="comment">//5,循环遍历</span></div><div class="line"><span class="keyword">while</span>(rs.next())&#123;</div><div class="line">	System.out.println(rs.getString(<span class="string">"name"</span>)+<span class="string">" : "</span>+rs.getInt(<span class="string">"age"</span>));</div><div class="line">&#125;</div><div class="line"><span class="comment">//6,不管打开了什么都关掉，后打开的先关掉，有点像鞋袜原理</span></div><div class="line">rs.close();</div><div class="line">stmt.close();</div><div class="line">conn.close();</div></pre></td></tr></table></figure>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/qq_33915826/article/details/" target="_blank" rel="external">关系型数据库和非关系型数据库</a><br><a href="https://blog.csdn.net/u010727189/article/details/79399384" target="_blank" rel="external">B-tree/b+tree 原理以及聚簇索引和非聚簇索引</a><br><a href="https://www.cnblogs.com/chenshishuo/p/5030029.html" target="_blank" rel="external">细说mysql索引</a><br><a href="https://blog.csdn.net/bigtree_3721/article/details/77417518" target="_blank" rel="external"></a></p>
 
       
@@ -620,7 +621,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -631,7 +632,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -642,7 +643,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -677,7 +678,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关系型数据库和非关系型数据库"><span class="nav-text">1 关系型数据库和非关系型数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-关系型数据库"><span class="nav-text">1.1 关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-非关系型"><span class="nav-text">1.2 非关系型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库索引"><span class="nav-text">2 数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Mysql数据库如何创建索引"><span class="nav-text">2.1 Mysql数据库如何创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-建立索引的优缺点"><span class="nav-text">2.2 建立索引的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-优点"><span class="nav-text">2.2.1 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-缺点"><span class="nav-text">2.2.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-索引的数据结构"><span class="nav-text">2.3 索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-B-树的数据结构"><span class="nav-text">2.3.1 B+树的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？"><span class="nav-text">2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-常用的数据库存储引擎"><span class="nav-text">2.4 常用的数据库存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-聚簇索引和非聚簇索引"><span class="nav-text">2.5 聚簇索引和非聚簇索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-哪些情况下索引会失效？"><span class="nav-text">2.6 哪些情况下索引会失效？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-数据库事务的特性ACID"><span class="nav-text">3 数据库事务的特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数据库的隔离级别"><span class="nav-text">4 数据库的隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-数据库查询优化-Sql"><span class="nav-text">5 数据库查询优化(Sql)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-mysql的锁"><span class="nav-text">6 mysql的锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关系型数据库和非关系型数据库"><span class="nav-text">1 关系型数据库和非关系型数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-关系型数据库"><span class="nav-text">1.1 关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-非关系型"><span class="nav-text">1.2 非关系型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库索引"><span class="nav-text">2 数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Mysql数据库如何创建索引"><span class="nav-text">2.1 Mysql数据库如何创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-建立索引的优缺点"><span class="nav-text">2.2 建立索引的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-优点"><span class="nav-text">2.2.1 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-缺点"><span class="nav-text">2.2.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-索引的数据结构"><span class="nav-text">2.3 索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-B-树的数据结构"><span class="nav-text">2.3.1 B+树的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-为什么B-树更适合实际应用中操作系统的文件索引和数据库索引？"><span class="nav-text">2.3.2 为什么B+树更适合实际应用中操作系统的文件索引和数据库索引？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-常用的数据库存储引擎"><span class="nav-text">2.4 常用的数据库存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-聚簇索引和非聚簇索引"><span class="nav-text">2.5 聚簇索引和非聚簇索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-哪些情况下索引会失效？"><span class="nav-text">2.6 哪些情况下索引会失效？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-数据库事务的特性ACID"><span class="nav-text">3 数据库事务的特性ACID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数据库的隔离级别"><span class="nav-text">4 数据库的隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-数据库查询优化-Sql"><span class="nav-text">5 数据库查询优化(Sql)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-mysql的锁"><span class="nav-text">6 mysql的锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-JDBC要查询一条语句的流程"><span class="nav-text">7 JDBC要查询一条语句的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
