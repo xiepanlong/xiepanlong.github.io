@@ -81,7 +81,7 @@
 <meta property="og:image" content="http://yoursite.com/images/spring_pointcut.png">
 <meta property="og:image" content="http://yoursite.com/images/spring_target_obj.png">
 <meta property="og:image" content="http://yoursite.com/images/proxy.png">
-<meta property="og:updated_time" content="2018-12-25T08:22:35.857Z">
+<meta property="og:updated_time" content="2018-12-25T12:18:38.455Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring入门">
 <meta name="twitter:description" content="1 AOP1.1 AOPAOP：Aspect-Oriented Programming，面向切面编程，是面向对象编程（OOP）的补充，它提供了另一种关于程序结构的思考方式。核心思想：我们要关注的方法 散布在不同类中，如果想要在这些方法中加入相同的处理逻辑，过去我们采用的方法只能是硬编码，但是这样会造成大量的重复代码，不便于维护，AOP的出现就是解决针对这种问题的一种实现模式。">
@@ -384,7 +384,45 @@
 </ul>
 <p><strong>总结</strong>：<br>虽然相对于静态代理，动态代理大大减少了我们的开发任务，同时减少了对业务接口的依赖，降低了耦合度。但是还是有一点点小小的遗憾之处，那就是它始终无法摆脱仅支持interface代理的桎梏，因为它的设计注定了这个遗憾。回想一下那些动态生成的代理类的继承关系图，它们已经注定有一个共同的父类叫Proxy。Java的继承机制注定了这些动态代理类们无法实现对class的动态代理，原因是多继承在Java中本质上就行不通。有很多条理由，人们可以否定对 class代理的必要性，但是同样有一些理由，相信支持class动态代理会更美好。接口和类的划分，本就不是很明显，只是到了Java中才变得如此的细化。如果只从方法的声明及是否被定义来考量，有一种两者的混合体，它的名字叫抽象类。实现对抽象类的动态代理，相信也有其内在的价值。此外，还有一些历史遗留的类，它们将因为没有实现任何接口而从此与动态代理永世无缘。如此种种，不得不说是一个小小的遗憾。</p>
 <h3 id="2-3-CGLIB代理"><a href="#2-3-CGLIB代理" class="headerlink" title="2.3 CGLIB代理"></a>2.3 CGLIB代理</h3><p>JDK实现动态代理需要实现类通过接口定义业务方法，对于没有接口的类，如何实现动态代理呢，这就需要CGLib了。CGLib采用了非常底层的字节码技术，其原理是通过字节码技术为一个类创建子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势织入横切逻辑。但因为采用的是继承，所以不能对final修饰的类进行代理。JDK动态代理与CGLib动态代理均是实现Spring AOP的基础。</p>
+<p>cglib详情：<a href="https://www.jianshu.com/p/9a61af393e41?from=timeline&amp;isappinstalled=0" target="_blank" rel="external">深入理解CGLIB动态代理机制
+</a>  </p>
 <p><strong>总结</strong>：<br> CGLIB创建的动态代理对象比JDK创建的动态代理对象的性能更高，但是CGLIB创建代理对象时所花费的时间却比JDK多得多。所以对于单例的对象，因为无需频繁创建对象，用CGLIB合适，反之使用JDK方式要更为合适一些。同时由于CGLib由于是采用动态创建子类的方法，对于final修饰的方法无法进行代理。</p>
+<h3 id="2-4-三种代理方式对比"><a href="#2-4-三种代理方式对比" class="headerlink" title="2.4 三种代理方式对比"></a>2.4 三种代理方式对比</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>代理方式</th>
+<th style="text-align:left">实现</th>
+<th style="text-align:left">优点</th>
+<th style="text-align:left">缺点</th>
+<th style="text-align:left">特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DK静态代理</td>
+<td style="text-align:left">代理类与委托类实现同一接口，并且在代理类中需要硬编码接口</td>
+<td style="text-align:left">实现简单，容易理解</td>
+<td style="text-align:left">代理类需要硬编码接口，在实际应用中可能会导致重复编码，浪费存储空间并且效率很低</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td>JDK动态代理</td>
+<td style="text-align:left">代理类与委托类实现同一接口，主要是通过代理类实现InvocationHandler并重写invoke方法来进行动态代理的，在invoke方法中将对方法进行增强处理</td>
+<td style="text-align:left">不需要硬编码接口，代码复用率高</td>
+<td style="text-align:left">只能够代理实现了接口的委托类</td>
+<td style="text-align:left">底层使用反射机制进行方法的调用</td>
+</tr>
+<tr>
+<td>CGLIB动态代理</td>
+<td style="text-align:left">代理类将委托类作为自己的父类并为其中的非final委托方法创建两个方法，一个是与委托方法签名相同的方法，它在方法中会通过super调用委托方法；另一个是代理类独有的方法。在代理方法中，它会判断是否存在实现了MethodInterceptor接口的对象，若存在则将调用intercept方法对委托方法进行代理</td>
+<td style="text-align:left">可以在运行时对类或者是接口进行增强操作，且委托类无需实现接口</td>
+<td style="text-align:left">不能对final类以及final方法进行代理</td>
+<td style="text-align:left">底层将方法全部存入一个数组中，通过数组索引直接进行方法调用</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h2 id="3-IOC"><a href="#3-IOC" class="headerlink" title="3 IOC"></a>3 IOC</h2><p>IOC，即控制反转。所谓控制反转，就是把原先我们代码里面需要实现的对象创建、依赖的代码，反转给容器来帮忙实现。那么必然的我们需要创建一个容器，同时需要一种描述来让容器知道需要创建的对象与对象的关系。</p>
 <h3 id="3-1-Bean的加载过程"><a href="#3-1-Bean的加载过程" class="headerlink" title="3.1 Bean的加载过程"></a>3.1 Bean的加载过程</h3><p>1.获取配置文件资源<br>2.对获取的xml资源进行一定的处理检验<br>3.处理包装资源<br>4.解析处理包装过后的资源<br>5.加载提取bean并注册(添加到beanDefinitionMap中)</p>
 <p>详情见：<a href="https://blog.csdn.net/hsj1213522415/article/details/78166741" target="_blank" rel="external">spring加载bean的过程</a>   </p>
@@ -572,7 +610,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-AOP"><span class="nav-text">1 AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-AOP"><span class="nav-text">1.1 AOP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Aspect"><span class="nav-text">1.2 Aspect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Join-point"><span class="nav-text">1.3 Join point</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Advice"><span class="nav-text">1.4 Advice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Pointcut"><span class="nav-text">1.5 Pointcut</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Target-object"><span class="nav-text">1.6 Target object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-代理模式"><span class="nav-text">2 代理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-静态代理"><span class="nav-text">2.1 静态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-jdk动态代理"><span class="nav-text">2.2 jdk动态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-CGLIB代理"><span class="nav-text">2.3 CGLIB代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-IOC"><span class="nav-text">3 IOC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Bean的加载过程"><span class="nav-text">3.1 Bean的加载过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-SpringMVC"><span class="nav-text">4 SpringMVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-SpringMVC的执行流程"><span class="nav-text">4.1 SpringMVC的执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-AOP"><span class="nav-text">1 AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-AOP"><span class="nav-text">1.1 AOP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Aspect"><span class="nav-text">1.2 Aspect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Join-point"><span class="nav-text">1.3 Join point</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Advice"><span class="nav-text">1.4 Advice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Pointcut"><span class="nav-text">1.5 Pointcut</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Target-object"><span class="nav-text">1.6 Target object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-代理模式"><span class="nav-text">2 代理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-静态代理"><span class="nav-text">2.1 静态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-jdk动态代理"><span class="nav-text">2.2 jdk动态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-CGLIB代理"><span class="nav-text">2.3 CGLIB代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-三种代理方式对比"><span class="nav-text">2.4 三种代理方式对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-IOC"><span class="nav-text">3 IOC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Bean的加载过程"><span class="nav-text">3.1 Bean的加载过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-SpringMVC"><span class="nav-text">4 SpringMVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-SpringMVC的执行流程"><span class="nav-text">4.1 SpringMVC的执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
