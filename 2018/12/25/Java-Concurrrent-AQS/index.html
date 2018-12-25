@@ -51,7 +51,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ML,Math," />
+  <meta name="keywords" content="Java,AQS," />
 
 
 
@@ -67,30 +67,20 @@
 
 
 
-<meta name="description" content="This article is divided into three parts, namely linear algebra, probability theory, differential learning">
-<meta name="keywords" content="ML,Math">
+<meta name="description" content="1 AQSAQS（AbstractQueueSynchronizer）即抽象的队列式同步器，AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的ReentrantLock/Semaphore/CountDownLatch。AQS的核心思想是基于volatile int state这样的volatile变量，配合Unsafe工具对其原子性的操作来实现对当前锁状态进行修改">
+<meta name="keywords" content="Java,AQS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mathematical Basis of ML">
-<meta property="og:url" content="http://yoursite.com/2017/09/30/Mathematical-Basis-of-ML/index.html">
+<meta property="og:title" content="Java-Concurrrent-AQS">
+<meta property="og:url" content="http://yoursite.com/2018/12/25/Java-Concurrrent-AQS/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="This article is divided into three parts, namely linear algebra, probability theory, differential learning">
+<meta property="og:description" content="1 AQSAQS（AbstractQueueSynchronizer）即抽象的队列式同步器，AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的ReentrantLock/Semaphore/CountDownLatch。AQS的核心思想是基于volatile int state这样的volatile变量，配合Unsafe工具对其原子性的操作来实现对当前锁状态进行修改">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/images/math1.png">
-<meta property="og:image" content="http://yoursite.com/images/math2.png">
-<meta property="og:image" content="http://yoursite.com/images/math3.png">
-<meta property="og:image" content="http://yoursite.com/images/math4.png">
-<meta property="og:image" content="http://yoursite.com/images/math5.png">
-<meta property="og:image" content="http://yoursite.com/images/math6.png">
-<meta property="og:image" content="http://yoursite.com/images/math7.png">
-<meta property="og:image" content="http://yoursite.com/images/math8.png">
-<meta property="og:image" content="http://yoursite.com/images/math9.png">
-<meta property="og:image" content="http://yoursite.com/images/math10.png">
-<meta property="og:image" content="http://yoursite.com/images/math11.png">
-<meta property="og:updated_time" content="2017-09-30T07:57:43.000Z">
+<meta property="og:image" content="http://yoursite.com/images/aqs_queue1.jpg">
+<meta property="og:updated_time" content="2018-12-25T03:22:51.713Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mathematical Basis of ML">
-<meta name="twitter:description" content="This article is divided into three parts, namely linear algebra, probability theory, differential learning">
-<meta name="twitter:image" content="http://yoursite.com/images/math1.png">
+<meta name="twitter:title" content="Java-Concurrrent-AQS">
+<meta name="twitter:description" content="1 AQSAQS（AbstractQueueSynchronizer）即抽象的队列式同步器，AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的ReentrantLock/Semaphore/CountDownLatch。AQS的核心思想是基于volatile int state这样的volatile变量，配合Unsafe工具对其原子性的操作来实现对当前锁状态进行修改">
+<meta name="twitter:image" content="http://yoursite.com/images/aqs_queue1.jpg">
 
 
 
@@ -120,13 +110,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/30/Mathematical-Basis-of-ML/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/25/Java-Concurrrent-AQS/"/>
 
 
 
 
 
-  <title>Mathematical Basis of ML | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Java-Concurrrent-AQS | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -263,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/30/Mathematical-Basis-of-ML/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/25/Java-Concurrrent-AQS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Panlong Xie">
@@ -280,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mathematical Basis of ML</h1>
+          <h1 class="post-title" itemprop="name headline">Java-Concurrrent-AQS</h1>
         
 
         <div class="post-meta">
@@ -292,8 +282,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-30T12:40:21+08:00">
-                2017-09-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-25T10:39:55+08:00">
+                2018-12-25
               </time>
             
 
@@ -315,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ML/" itemprop="url" rel="index">
-                    <span itemprop="name">ML</span>
+                  <a href="/categories/Concurrent/" itemprop="url" rel="index">
+                    <span itemprop="name">Concurrent</span>
                   </a>
                 </span>
 
@@ -352,47 +342,35 @@
       
 
       
-        <p>This article is divided into three parts, namely linear algebra, probability theory, differential learning</p>
-<a id="more"></a>
-<h1 id="1-Linear-Algebra-Review"><a href="#1-Linear-Algebra-Review" class="headerlink" title="1. Linear Algebra Review"></a>1. Linear Algebra Review</h1><h2 id="Matrix-multiplication"><a href="#Matrix-multiplication" class="headerlink" title="Matrix multiplication"></a>Matrix multiplication</h2><ul>
-<li>(AB)C = A(BC)</li>
-<li>A(B + C) = AB + AC</li>
-<li>[Note] : AB != BA</li>
+        <h2 id="1-AQS"><a href="#1-AQS" class="headerlink" title="1 AQS"></a>1 AQS</h2><p>AQS（AbstractQueueSynchronizer）即抽象的队列式同步器，AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的ReentrantLock/Semaphore/CountDownLatch。AQS的核心思想是基于volatile int state这样的volatile变量，配合Unsafe工具对其原子性的操作来实现对当前锁状态进行修改。同步器内部依赖一个FIFO的双向队列来完成资源获取线程的排队工作。（它维护了一个volatile int state（代表共享资源）和一个FIFO线程等待双向队列（多线程争用资源被阻塞时会进入此队列）。）这里volatile是核心关键词，具体volatile的语义，在此不述。state的访问方式有三种:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getState()</div><div class="line">setState()</div><div class="line">compareAndSetState()</div></pre></td></tr></table></figure>
+<p>AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能执行，如ReentrantLock）和Share（共享，多个线程可同时执行，如Semaphore/CountDownLatch）。</p>
+<p>不同的自定义同步器争用共享资源的方式也不同。自定义同步器在实现时只需要实现共享资源state的获取与释放方式即可，至于具体线程等待队列的维护（如获取资源失败入队/唤醒出队等），AQS已经在顶层实现好了。自定义同步器实现时主要实现以下几种方法：</p>
+<ul>
+<li>isHeldExclusively()：该线程是否正在独占资源。只有用到condition才需要去实现它。  </li>
+<li>tryAcquire(int)：独占方式。尝试获取资源，成功则返回true，失败则返回false。  </li>
+<li>tryRelease(int)：独占方式。尝试释放资源，成功则返回true，失败则返回false。  </li>
+<li>tryAcquireShared(int)：共享方式。尝试获取资源。负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。  </li>
+<li>tryReleaseShared(int)：共享方式。尝试释放资源，如果释放后允许唤醒后续等待结点返回true，否则返回false。  </li>
 </ul>
-<h2 id="Transpose-Matix"><a href="#Transpose-Matix" class="headerlink" title="Transpose Matix"></a>Transpose Matix</h2><ul>
-<li>$(A^T)^T = A$</li>
-<li>$(AB)^T = B^TA^T$</li>
-<li>$(A + B)^T = A^T + B^T$</li>
+<h2 id="2-AQS同步队列"><a href="#2-AQS同步队列" class="headerlink" title="2 AQS同步队列"></a>2 AQS同步队列</h2><p> 同步器AQS内部的实现是依赖同步队列（一个FIFO的双向队列，其实就是数据结构双向链表）来完成同步状态的管理。</p>
+<ul>
+<li>当前线程获取同步状态失败时，同步器AQS会将当前线程和等待状态等信息构造成为一个节点（node）加入到同步队列，同时会阻塞当前线程；</li>
+<li>当同步状态释放的时候，会把首节点中的线程唤醒，使首节点的线程再次尝试获取同步状态。AQS是独占锁和共享锁的实现的父类。   </li>
 </ul>
-<p>[Note] : $A \in \mathbb{R} $ is symmetric if $A^T = A$</p>
-<h2 id="Trace"><a href="#Trace" class="headerlink" title="Trace"></a>Trace</h2><ul>
-<li>$trA = trA^T$</li>
-<li>$tr(A + B) = trA + trB$</li>
-<li>$tr(tA) = t trA$</li>
-<li>$trAB = trBA$</li>
-<li>$trABC = trBCA = trCAB$</li>
+<h2 id="3-AQS锁的类别"><a href="#3-AQS锁的类别" class="headerlink" title="3 AQS锁的类别"></a>3 AQS锁的类别</h2><ul>
+<li>独占锁<br>锁在一个时间点只能被一个线程占有。根据锁的获取机制，又分为“公平锁”和“非公平锁”。等待队列中按照FIFO的原则获取锁，等待时间越长的线程越先获取到锁，这就是公平的获取锁，即公平锁。而非公平锁，线程获取的锁的时候，无视等待队列直接获取锁。ReentrantLock和ReentrantReadWriteLock.Writelock是独占锁。</li>
+<li>共享锁<br>同一个时候能够被多个线程获取的锁，能被共享的锁。JUC包中ReentrantReadWriteLock.ReadLock，CyclicBarrier，CountDownLatch和Semaphore都是共享锁。</li>
 </ul>
-<p>[Note] : $A, B, C \in \mathbb{R^2}$</p>
-<h2 id="Inverse"><a href="#Inverse" class="headerlink" title="Inverse"></a>Inverse</h2><ul>
-<li>$(A^{-1})^{-1} = A$</li>
-<li>$(AB)^{-1} = B^{-1}A^{-1}$</li>
-<li>$(A^{-1})^T = (A^T)^{-1} = A^{-T}$</li>
+<h2 id="4-AQS同步器的结构"><a href="#4-AQS同步器的结构" class="headerlink" title="4 AQS同步器的结构"></a>4 AQS同步器的结构</h2><p><img src="/images/aqs_queue1.jpg" alt=""><br>同步器拥有首节点（head）和尾节点（tail）。同步队列的基本结构如上图所示。</p>
+<ul>
+<li><p><strong>同步队列设置尾节点（未获取到锁的线程加入同步队列）</strong>: 同步器AQS中包含两个节点类型的引用：一个指向头结点的引用（head),一个指向尾节点的引用（tail），当一个线程成功的获取到锁（同步状态），其他线程无法获取到锁，而是被构造成节点（包含当前线程，等待状态）加入到同步队列中等待获取到锁的线程释放锁。这个<strong>加入队列的过程，必须要保证线程安全</strong>。否则如果多个线程的环境下，可能造成添加到队列等待的节点顺序错误，或者数量不对。因此同步器提供了<strong>CAS原子的设置尾节点</strong>的方法（保证一个未获取到同步状态的线程加入到同步队列后，下一个未获取的线程才能够加入）。  </p>
+</li>
+<li><p><strong>同步队列设置首节点（原头节点释放锁，唤醒后继节点）</strong>：同步队列遵循FIFO，头节点是获取锁（同步状态）成功的节点，头节点在释放同步状态的时候，会唤醒后继节点，而后继节点将会在获取锁（同步状态）成功时候将自己设置为头节点。设置头节点是由获取锁（同步状态）成功的线程来完成的，由于只有一个线程能够获取同步状态，则设置头节点的方法不需要CAS保证，只需要将头节点设置成为原首节点的后继节点 ，并断开原头结点的next引用。</p>
+</li>
 </ul>
-<h2 id="Determinant"><a href="#Determinant" class="headerlink" title="Determinant"></a>Determinant</h2><ul>
-<li>$|A| = |A^T|$</li>
-<li>$|AB| = |A||B|$</li>
-<li>$|A|^{-1} = \frac{1}{|A|}$<h2 id="Gradient"><a href="#Gradient" class="headerlink" title="Gradient"></a>Gradient</h2></li>
-</ul>
-<p><img src="/images/math1.png" alt="gradient"></p>
-<h2 id="Hessian"><a href="#Hessian" class="headerlink" title="Hessian"></a>Hessian</h2><p><img src="/images/math2.png" alt=""><br><img src="/images/math3.png" alt=""></p>
-<h2 id="Complement"><a href="#Complement" class="headerlink" title="Complement"></a>Complement</h2><p><img src="/images/math4.png" alt=""><br><img src="/images/math5.png" alt=""></p>
-<h1 id="2-Probability-Theory"><a href="#2-Probability-Theory" class="headerlink" title="2. Probability Theory"></a>2. Probability Theory</h1><h2 id="Random-Variables"><a href="#Random-Variables" class="headerlink" title="Random Variables"></a>Random Variables</h2><p>Random variables play an important role in probability theory. The most important fact about random variables is that they are not variables. They are actually functions that map outcomes (in the outcome space) to real values. In terms of notation, we usually denote random variables by a capital letter. </p>
-<h2 id="Independence"><a href="#Independence" class="headerlink" title="Independence"></a>Independence</h2><p><img src="/images/math6.png" alt=""><br>[Node] : </p>
-<p>Independence =&gt; Cov = 0 And p(X)p(Y) = P(XY);<br>Irrelevant =&gt; Cov = 0 and p(X)p(Y) != P(XY);</p>
-<h2 id="Expectations"><a href="#Expectations" class="headerlink" title="Expectations"></a>Expectations</h2><p><img src="/images/math7.png" alt=""><br><img src="/images/math8.png" alt=""></p>
-<h2 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h2><p><img src="/images/math9.png" alt=""></p>
-<h2 id="Important-Distributions"><a href="#Important-Distributions" class="headerlink" title="Important Distributions"></a>Important Distributions</h2><p><img src="/images/math10.png" alt=""><br><img src="/images/math11.png" alt=""></p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="[参考]"></a>[参考]</h4><p><a href="http://cs229.stanford.edu/materials.html" target="_blank" rel="external">CS 229 Machine Learning Course Materials</a></p>
+<h2 id="5-独占式的锁的获取"><a href="#5-独占式的锁的获取" class="headerlink" title="5 独占式的锁的获取"></a>5 独占式的锁的获取</h2><p>调用同步器的acquire(int arg)方法可以获取同步状态，该方法对中断不敏感，即线程获取同步状态失败后进入同步队列，后续对线程进行中断操作时，线程不会从同步队列中移除。<br> (1) 当前线程实现通过tryAcquire()方法尝试获取锁，获取成功的话直接返回，如果尝试失败的话，进入等待队列排队等待，可以保证线程安全（CAS）的获取同步状态。<br> (2) 如果尝试获取锁失败的话，构造同步节点（独占式的Node.EXCLUSIVE），通过addWaiter(Node node,int args)方法,将节点加入到同步队列的队列尾部。<br>(3) 最后调用acquireQueued(final Node node, int args)方法，使该节点以死循环的方式获取同步状态，如果获取不到，则阻塞节点中的线程。acquireQueued方法当前线程在死循环中获取同步状态，而只有前驱节点是头节点的时候才能尝试获取锁（同步状态）（ p == head &amp;&amp; tryAcquire(arg)）。原因是：<br>    1.头结点是成功获取同步状态的节点，而头结点的线程释放锁以后，将唤醒后继节点，后继节点线程被唤醒后要检查自己的前驱节点是否为头结点。<br>    2.维护同步队列的FIFO原则，节点进入同步队列以后，就进入了一个自旋的过程，每个节点（后者说每个线程）都在自省的观察。  </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.cnblogs.com/waterystone/p/4920797.html" target="_blank" rel="external">Java并发之AQS详解</a><br><a href="https://www.cnblogs.com/200911/p/6031350.html" target="_blank" rel="external">JUC回顾之-AQS同步器的实现原理</a></p>
 
       
     </div>
@@ -425,8 +403,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/24/Latex-Formula-Grammar/" rel="next" title="Latex Formula Grammar">
-                <i class="fa fa-chevron-left"></i> Latex Formula Grammar
+              <a href="/2018/12/23/JDK-Design-Patterns/" rel="next" title="JDK中的设计模式简介">
+                <i class="fa fa-chevron-left"></i> JDK中的设计模式简介
               </a>
             
           </div>
@@ -434,10 +412,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/01/Python-Learning-Note/" rel="prev" title="Python Learning Note">
-                Python Learning Note <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -574,7 +548,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Linear-Algebra-Review"><span class="nav-text">1. Linear Algebra Review</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Matrix-multiplication"><span class="nav-text">Matrix multiplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transpose-Matix"><span class="nav-text">Transpose Matix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trace"><span class="nav-text">Trace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inverse"><span class="nav-text">Inverse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Determinant"><span class="nav-text">Determinant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient"><span class="nav-text">Gradient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hessian"><span class="nav-text">Hessian</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Complement"><span class="nav-text">Complement</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Probability-Theory"><span class="nav-text">2. Probability Theory</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-Variables"><span class="nav-text">Random Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Independence"><span class="nav-text">Independence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Expectations"><span class="nav-text">Expectations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Variance"><span class="nav-text">Variance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Important-Distributions"><span class="nav-text">Important Distributions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-text">[参考]</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-AQS"><span class="nav-text">1 AQS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-AQS同步队列"><span class="nav-text">2 AQS同步队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-AQS锁的类别"><span class="nav-text">3 AQS锁的类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-AQS同步器的结构"><span class="nav-text">4 AQS同步器的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-独占式的锁的获取"><span class="nav-text">5 独占式的锁的获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -702,7 +676,7 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -748,26 +722,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 

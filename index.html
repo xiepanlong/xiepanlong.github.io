@@ -250,6 +250,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/25/Java-Concurrrent-AQS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/25/Java-Concurrrent-AQS/" itemprop="url">Java-Concurrrent-AQS</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-25T10:39:55+08:00">
+                2018-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Concurrent/" itemprop="url" rel="index">
+                    <span itemprop="name">Concurrent</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-AQS"><a href="#1-AQS" class="headerlink" title="1 AQS"></a>1 AQS</h2><p>AQS（AbstractQueueSynchronizer）即抽象的队列式同步器，AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的ReentrantLock/Semaphore/CountDownLatch。AQS的核心思想是基于volatile int state这样的volatile变量，配合Unsafe工具对其原子性的操作来实现对当前锁状态进行修改。同步器内部依赖一个FIFO的双向队列来完成资源获取线程的排队工作。（它维护了一个volatile int state（代表共享资源）和一个FIFO线程等待双向队列（多线程争用资源被阻塞时会进入此队列）。）这里volatile是核心关键词，具体volatile的语义，在此不述。state的访问方式有三种:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getState()</div><div class="line">setState()</div><div class="line">compareAndSetState()</div></pre></td></tr></table></figure>
+<p>AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能执行，如ReentrantLock）和Share（共享，多个线程可同时执行，如Semaphore/CountDownLatch）。</p>
+<p>不同的自定义同步器争用共享资源的方式也不同。自定义同步器在实现时只需要实现共享资源state的获取与释放方式即可，至于具体线程等待队列的维护（如获取资源失败入队/唤醒出队等），AQS已经在顶层实现好了。自定义同步器实现时主要实现以下几种方法：</p>
+<ul>
+<li>isHeldExclusively()：该线程是否正在独占资源。只有用到condition才需要去实现它。  </li>
+<li>tryAcquire(int)：独占方式。尝试获取资源，成功则返回true，失败则返回false。  </li>
+<li>tryRelease(int)：独占方式。尝试释放资源，成功则返回true，失败则返回false。  </li>
+<li>tryAcquireShared(int)：共享方式。尝试获取资源。负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。  </li>
+<li>tryReleaseShared(int)：共享方式。尝试释放资源，如果释放后允许唤醒后续等待结点返回true，否则返回false。  </li>
+</ul>
+<h2 id="2-AQS同步队列"><a href="#2-AQS同步队列" class="headerlink" title="2 AQS同步队列"></a>2 AQS同步队列</h2><p> 同步器AQS内部的实现是依赖同步队列（一个FIFO的双向队列，其实就是数据结构双向链表）来完成同步状态的管理。</p>
+<ul>
+<li>当前线程获取同步状态失败时，同步器AQS会将当前线程和等待状态等信息构造成为一个节点（node）加入到同步队列，同时会阻塞当前线程；</li>
+<li>当同步状态释放的时候，会把首节点中的线程唤醒，使首节点的线程再次尝试获取同步状态。AQS是独占锁和共享锁的实现的父类。   </li>
+</ul>
+<h2 id="3-AQS锁的类别"><a href="#3-AQS锁的类别" class="headerlink" title="3 AQS锁的类别"></a>3 AQS锁的类别</h2><ul>
+<li>独占锁<br>锁在一个时间点只能被一个线程占有。根据锁的获取机制，又分为“公平锁”和“非公平锁”。等待队列中按照FIFO的原则获取锁，等待时间越长的线程越先获取到锁，这就是公平的获取锁，即公平锁。而非公平锁，线程获取的锁的时候，无视等待队列直接获取锁。ReentrantLock和ReentrantReadWriteLock.Writelock是独占锁。</li>
+<li>共享锁<br>同一个时候能够被多个线程获取的锁，能被共享的锁。JUC包中ReentrantReadWriteLock.ReadLock，CyclicBarrier，CountDownLatch和Semaphore都是共享锁。</li>
+</ul>
+<h2 id="4-AQS同步器的结构"><a href="#4-AQS同步器的结构" class="headerlink" title="4 AQS同步器的结构"></a>4 AQS同步器的结构</h2><p><img src="/images/aqs_queue1.jpg" alt=""><br>同步器拥有首节点（head）和尾节点（tail）。同步队列的基本结构如上图所示。</p>
+<ul>
+<li><p><strong>同步队列设置尾节点（未获取到锁的线程加入同步队列）</strong>: 同步器AQS中包含两个节点类型的引用：一个指向头结点的引用（head),一个指向尾节点的引用（tail），当一个线程成功的获取到锁（同步状态），其他线程无法获取到锁，而是被构造成节点（包含当前线程，等待状态）加入到同步队列中等待获取到锁的线程释放锁。这个<strong>加入队列的过程，必须要保证线程安全</strong>。否则如果多个线程的环境下，可能造成添加到队列等待的节点顺序错误，或者数量不对。因此同步器提供了<strong>CAS原子的设置尾节点</strong>的方法（保证一个未获取到同步状态的线程加入到同步队列后，下一个未获取的线程才能够加入）。  </p>
+</li>
+<li><p><strong>同步队列设置首节点（原头节点释放锁，唤醒后继节点）</strong>：同步队列遵循FIFO，头节点是获取锁（同步状态）成功的节点，头节点在释放同步状态的时候，会唤醒后继节点，而后继节点将会在获取锁（同步状态）成功时候将自己设置为头节点。设置头节点是由获取锁（同步状态）成功的线程来完成的，由于只有一个线程能够获取同步状态，则设置头节点的方法不需要CAS保证，只需要将头节点设置成为原首节点的后继节点 ，并断开原头结点的next引用。</p>
+</li>
+</ul>
+<h2 id="5-独占式的锁的获取"><a href="#5-独占式的锁的获取" class="headerlink" title="5 独占式的锁的获取"></a>5 独占式的锁的获取</h2><p>调用同步器的acquire(int arg)方法可以获取同步状态，该方法对中断不敏感，即线程获取同步状态失败后进入同步队列，后续对线程进行中断操作时，线程不会从同步队列中移除。<br> (1) 当前线程实现通过tryAcquire()方法尝试获取锁，获取成功的话直接返回，如果尝试失败的话，进入等待队列排队等待，可以保证线程安全（CAS）的获取同步状态。<br> (2) 如果尝试获取锁失败的话，构造同步节点（独占式的Node.EXCLUSIVE），通过addWaiter(Node node,int args)方法,将节点加入到同步队列的队列尾部。<br>(3) 最后调用acquireQueued(final Node node, int args)方法，使该节点以死循环的方式获取同步状态，如果获取不到，则阻塞节点中的线程。acquireQueued方法当前线程在死循环中获取同步状态，而只有前驱节点是头节点的时候才能尝试获取锁（同步状态）（ p == head &amp;&amp; tryAcquire(arg)）。原因是：<br>    1.头结点是成功获取同步状态的节点，而头结点的线程释放锁以后，将唤醒后继节点，后继节点线程被唤醒后要检查自己的前驱节点是否为头结点。<br>    2.维护同步队列的FIFO原则，节点进入同步队列以后，就进入了一个自旋的过程，每个节点（后者说每个线程）都在自省的观察。  </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.cnblogs.com/waterystone/p/4920797.html" target="_blank" rel="external">Java并发之AQS详解</a><br><a href="https://www.cnblogs.com/200911/p/6031350.html" target="_blank" rel="external">JUC回顾之-AQS同步器的实现原理</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/23/JDK-Design-Patterns/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -829,154 +1001,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/Java-Concurrent-Volatile/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Panlong Xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/FitMan.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/21/Java-Concurrent-Volatile/" itemprop="url">Java并发编程之volatile</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-21T21:44:51+08:00">
-                2018-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Concurrent/" itemprop="url" rel="index">
-                    <span itemprop="name">Concurrent</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="1-引入Volatile"><a href="#1-引入Volatile" class="headerlink" title="1 引入Volatile"></a>1 引入Volatile</h2><p>在Java并发编程中，涉及到三个概念：原子性、可见性、有序性。针对可见性，Java提供了volatile关键字来保证可见性。当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原来的旧值，因此无法保证可见性。另外，通过synchronized和Lock也能够保证可见性，synchronized和Lock能保证同一时刻只有一个线程获取锁然后执行同步代码，并且在释放锁之前会将对变量的修改刷新到主存当中。因此可以保证可见性。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/21/Java-Concurrent-Volatile/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-    <footer class="post-footer">
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1030,7 +1054,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1052,7 +1076,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
