@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 Java线程池在Java中，如果每个任务都创建一个新的thread，开销是非常大的。除了创建和销毁线程的时间开销外，还消耗大量的系统资源。为了规避以上问题，尽可能减少创建和销毁线程的次数，特别是一些资源耗费比较大的线程的创建和销毁，尽量利用已有的线程对象来进行服务，这就是线程池引入的原因。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-23T08:23:59.281Z">
+<meta property="og:updated_time" content="2018-12-26T06:40:22.059Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程之线程池">
 <meta name="twitter:description" content="1 Java线程池在Java中，如果每个任务都创建一个新的thread，开销是非常大的。除了创建和销毁线程的时间开销外，还消耗大量的系统资源。为了规避以上问题，尽可能减少创建和销毁线程的次数，特别是一些资源耗费比较大的线程的创建和销毁，尽量利用已有的线程对象来进行服务，这就是线程池引入的原因。">
@@ -340,7 +340,15 @@
       
 
       
-        <h2 id="1-Java线程池"><a href="#1-Java线程池" class="headerlink" title="1 Java线程池"></a>1 Java线程池</h2><p>在Java中，如果每个任务都创建一个新的thread，开销是非常大的。除了创建和销毁线程的时间开销外，还消耗大量的系统资源。为了规避以上问题，尽可能减少创建和销毁线程的次数，特别是一些资源耗费比较大的线程的创建和销毁，尽量利用已有的线程对象来进行服务，这就是线程池引入的原因。<br><a id="more"></a></p>
+        <h2 id="1-Java线程池"><a href="#1-Java线程池" class="headerlink" title="1 Java线程池"></a>1 Java线程池</h2><p>在Java中，如果每个任务都创建一个新的thread，开销是非常大的。除了创建和销毁线程的时间开销外，还消耗大量的系统资源。为了规避以上问题，尽可能减少创建和销毁线程的次数，特别是一些资源耗费比较大的线程的创建和销毁，尽量利用已有的线程对象来进行服务，这就是线程池引入的原因。<br><a id="more"></a><br><strong>线程池的作用与好处</strong>：  </p>
+<ul>
+<li><p>减少资源的开销<br>减少了每次创建线程、销毁线程的开销。  </p>
+</li>
+<li><p>提高响应速度<br>每次请求到来时，由于线程的创建已经完成，故可以直接执行任务，因此提高了响应速度。  </p>
+</li>
+<li><p>提高线程的可管理性<br>线程是一种稀缺资源，若不加以限制，不仅会占用大量资源，而且会影响系统的稳定性。因此，线程池可以对线程的创建与停止、线程数量等等因素加以控制，使得线程在一种可控的范围内运行，不仅能保证系统稳定运行，而且方便性能调优。</p>
+</li>
+</ul>
 <h2 id="2-线程池的重要参数"><a href="#2-线程池的重要参数" class="headerlink" title="2 线程池的重要参数"></a>2 线程池的重要参数</h2><h3 id="2-1-corePoolSize：-核心线程数"><a href="#2-1-corePoolSize：-核心线程数" class="headerlink" title="2.1 corePoolSize： 核心线程数"></a>2.1 corePoolSize： 核心线程数</h3><ul>
 <li>核心线程会一直存活，即使没有任务需要执行；</li>
 <li>当线程数小于核心线程数时，即使有线程空闲，线程池也会优先创建新线程处理；  </li>
@@ -363,15 +371,37 @@
 <h4 id="3-2-2-无界队列（如不具有预定义容量的LinkedBlockingQueue）"><a href="#3-2-2-无界队列（如不具有预定义容量的LinkedBlockingQueue）" class="headerlink" title="3.2.2 无界队列（如不具有预定义容量的LinkedBlockingQueue）"></a>3.2.2 无界队列（如不具有预定义容量的LinkedBlockingQueue）</h4><p>LinkedBlockingQueue将导致当所有 corePoolSize 线程都忙时新任务在队列中等待。这样，创建的线程就不会超过 corePoolSize。（因此，maximumPoolSize 的值也就无效了。）当每个任务完全独立于其他任务，即任务执行互不影响时，适合于使用无界队列。<br>Executors.newFixedThreadPool(3)使用LinkedBlockingQueue创建线程池。<br>Executors.newSingleThreadExecutor()使用LinkedBlockingQueue创建线程池。  </p>
 <h4 id="3-2-3-有界队列（如ArrayBlockingQueue）"><a href="#3-2-3-有界队列（如ArrayBlockingQueue）" class="headerlink" title="3.2.3 有界队列（如ArrayBlockingQueue）"></a>3.2.3 有界队列（如ArrayBlockingQueue）</h4><p>有界队列（如ArrayBlockingQueue）有助于防止资源耗尽当最大线程数有限时，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷。  </p>
 <h4 id="3-2-4-优先级队列（如PriorityBlockingQueue）"><a href="#3-2-4-优先级队列（如PriorityBlockingQueue）" class="headerlink" title="3.2.4 优先级队列（如PriorityBlockingQueue）"></a>3.2.4 优先级队列（如PriorityBlockingQueue）</h4><h4 id="3-2-5-DelayedWorkQueue"><a href="#3-2-5-DelayedWorkQueue" class="headerlink" title="3.2.5 DelayedWorkQueue"></a>3.2.5 DelayedWorkQueue</h4><p>DelayedWorkQueue是ScheduledThreadPoolExecutor的静态内部类。<br>Executors.newScheduledThreadPool(3)使用DelayedWorkQueue创建线程池。  </p>
-<h2 id="4-线程池的拒绝策略-饱和策略"><a href="#4-线程池的拒绝策略-饱和策略" class="headerlink" title="4 线程池的拒绝策略/饱和策略"></a>4 线程池的拒绝策略/饱和策略</h2><p>接口RejectedExecutionHandler提供了拒绝任务处理的自定义方法的机会。在ThreadPoolExecutor中已经包含四种拒绝策略。<br>（1）AbortPolicy<br>拒绝策略：抛出运行时异常RejectedExecutionException。<br>这种策略丢弃任务，并抛出异常。（jdk默认策略）<br>（2）DiscardPolicy<br>拒绝策略：不能执行的任务将被丢弃。<br>这种策略什么都没做。<br>（3）DiscardOldestPolicy<br>拒绝策略：如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序。<br>该策略稍微复杂一些，在pool没有关闭的前提下首先丢掉缓存在队列中的最早的任务，然后重新尝试运行该任务。<br>（4）CallerRunsPolicy<br>拒绝策略：线程调用运行该任务的 execute 本身。此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。<br>这个策略不想放弃执行任务。但是由于池中已经没有任何资源了，那么就直接使用调用该execute的线程本身来执行。  </p>
+<h2 id="4-线程池的拒绝策略-饱和策略"><a href="#4-线程池的拒绝策略-饱和策略" class="headerlink" title="4 线程池的拒绝策略/饱和策略"></a>4 线程池的拒绝策略/饱和策略</h2><p>当实际线程数达到maximumPoolSize，并且阻塞队列已满时，就会调用饱和策略。接口RejectedExecutionHandler提供了拒绝任务处理的自定义方法的机会。在ThreadPoolExecutor中已经包含四种拒绝策略。<br>（1）<strong>AbortPolicy：默认，直接抛异常</strong><br>拒绝策略：抛出运行时异常RejectedExecutionException。<br>这种策略丢弃任务，并抛出异常。（jdk默认策略）<br>（2）<strong>DiscardPolicy：丢弃当前任务</strong><br>拒绝策略：不能执行的任务将被丢弃。<br>这种策略什么都没做。<br>（3）<strong>DiscardOldestPolicy：丢弃任务队列中最久的任务</strong><br>拒绝策略：如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序。<br>该策略稍微复杂一些，在pool没有关闭的前提下首先丢掉缓存在队列中的最早的任务，然后重新尝试运行该任务。<br>（4）<strong>CallerRunsPolicy：只用调用者所在的线程执行任务</strong><br>拒绝策略：线程调用运行该任务的 execute 本身。此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。<br>这个策略不想放弃执行任务。但是由于池中已经没有任何资源了，那么就直接使用调用该execute的线程本身来执行。  </p>
 <h2 id="5-四种线程池的用法"><a href="#5-四种线程池的用法" class="headerlink" title="5 四种线程池的用法"></a>5 四种线程池的用法</h2><ul>
 <li>newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。</li>
 <li>newFixedThreadPool 创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。</li>
 <li>newScheduledThreadPool 创建一个定长线程池，支持定时及周期性任务执行。</li>
 <li>newSingleThreadExecutor 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。</li>
 </ul>
-<h2 id="6-Java线程池调优"><a href="#6-Java线程池调优" class="headerlink" title="6 Java线程池调优"></a>6 Java线程池调优</h2><p><a href="https://www.cnblogs.com/jianzh5/p/6437315.html" target="_blank" rel="external"><strong>JAVA线程池调优</strong></a>  </p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/jianzh5/p/6437315.html" target="_blank" rel="external"><strong>JAVA线程池调优</strong></a><br><a href="http://www.cnblogs.com/waytobestcoder/p/5323130.html" target="_blank" rel="external">ThreadPoolExecutor线程池参数设置技巧</a><br><a href="https://blog.csdn.net/ican87/article/details/80874933" target="_blank" rel="external">线程池排队策略 &amp; 拒绝策略</a><br><a href="https://blog.csdn.net/u011974987/article/details/51027795" target="_blank" rel="external">Java 四种线程池的用法分析</a> </p>
+<p>使用场景和详情请看：<a href="https://blog.csdn.net/u010425776/article/details/56676897" target="_blank" rel="external">Java并发编程的艺术(十一)——线程池(2)</a></p>
+<h2 id="6-提交任务"><a href="#6-提交任务" class="headerlink" title="6 提交任务"></a>6 提交任务</h2><p>可以向ThreadPoolExecutor提交两种任务：Callable和Runnable。  </p>
+<ul>
+<li><p><strong>Callable</strong><br>该类任务有返回结果，可以抛出异常。<br>通过submit函数提交，返回Future对象。<br>可通过get获取执行结果。  </p>
+</li>
+<li><p><strong>Runnable</strong><br>该类任务只执行，无法获取返回结果，并在执行过程中无法抛异常。<br>通过execute提交。  </p>
+</li>
+</ul>
+<h2 id="7-关闭线程池"><a href="#7-关闭线程池" class="headerlink" title="7 关闭线程池"></a>7 关闭线程池</h2><p>关闭线程池有两种方式：shutdown和shutdownNow，关闭时，会遍历所有的线程，调用它们的interrupt函数中断线程。但这两种方式对于正在执行的线程处理方式不同。</p>
+<ul>
+<li><strong>shutdown()</strong><br>仅停止阻塞队列中等待的线程，那些正在执行的线程就会让他们执行结束。</li>
+<li><strong>shutdownNow()</strong><br>不仅会停止阻塞队列中的线程，而且会停止正在执行的线程。</li>
+</ul>
+<h2 id="8-设置合理的线程池的大小"><a href="#8-设置合理的线程池的大小" class="headerlink" title="8 设置合理的线程池的大小"></a>8 设置合理的线程池的大小</h2><p>任务一般可分为：CPU密集型、IO密集型、混合型，对于不同类型的任务需要分配不同大小的线程池。</p>
+<ul>
+<li><p>CPU密集型任务<br>尽量使用较小的线程池，一般为CPU核心数+1。<br>因为CPU密集型任务使得CPU使用率很高，若开过多的线程数，只能增加上下文切换的次数，因此会带来额外的开销。  </p>
+</li>
+<li><p>IO密集型任务<br>可以使用稍大的线程池，一般为2*CPU核心数。<br>IO密集型任务CPU使用率并不高，因此可以让CPU在等待IO的时候去处理别的任务，充分利用CPU时间。  </p>
+</li>
+<li><p>混合型任务<br>可以将任务分成IO密集型和CPU密集型任务，然后分别用不同的线程池去处理。<br>只要分完之后两个任务的执行时间相差不大，那么就会比串行执行来的高效。<br>因为如果划分之后两个任务执行时间相差甚远，那么先执行完的任务就要等后执行完的任务，最终的时间仍然取决于后执行完的任务，而且还要加上任务拆分与合并的开销，得不偿失。  </p>
+</li>
+</ul>
+<h2 id="9-Java线程池调优"><a href="#9-Java线程池调优" class="headerlink" title="9 Java线程池调优"></a>9 Java线程池调优</h2><p><a href="https://www.cnblogs.com/jianzh5/p/6437315.html" target="_blank" rel="external"><strong>JAVA线程池调优</strong></a>  </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/jianzh5/p/6437315.html" target="_blank" rel="external"><strong>JAVA线程池调优</strong></a><br><a href="http://www.cnblogs.com/waytobestcoder/p/5323130.html" target="_blank" rel="external">ThreadPoolExecutor线程池参数设置技巧</a><br><a href="https://blog.csdn.net/ican87/article/details/80874933" target="_blank" rel="external">线程池排队策略 &amp; 拒绝策略</a><br><a href="https://blog.csdn.net/u011974987/article/details/51027795" target="_blank" rel="external">Java 四种线程池的用法分析</a><br><a href="https://blog.csdn.net/u010425776/article/details/56673564" target="_blank" rel="external">Java并发编程的艺术(十)——线程池(1)</a></p>
 
       
     </div>
@@ -496,7 +526,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -518,7 +548,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -553,7 +583,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java线程池"><span class="nav-text">1 Java线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-线程池的重要参数"><span class="nav-text">2 线程池的重要参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-corePoolSize：-核心线程数"><span class="nav-text">2.1 corePoolSize： 核心线程数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-queueCapacity：任务队列容量"><span class="nav-text">2.2 queueCapacity：任务队列容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-maxPoolSize：最大线程数"><span class="nav-text">2.3 maxPoolSize：最大线程数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-keepAliveTime：线程空闲时间"><span class="nav-text">2.4 keepAliveTime：线程空闲时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-allowCoreThreadTimeout：允许核心线程超时"><span class="nav-text">2.5 allowCoreThreadTimeout：允许核心线程超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-rejectedExecutionHandler：任务拒绝处理器"><span class="nav-text">2.6 rejectedExecutionHandler：任务拒绝处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-线程池的排队策略"><span class="nav-text">3 线程池的排队策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-任务队列"><span class="nav-text">3.1 任务队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-排队策略"><span class="nav-text">3.2 排队策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-直接提交（如SynchronousQueue）"><span class="nav-text">3.2.1 直接提交（如SynchronousQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-无界队列（如不具有预定义容量的LinkedBlockingQueue）"><span class="nav-text">3.2.2 无界队列（如不具有预定义容量的LinkedBlockingQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-有界队列（如ArrayBlockingQueue）"><span class="nav-text">3.2.3 有界队列（如ArrayBlockingQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-优先级队列（如PriorityBlockingQueue）"><span class="nav-text">3.2.4 优先级队列（如PriorityBlockingQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5-DelayedWorkQueue"><span class="nav-text">3.2.5 DelayedWorkQueue</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-线程池的拒绝策略-饱和策略"><span class="nav-text">4 线程池的拒绝策略/饱和策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-四种线程池的用法"><span class="nav-text">5 四种线程池的用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Java线程池调优"><span class="nav-text">6 Java线程池调优</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java线程池"><span class="nav-text">1 Java线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-线程池的重要参数"><span class="nav-text">2 线程池的重要参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-corePoolSize：-核心线程数"><span class="nav-text">2.1 corePoolSize： 核心线程数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-queueCapacity：任务队列容量"><span class="nav-text">2.2 queueCapacity：任务队列容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-maxPoolSize：最大线程数"><span class="nav-text">2.3 maxPoolSize：最大线程数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-keepAliveTime：线程空闲时间"><span class="nav-text">2.4 keepAliveTime：线程空闲时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-allowCoreThreadTimeout：允许核心线程超时"><span class="nav-text">2.5 allowCoreThreadTimeout：允许核心线程超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-rejectedExecutionHandler：任务拒绝处理器"><span class="nav-text">2.6 rejectedExecutionHandler：任务拒绝处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-线程池的排队策略"><span class="nav-text">3 线程池的排队策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-任务队列"><span class="nav-text">3.1 任务队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-排队策略"><span class="nav-text">3.2 排队策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-直接提交（如SynchronousQueue）"><span class="nav-text">3.2.1 直接提交（如SynchronousQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-无界队列（如不具有预定义容量的LinkedBlockingQueue）"><span class="nav-text">3.2.2 无界队列（如不具有预定义容量的LinkedBlockingQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-有界队列（如ArrayBlockingQueue）"><span class="nav-text">3.2.3 有界队列（如ArrayBlockingQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-优先级队列（如PriorityBlockingQueue）"><span class="nav-text">3.2.4 优先级队列（如PriorityBlockingQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5-DelayedWorkQueue"><span class="nav-text">3.2.5 DelayedWorkQueue</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-线程池的拒绝策略-饱和策略"><span class="nav-text">4 线程池的拒绝策略/饱和策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-四种线程池的用法"><span class="nav-text">5 四种线程池的用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-提交任务"><span class="nav-text">6 提交任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-关闭线程池"><span class="nav-text">7 关闭线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-设置合理的线程池的大小"><span class="nav-text">8 设置合理的线程池的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Java线程池调优"><span class="nav-text">9 Java线程池调优</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

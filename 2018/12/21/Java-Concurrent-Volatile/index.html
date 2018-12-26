@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:description" content="1 引入Volatile在Java并发编程中，涉及到三个概念：原子性、可见性、有序性。针对可见性，Java提供了volatile关键字来保证可见性。当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-21T14:43:40.285Z">
+<meta property="og:updated_time" content="2018-12-26T03:03:38.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程之volatile">
 <meta name="twitter:description" content="1 引入Volatile在Java并发编程中，涉及到三个概念：原子性、可见性、有序性。针对可见性，Java提供了volatile关键字来保证可见性。当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原">
@@ -353,15 +353,45 @@
 <li>对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始</li>
 </ul>
 <h2 id="3-深入剖析Volatile"><a href="#3-深入剖析Volatile" class="headerlink" title="3 深入剖析Volatile"></a>3 深入剖析Volatile</h2><h3 id="3-1-volatile关键字的两层语义"><a href="#3-1-volatile关键字的两层语义" class="headerlink" title="3.1 volatile关键字的两层语义"></a>3.1 volatile关键字的两层语义</h3><p>一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：<br>    1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。<br>    2）禁止进行指令重排序。</p>
-<p>【注】volatile的运行原理<br>第一：使用volatile关键字会强制将修改的值立即写入主存；<br>第二：使用volatile关键字的话，当线程2进行修改时，会导致线程1的工作内存中缓存变量的缓存行无效（反映到硬件层的话，就是CPU的L1或者L2缓存中对应的缓存行无效）；<br>第三：由于线程1的工作内存中缓存变量的缓存行无效，所以线程1再次读取变量stop的值时会去主存读取。</p>
-<h3 id="3-2-volatile关键字只能保证可见性而不能保证原子性"><a href="#3-2-volatile关键字只能保证可见性而不能保证原子性" class="headerlink" title="3.2 volatile关键字只能保证可见性而不能保证原子性"></a>3.2 volatile关键字只能保证可见性而不能保证原子性</h3><h3 id="3-3-volatile能保证有序性？"><a href="#3-3-volatile能保证有序性？" class="headerlink" title="3.3 volatile能保证有序性？"></a>3.3 volatile能保证有序性？</h3><p>在前面提到volatile关键字能禁止指令重排序，所以volatile能在一定程度上保证有序性。volatile关键字禁止指令重排序有两层意思：<br>1）当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；<br>2）在进行指令优化时，不能将在对volatile变量访问的语句放在其后面执行，也不能把volatile变量后面的语句放到其前面执行。</p>
+<p>【注】volatile的运行原理——如何确保可见性<br>第一：使用volatile关键字会强制将修改的值立即写入主存；<br>第二：使用volatile关键字的话，当线程2进行修改时，会导致线程1的工作内存中缓存变量的缓存行无效（反映到硬件层的话，就是CPU的L1或者L2缓存中对应的缓存行无效）；<br>第三：由于线程1的工作内存中缓存变量的缓存行无效，所以线程1再次读取变量的值时会去主存读取。</p>
+<p>综上：<strong>volatile变量写</strong>：当被volatile修饰的变量进行写操作时，这个变量将会被直接写入共享内存，而非线程的专属存储空间。<strong>volatile变量读</strong>：当读取一个被volatile修饰的变量时，会直接从共享内存中读，而非线程专属的存储空间中读。通过对volatile变量读写的限制，就能保证线程每次读到的都是最新的值，从而确保了该变量的内存可见性。</p>
+<h3 id="3-2-volatile能保证原子性吗？"><a href="#3-2-volatile能保证原子性吗？" class="headerlink" title="3.2 volatile能保证原子性吗？"></a>3.2 volatile能保证原子性吗？</h3><p>volatile关键字只能保证可见性，一般情况下不能保证原子性；但是也有特例：比如说volatile能够保证long、double读写的原子性。原因是：在Java中的所有类型中，有long、double类型比较特殊，他们占据8字节（64比特），其余类型都小于64比特。在32位操作系统中，CPU一次只能读取/写入32位的数据，因此对于64位的long、double变量的读写会进行两步。在多线程中，若一条线程只写入了long型变量的前32位，紧接着另一条线程读取了这个只有“一半”的变量，从而就读到了一个错误的数据。<br>为了避免这种情况，需要在用volatile修饰long、double型变量。</p>
+<h3 id="3-3-volatile能保证有序性？"><a href="#3-3-volatile能保证有序性？" class="headerlink" title="3.3 volatile能保证有序性？"></a>3.3 volatile能保证有序性？</h3><p>在前面提到volatile关键字能禁止指令重排序，所以volatile能在一定程度上保证有序性。volatile关键字禁止指令重排序有两层意思：<br>1）当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；<br>2）在进行指令优化时，不能将在对volatile变量访问的语句放在其后面执行，也不能把volatile变量后面的语句放到其前面执行。</p>
 <p>【注】volatile的有序性保证的原理<br>volatile是通过内存屏障和禁止重排序优化来实现：<br>第一：对于volatile变量的写操作时，会在写操作后加入一条store屏障指令，将本地内存中的共享变量刷新到主内存；<br>第二：对于volatile变量的读操作时，会在读操作前加入一条load屏障指令，从主内存中读取共享变量；<br>通过以上策略便能够保证不同线程总能看到volatile变量的最新值。</p>
+<h3 id="3-4-重排序"><a href="#3-4-重排序" class="headerlink" title="3.4 重排序"></a>3.4 重排序</h3><p>重排序指的是编译器、处理器在不改变程序执行结果的前提下，重新排列指令的执行顺序，以达到最佳的运行效率。重排序主要分为以下两类：编译器重排序和处理器重排序。</p>
+<h4 id="3-4-1-数据依赖"><a href="#3-4-1-数据依赖" class="headerlink" title="3.4.1 数据依赖"></a>3.4.1 数据依赖</h4><p>编译器和处理器并不会随意的改变指令的执行顺序，因为有些指令之间是有依赖关系的，若改变了他们的执行顺序，就会出现错误的结果。因此，编译器和处理器只会对没有依赖关系的指令进行重排序。<br><strong>数据依赖</strong>：若相邻的两条指令访问同一个变量，并且其中有一条指令执行写操作，那么这样的两条指令之间存在数据依赖。对于有数据依赖关系的指令，不会发生重排序。</p>
+<h4 id="3-4-2-数据依赖关系总结"><a href="#3-4-2-数据依赖关系总结" class="headerlink" title="3.4.2 数据依赖关系总结"></a>3.4.2 数据依赖关系总结</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">指令</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">读后写</td>
+<td style="text-align:center">a = b; b = 1</td>
+</tr>
+<tr>
+<td style="text-align:right">写后写</td>
+<td style="text-align:center">a = 1; a = 2</td>
+</tr>
+<tr>
+<td style="text-align:right">写后读</td>
+<td style="text-align:center">a = 1; b = a</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>【注】as-if-serial<br>在单线程开发中，程序员不需要知道指令是如何重排序的，只要简单地认为指令是按照顺序依次执行的即可。这就是as-if-serial的语义，即：貌似是串行的。</p>
+<h3 id="3-5-volatile的特性"><a href="#3-5-volatile的特性" class="headerlink" title="3.5 volatile的特性"></a>3.5 volatile的特性</h3><p>若两行指令之间没有依赖关系，那么计算机可以对他们的顺序进行重排序，但若两行之间的某个变量被volatile修饰后，重排序规则会发生变化。在以下情况下，即使两行代码之间没有依赖关系，也不会发生重排序：<br><strong>volatile读</strong>：<br>若volatile读操作的前一行为volatile读/写，则这两行不会发生重排序；<br>volatile读操作和它后一行代码都不会发生重排序。<br><strong>volatile写</strong>：<br>volatile写操作和它前一行代码都不会发生重排序；<br>若volatile写操作的后一行代码为volatile读/写，则这两行不会发生重排序。  </p>
 <h2 id="4-Volatile的适用场景"><a href="#4-Volatile的适用场景" class="headerlink" title="4 Volatile的适用场景"></a>4 Volatile的适用场景</h2><p>通常来说使用volatile变量提供理想的线程安全，必须具备两个条件：其一对变量的写操作不依赖于当前值；其二该变量没有包含在具有其他变量不变的式子中。主要使用在状态标示量以及Double Check中。示例如下：</p>
 <h3 id="4-1-状态标记"><a href="#4-1-状态标记" class="headerlink" title="4.1 状态标记"></a>4.1 状态标记</h3><p>这种类型的状态标记的一个公共特性是：通常只有一种状态转换；shutdownRequested 标志从false 转换为true，然后程序停止。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> shutdownRequested;</div><div class="line"> </div><div class="line">...</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span> </span>&#123; </div><div class="line">    shutdownRequested = <span class="keyword">true</span>; </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span> </span>&#123; </div><div class="line">    <span class="keyword">while</span> (!shutdownRequested) &#123; </div><div class="line">        <span class="comment">// do stuff</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="4-2-一次性安全发布"><a href="#4-2-一次性安全发布" class="headerlink" title="4.2 一次性安全发布"></a>4.2 一次性安全发布</h3><p>在缺乏同步的情况下，可能会遇到某个对象引用的更新值（由另一个线程写入）和该对象状态的旧值同时存在。这就是造成著名的双重检查锁定（double-checked-locking）问题的根源，其中对象引用在没有同步的情况下进行读操作，产生的问题是您可能会看到一个更新的引用，但是仍然会通过该引用看到不完全构造的对象。完美的单例模式实现:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instace;   </div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;   </div><div class="line">    <span class="comment">//第一次null检查     </span></div><div class="line">    <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;            </div><div class="line">        <span class="keyword">synchronized</span>(Singleton.class) &#123;    <span class="comment">//1     </span></div><div class="line">            <span class="comment">//第二次null检查       </span></div><div class="line">            <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;          <span class="comment">//2  </span></div><div class="line">                instance = <span class="keyword">new</span> Singleton();<span class="comment">//3  </span></div><div class="line">            &#125;  </div><div class="line">        &#125;           </div><div class="line">    &#125;  </div><div class="line">    <span class="keyword">return</span> instance;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">Java并发编程：volatile关键字解析</a><br><a href="https://blog.csdn.net/vking_wang/article/details/9982709" target="_blank" rel="external">volatile的适用场景</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">Java并发编程：volatile关键字解析</a><br><a href="https://blog.csdn.net/vking_wang/article/details/9982709" target="_blank" rel="external">volatile的适用场景</a><br><a href="https://blog.csdn.net/u010425776/article/details/54290526" target="_blank" rel="external">Java并发编程的艺术(三)——volatile</a>  </p>
 
       
     </div>
@@ -486,7 +516,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -508,7 +538,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -543,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引入Volatile"><span class="nav-text">1 引入Volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-happens-before原则"><span class="nav-text">2 happens-before原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-深入剖析Volatile"><span class="nav-text">3 深入剖析Volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-volatile关键字的两层语义"><span class="nav-text">3.1 volatile关键字的两层语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-volatile关键字只能保证可见性而不能保证原子性"><span class="nav-text">3.2 volatile关键字只能保证可见性而不能保证原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-volatile能保证有序性？"><span class="nav-text">3.3 volatile能保证有序性？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Volatile的适用场景"><span class="nav-text">4 Volatile的适用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-状态标记"><span class="nav-text">4.1 状态标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-一次性安全发布"><span class="nav-text">4.2 一次性安全发布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引入Volatile"><span class="nav-text">1 引入Volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-happens-before原则"><span class="nav-text">2 happens-before原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-深入剖析Volatile"><span class="nav-text">3 深入剖析Volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-volatile关键字的两层语义"><span class="nav-text">3.1 volatile关键字的两层语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-volatile能保证原子性吗？"><span class="nav-text">3.2 volatile能保证原子性吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-volatile能保证有序性？"><span class="nav-text">3.3 volatile能保证有序性？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-重排序"><span class="nav-text">3.4 重排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-数据依赖"><span class="nav-text">3.4.1 数据依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-数据依赖关系总结"><span class="nav-text">3.4.2 数据依赖关系总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-volatile的特性"><span class="nav-text">3.5 volatile的特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Volatile的适用场景"><span class="nav-text">4 Volatile的适用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-状态标记"><span class="nav-text">4.1 状态标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-一次性安全发布"><span class="nav-text">4.2 一次性安全发布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
