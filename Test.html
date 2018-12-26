@@ -67,18 +67,18 @@
 
 
 
-<meta name="description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay   B+ 树的原理1）在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。2）在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &amp;lt;= n &amp;lt;=m,根结点的取值范围为1&amp;">
+<meta name="description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta property="og:type" content="website">
 <meta property="og:title" content="零柒 - Panlong Xie&#39;s Blog">
 <meta property="og:url" content="http://yoursite.com/Test.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay   B+ 树的原理1）在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。2）在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &amp;lt;= n &amp;lt;=m,根结点的取值范围为1&amp;">
+<meta property="og:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/sort.png">
-<meta property="og:updated_time" content="2018-12-20T11:43:40.711Z">
+<meta property="og:updated_time" content="2018-12-25T08:11:42.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
-<meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay   B+ 树的原理1）在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。2）在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &amp;lt;= n &amp;lt;=m,根结点的取值范围为1&amp;">
+<meta name="twitter:description" content="title: Test Blogdate: 2016-09-17tags: [Welcome, Blog]categories:   Essay  负载均衡的方法当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。负载均衡的几种常用方式：">
 <meta name="twitter:image" content="http://yoursite.com/images/sort.png">
 
 
@@ -261,36 +261,7 @@
 <ul>
 <li>Essay</li>
 </ul>
-<ol>
-<li>B+ 树的原理<br>1）在B+树中，具有n个关键字的结点有n个分支，而在B-树中，具有n个关键字的结点含有n+1个关键字。<br>2）在B+树中，每个结点（除根结点外）中的关键字个数n的取值为ceil(m/2) &lt;= n &lt;=m,根结点的取值范围为1&lt;=n&lt;=m，b树他们的取值范围分别是ceil(m/2) -1&lt;= n &lt;=m-1和1&lt;=n&lt;=m-1。<br>3）在B+树中叶子结点包含信息，并且包含了全部关键字，叶子结点引出的指针指向记录。<br>4）在B+树中的所有非叶子结点仅起到一个索引的作用，即结点中的每个索引项只含有对应子树的最大关键字和指向该子树的指针。</li>
-</ol>
-<a id="more"></a>
-<ol>
-<li>为什么说B+-tree比B 树更适合实际应用中操作系统的文件索引和数据库索引？<br>1) B+-tree的磁盘读写代价更低</li>
-</ol>
-<p>B+-tree的内部结点并没有指向关键字具体信息的指针。因此其内部结点相对B 树更小。如果把所有同一内部结点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读入内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。</p>
-<p>2) B+-tree的查询效率更加稳定</p>
-<p>由于非终结点并不是最终指向文件内容的结点，而只是叶子结点中关键字的索引。所以任何关键字的查找必须走一条从根结点到叶子结点的路。所有关键字查询的路径长度相同，导致每一个数据的查询效率相当</p>
-<ol>
-<li>数据库如何建索引？<br>普通索引：<br>CREATE INDEX indexName ON mytable(username(length));如果是CHAR VARCHAR类型，length可以小于字段实际长度；如果是BLOB和TEXT类型，必须指定 length，下同。</li>
-</ol>
-<p>唯一索引<br>它与前面的普通索引类似，不同的就是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。 创建索引:<br>CREATE UNIQUE INDEX indexName ON mytable(username(length)); </p>
-<p>主键索引<br>它是一种特殊的唯一索引，不允许有空值。一般是在建表的时候同时创建主键索引：<br>CREATE TABLE mytable(   ID INT NOT NULL,    username VARCHAR(16) NOT NULL,   PRIMARY KEY(ID) ); </p>
-<p>组合索引 </p>
-<ol>
-<li>Http 访问页面的流程<br>超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。<br>客户端为了访问服务器而执行的一系列关于协议的操作：<br>1， 在应用层，客户端浏览器通过域名解析协议（DNS）将网址解析为Ip地址220.181.27.48，（通过这个ip地址来寻找客户端到服务端的路径），客户端浏览器发起一个HTTP会话，交给传输层处理。</li>
-</ol>
-<p>2， 在运输层，客户端的传输层将http会话请求分成tcp报文段，添加源端口和目的端口，交给网络层。</p>
-<p>3， 在网络层，客户端网络层不关心传输层和应用层，只是向上提供简单的，无连接的，尽最大努力交付的数据报服务，主要工作是通过查找路由表确定如何到达服务器。具体点到点的通信交给数据链路层。</p>
-<p>4， 在数据链路层，包通过链路层发送到路由器，通过邻居协议查找给定IP地址的MAC地址，然后发送ARP请求查找目的地址，如果得到回应后就可以使用ARP的请求应答交换的IP数据包现在就可以传输了，然后发送IP数据包到达服务器的地址。</p>
-<p>5， 在物理层被封装成比特流传送。</p>
-<p><a href="https://blog.csdn.net/qq_37746973/article/details/81115712" target="_blank" rel="external">访问网页的全过程详解</a></p>
-<ol>
-<li><p>服务器收到数据后怎么办，没反应到这里问负载均衡</p>
-</li>
-<li><p>负载均衡的方法<br>当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。<br>负载均衡的几种常用方式：<br>1、轮询（默认）<br>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。<br>2、weight 权重轮询（权重越高，进入的几率越大）<br>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的<br>情况。</p>
-</li>
-</ol>
+<p>负载均衡的方法<br>当一台服务器的单位时间内的访问量越大时，服务器压力就越大，大到超过自身承受能力时，服务器就会崩溃。为了避免服务器崩溃，让用户有更好的体验，我们通过负载均衡的方式来分担服务器压力。负载均衡是用反向代理的原理实现的。<br>负载均衡的几种常用方式：<br><a id="more"></a><br>1、轮询（默认）<br>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。<br>2、weight 权重轮询（权重越高，进入的几率越大）<br>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的<br>情况。</p>
 <p>IP-Hash</p>
 <p>优点：无需进行session同步，固定IP会固定访问一台服务器。 </p>
 <p>缺点：恶意攻击，会造成某台服务器压垮。提供的服务不同，面向的地区不同，IP可能会出现集中，造成不均匀，不可控。</p>
@@ -299,75 +270,58 @@
 <p>5.URL-Hash </p>
 <p>这种是根据URL进行hash，这样某些请求永远打某台服务器。利于利用服务器的缓存，但是可能由于URL的哈希值分布不均匀，以及业务侧重造成某些服务器压力大，某些负荷低。这种也需要进行session同步。</p>
 <p>静态负载均衡算法包括：轮询，比率，优先权<br>动态负载均衡算法包括: 最少连接数,最快响应速度，观察方法，预测法，动态性能分配，动态服务器补充，服务质量，服务类型，规则模式。<br>静态负载均衡算法<br>    轮询（Round Robin）：顺序循环将请求一次顺序循环地连接每个服务器。当其中某个服务器发生第二到第7 层的故障，BIG-IP 就把其从顺序循环队列中拿出，不参加下一次的轮询，直到其恢复正常。<br>    比率（Ratio）：给每个服务器分配一个加权值为比例，根椐这个比例，把用户的请求分配到每个服务器。当其中某个服务器发生第二到第7 层的故障，BIG-IP 就把其从服务器队列中拿出，不参加下一次的用户请求的分配, 直到其恢复正常。<br>    优先权（Priority）：给所有服务器分组,给每个组定义优先权，BIG-IP 用户的请求，分配给优先级最高的服务器组（在同一组内，采用轮询或比率算法，分配用户的请求）；当最高优先级中所有服务器出现故障，BIG-IP 才将请求送给次优先级的服务器组。这种方式，实际为用户提供一种热备份的方式。<br>动态负载均衡算法<br>    最少的连接方式（Least Connection）：传递新的连接给那些进行最少连接处理的服务器。当其中某个服务器发生第二到第7 层的故障，BIG-IP 就把其从服务器队列中拿出，不参加下一次的用户请求的分配, 直到其恢复正常。<br>    最快模式（Fastest）：传递连接给那些响应最快的服务器。当其中某个服务器发生第二到第7 层的故障，BIG-IP 就把其从服务器队列中拿出，不参加下一次的用户请求的分配，直到其恢复正常。<br>    观察模式（Observed）：连接数目和响应时间以这两项的最佳平衡为依据为新的请求选择服务器。当其中某个服务器发生第二到第7 层的故障，BIG-IP就把其从服务器队列中拿出，不参加下一次的用户请求的分配，直到其恢复正常。<br>    预测模式（Predictive）：BIG-IP利用收集到的服务器当前的性能指标，进行预测分析，选择一台服务器在下一个时间片内，其性能将达到最佳的服务器相应用户的请求。(被BIG-IP 进行检测)<br>    动态性能分配(Dynamic Ratio-APM):BIG-IP 收集到的应用程序和应用服务器的各项性能参数，动态调整流量分配。<br>    动态服务器补充(Dynamic Server Act.):当主服务器群中因故障导致数量减少时，动态地将备份服务器补充至主服务器群。<br>    服务质量(QoS）:按不同的优先级对数据流进行分配。<br>    服务类型(ToS): 按不同的服务类型（在Type of Field中标识）负载均衡对数据流进行分配。<br>    规则模式：针对不同的数据流设置导向规则，用户可自行。</p>
-<ol>
-<li>java 线程池的参数意思<br><a href="http://www.cnblogs.com/waytobestcoder/p/5323130.html" target="_blank" rel="external">ThreadPoolExecutor线程池参数设置技巧</a>  </li>
-</ol>
-<p>Java中的多线程了解么，线程池的增长策略和拒绝策略了解么，说一下。<br><a href="https://blog.csdn.net/ican87/article/details/80874933" target="_blank" rel="external">线程池排队策略 &amp; 拒绝策略</a></p>
-<ol>
-<li>java 线程之间如何通信<br>进程通信的方式<br>管道，信号量，消息队列，共享内存，套接字<br>内存共享：共享内存允许两个或多个进程共享一给定的存储区，因为数据不需要来回复制，所以是最快的一种进程间通信机制。共享内存可以通过mmap()映射普通文件（特殊情况下还可以采用匿名映射）机制实现，也可以通过系统共享内存机制实现。应用接口和原理很简单，内部机制复杂。为了实现更安全通信，往往还与信号灯等同步机制共同使用。  </li>
-</ol>
-<p><a href="http://www.cnblogs.com/hapjin/p/5492619.html" target="_blank" rel="external">JAVA多线程之线程间的通信方式</a></p>
 <p>10 jvm gc 的时机<br>GC 经常发生的区域是堆区，堆区还可以细分为新生代、老年代，新生代还分为一个 Eden 区和两个 Survivor 区。</p>
 <p>对象优先在 Eden 中分配，当 Eden 中没有足够空间时，虚拟机将发生一次 Minor GC，因为 Java 大多数对象都是朝生夕灭，所以 Minor GC 非常频繁，而且速度也很快；</p>
 <p>Full GC，发生在老年代的 GC，当老年代没有足够的空间时即发生 Full GC，发生 Full GC 一般都会有一次 Minor GC。</p>
 <p>大对象直接进入老年代，如很长的字符串数组，虚拟机提供一个；XX:PretenureSizeThreadhold 参数，令大于这个参数值的对象直接在老年代中分配，避免在 Eden 区和两个 Survivor 区发生大量的内存拷贝；</p>
 <p>发生 Minor GC 时，虚拟机会检测之前每次晋升到老年代的平均大小是否大于老年代的剩余空间大小，</p>
 <p>如果大于，则进行一次 Full GC，</p>
-<p>如果小于，则查看 HandlePromotionFailure 设置是否允许担保失败，如果允许，那只会进行一次 Minor GC，如果不允许，则改为进行一次 Full GC。<br>11 java 什么时候发生死锁<br><a href="https://blog.csdn.net/qweqwruio/article/details/81359744" target="_blank" rel="external">什么情况下Java程序会产生死锁？</a><br>12 如何避免死锁<br><a href="https://www.cnblogs.com/bopo/p/9228834.html" target="_blank" rel="external">死锁的四个必要条件？如何避免与预防死锁？</a><br>13 如何分析gc日志、分析堆转储快照<br><a href="https://blog.csdn.net/baiyan3212/article/details/81458697" target="_blank" rel="external">GC日志分析</a><br>14 TCP 详解<br><a href="https://blog.csdn.net/sinat_36629696/article/details/80740678" target="_blank" rel="external">TCP 详解</a><br>16 Redis以及mongo和关系型数据库的区别在哪<br><a href="https://blog.csdn.net/qq_33915826/article/details/80386321" target="_blank" rel="external">关系型数据库和非关系型数据库（MongoDB和redis对比）</a><br>17 N个数如何取到最小的K个数<br><a href="http://www.cnblogs.com/studynote/p/3404873.html" target="_blank" rel="external">找出N个数中最小的k个数问题(复杂度O(N*logk))</a><br><a href="https://www.cnblogs.com/felixfang/articles/3533890.html" target="_blank" rel="external">快速选择</a>   O（n）</p>
-<p>2讲一下线程增加的过程和拒绝策略的执行。<br><a href="http://www.cnblogs.com/bopo/p/9485764.html" target="_blank" rel="external">线程池及增长策略和拒绝策略</a>  </p>
+<p>如果小于，则查看 HandlePromotionFailure 设置是否允许担保失败，如果允许，那只会进行一次 Minor GC，如果不允许，则改为进行一次 Full GC。</p>
+<p>11 java 什么时候发生死锁<br><a href="https://blog.csdn.net/qweqwruio/article/details/81359744" target="_blank" rel="external">什么情况下Java程序会产生死锁？</a>  </p>
+<p>12 如何避免死锁<br><a href="https://www.cnblogs.com/bopo/p/9228834.html" target="_blank" rel="external">死锁的四个必要条件？如何避免与预防死锁？</a>  </p>
+<p>13 如何分析gc日志、分析堆转储快照<br><a href="https://blog.csdn.net/baiyan3212/article/details/81458697" target="_blank" rel="external">GC日志分析</a>  </p>
+<p>17 N个数如何取到最小的K个数<br><a href="http://www.cnblogs.com/studynote/p/3404873.html" target="_blank" rel="external">找出N个数中最小的k个数问题(复杂度O(N*logk))</a><br><a href="https://www.cnblogs.com/felixfang/articles/3533890.html" target="_blank" rel="external">快速选择</a>   O（n）</p>
 <p>4高并发情况下，如何使用线程池，用哪个，问了一下线程结束要多久，是否在下一个线程结束前完成<br><a href="http://www.cnblogs.com/dolphin0520/p/3932921.html" target="_blank" rel="external">Java并发编程：线程池的使用</a>    </p>
 <p><a href="https://blog.csdn.net/u011974987/article/details/51027795" target="_blank" rel="external">Java 四种线程池的用法分析</a>  </p>
 <p>线程池常用的几种类型？<br>答：Java通过Executors提供四种线程池，分别为：<br>１　newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。Executors.newCachedThreadPool(); 缺点：大家一般不用是因为newCachedThreadPool 可以无线的新建线程，容易造成堆外内存溢出，因为它的最大值是在初始化的时候设置为 Integer.MAX_VALUE，一般来说机器都没那么大内存给它不断使用。当然知道可能出问题的点，就可以去重写一个方法限制一下这个最大值<br>２　newFixedThreadPool  Executors.newFixedThreadPool(3);创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。定长线程池的大小最好根据系统资源进行设置。如Runtime.getRuntime().availableProcessors()。可参考PreloadDataCache。其实newFixedThreadPool()在严格上说并不会复用线程，每运行一个Runnable都会通过ThreadFactory创建一个线程<br>３　newScheduledThreadPool 创建一个定长线程池，支持定时及周期性任务执行。  Executors.newScheduledThreadPool(5);与Timer 对比：Timer 的优点在于简单易用，但由于所有任务都是由同一个线程来调度，因此所有任务都是串行执行的，同一时间只能有一个任务在执行，前一个任务的延迟或异常都将会影响到之后的任务（比如：一个任务出错，以后的任务都无法继续）。<br>ScheduledThreadPoolExecutor的设计思想是，每一个被调度的任务都会由线程池中一个线程去执行，因此任务是并发执行的，相互之间不会受到干扰。需要注意的是，只有当任务的执行时间到来时，ScheduedExecutor 才会真正启动一个线程，其余时间 ScheduledExecutor 都是在轮询任务的状态。<br>通过对比可以发现ScheduledExecutorService比Timer更安全，功能更强大，在以后的开发中尽可能使用ScheduledExecutorService(JDK1.5以后)替代Timer<br>４　newSingleThreadExecutor Executors.newSingleThreadExecutor()　创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。现行大多数GUI程序都是单线程的。Android中单线程可用于数据库操作，文件操作，应用批量安装，应用批量删除等不适合并发但可能IO阻塞性及影响UI线程响应的操作。</p>
 <p>6 并发juc了解么，有哪些线程安全的list。<br>Vector<br>HashTable<br>StringBuffer<br>Collections.synchronizedList<br>CopyOnWriteArrayList</p>
+<p>HashMap&amp;ConcurrentHashMap<br> <a href="http://www.importnew.com/28263.html" target="_blank" rel="external">Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析</a>  </p>
+<p> <a href="https://www.jianshu.com/p/487d00afe6ca" target="_blank" rel="external">ConcurrentHashMap源码分析（JDK8） 扩容实现机制</a><br><a href="http://www.cnblogs.com/morethink/p/7762168.html" target="_blank" rel="external">JDK8 HashMap 源码解析</a></p>
 <p>concurrenthashmap1.8的改动。<br><a href="https://blog.csdn.net/qiaoqiao0609/article/details/79082860" target="_blank" rel="external">ConcurrentHashMap在jdk1.8中的改进</a><br>ConcurrentHashMap在jdk1.8中做了两方面的改进</p>
 <p>改进一：取消segments字段，直接采用transient volatile HashEntry<k,v>[] table保存数据，采用table数组元素作为锁，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</k,v></p>
 <p>改进二：将原先table数组＋单向链表的数据结构，变更为table数组＋单向链表＋红黑树的结构。对于hash表来说，最核心的能力在于将key hash之后能均匀的分布在数组中。如果hash之后散列的很均匀，那么table数组中的每个队列长度主要为0或者1。但实际情况并非总是如此理想，虽然ConcurrentHashMap类默认的加载因子为0.75，但是在数据量过大或者运气不佳的情况下，还是会存在一些队列长度过长的情况，如果还是采用单向列表方式，那么查询某个节点的时间复杂度为O(n)；因此，对于个数超过8(默认值)的列表，jdk1.8中采用了红黑树的结构，那么查询的时间复杂度可以降低到O(logN)，以此改进性能。</p>
-<p>7HTTP协议了解么，和tcp有什么区别。<br>http协议是应用层的协议，TCP协议是传输层的协议，http协议是建立是TCP协议之上的，http是无状态的的短链接，而TCP是有状态的长链接。<br><a href="http://www.cnblogs.com/ranyonsue/p/5984001.html" target="_blank" rel="external">HTTP简介</a>  </p>
-<p>8 http1.0和2.0的区别。<br><a href="https://www.cnblogs.com/heluan/p/8620312.html" target="_blank" rel="external">HTTP1.0、HTTP1.1 和 HTTP2.0 的区别</a><br>答了TCP连接复用，加入ssl，以及压缩请求头。<br>其中哪个更新比较有意义，为什么。我说的是压缩请求头，这样可以优化HTTP服务的性能。  </p>
-<p>9 Java的网络编程，比如NIO和Socket了解么。</p>
+<p>9 Java的网络编程，比如NIO和Socket了解么。<br>1 阻塞IO ：就是线程会阻塞在系统调用recevfrom上，并且等待数据准备就绪以后才会返回。</p>
+<p>2 非阻塞IO : 不阻塞在系统调用recevfrom，而是通过自旋忙等的方式不断询问缓冲区数据是否准备就绪，避免线程阻塞的开销。</p>
+<p>3 IO多路复用 ：使用IO多路复用器管理socket，由于每个socket是一个文件描述符，操作系统可以维护socket和它的连接状态，一般分为可连接，可读和可写等状态。</p>
 <p><a href="https://blog.csdn.net/a724888/article/details/80856584" target="_blank" rel="external">Java网络编程与NIO学习总结</a>  </p>
-<p>说下BIO和NIO的区别把。<br>我说了BIO的阻塞用法，以及NIO的IO多路复用用法，说了selector，seletedkey，channel等类的使用流程，以及单线程处理连接，多线程处理IO请求的好处。</p>
+<p>select、epoll、poll<br> <a href="https://www.cnblogs.com/diegodu/p/6823855.html" target="_blank" rel="external">java BIO/NIO/AIO 学习</a>  </p>
 <p>10说一下NIO的类库或框架<br>讲了netty，写过服务端和客户端的demo，没有在生产中实践。<br>1 channelhandler负责请求就绪时的io响应。<br>2 bytebuf支持零拷贝，通过逻辑buff合并实际buff。<br>3 eventloop线程组负责实现线程池，任务队列里就是io请求任务，类似线程池调度执行。<br>4 acceptor接收线程负责接收tcp请求，并且注册任务到队列里。</p>
 <p>11 倒排索引了解么，我说不了解。<br><a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="external">倒排索引原理和实现</a><br>其实就是搜索引擎的基础索引，根据关键字到文档的映射关系建立索引，中文关键字可以使用中文分词，查询时通过关键字来定位索引，并且进行排序后得到文档结果集。</p>
-<p>sql优化的方式<br><a href="https://blog.csdn.net/jie_liang/article/details/77340905" target="_blank" rel="external">sql优化的几种方法</a><br>我说的是MySQL，先讲了一下sql使用索引的优化，然后基于索引说了几条优化方案。</p>
 <p>12 索引什么时候会失效变成全表扫描<br><a href="https://www.cnblogs.com/HoverM/p/9204767.html" target="_blank" rel="external">会引起 sql语句全表扫描的几种情况</a><br>说了联合索引的前缀匹配，跳跃索引，聚合函数，判空和&lt;&gt;这些情况。</p>
 <p>13分布式的paxos和raft算法了解么<br><a href="https://www.jdon.com/artichect/paxos.html" target="_blank" rel="external">分布式系统Paxos算法</a><br><a href="https://www.jdon.com/artichect/raft.html" target="_blank" rel="external">分布式系统的Raft算法</a><br>了解过，但是讲不清楚。<br>paxos：多个proposer发请提议（每个提议有id+value），acceptor接受最新id的提议并把之前保留的提议返回。当超过半数的accetor返回某个提议时，此时要求value修改为propeser历史上最大值，propeser认为可以接受该提议，于是广播给每个acceptor，acceptor发现该提议和自己保存的一致，于是接受该提议并且learner同步该提议。</p>
 <p>raft：raft要求每个节点有一个选主的时间间隔，每过一个时间间隔向master发送心跳包，当心跳失败，该节点重新发起选主，当过半节点响应时则该节点当选主机，广播状态，然后以后继续下一轮选主。</p>
 <p>14中间件知道哪些，阿里的dubbo，rocketmq的事务消息，问了TCC回答说这个之前没看明白。<br>说了mycat实现分表分库，消息队列kafka和rabbitmq等。</p>
-<p>15平时看什么书，怎么学习的。还跟我说他们部门3个华科的，校友多多。</p>
-<p>16Spring和Springmvc讲一下。讲了Spring的ioc和aop，Springmvc的基本架构，请求流程。 </p>
-<p><a href="https://blog.csdn.net/qq_32575047/article/details/80416015" target="_blank" rel="external">简单讲一下 SpringMVC的执行流程?</a>  </p>
-<p>一面：<br>1 自我介绍<br>2 讲一下ArrayList和linkedlist的区别，ArrayList的扩容方式，扩容时机。<br><a href="https://blog.csdn.net/yz972641975/article/details/78662617" target="_blank" rel="external">JDK1.8 ArrayList 扩容详解</a><br>3 hashmap的实现。</p>
-<p>5 你说了解分布式服务，那么你怎么理解分布式服务。</p>
-<p>7 你在项目中怎么用到并发的</p>
-<p>2 说一下Spring源码把，它的架构，流程。  </p>
-<p>Spring的整体架构<br>Spring 总共有十几个组件，其中核心组件只有三个：Core、Context 和 Beans。以下是 Spring3的总体架构图。<br>组成 Spring 框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：  </p>
+<p>2 讲一下ArrayList和linkedlist的区别，ArrayList的扩容方式，扩容时机。<br><a href="https://blog.csdn.net/yz972641975/article/details/78662617" target="_blank" rel="external">JDK1.8 ArrayList 扩容详解</a>  </p>
+<p>5 你说了解分布式服务，那么你怎么理解分布式服务。<br><a href="https://blog.csdn.net/u012547613/article/details/79283196" target="_blank" rel="external">谈谈自己对分布式的理解</a>  </p>
+<p>2 说一下Spring源码把，它的架构，流程。</p>
+<p><a href="https://www.cnblogs.com/redcool/p/6413461.html" target="_blank" rel="external">Spring BeanFactory与FactoryBean的区别及其各自的详细介绍于用法</a>   </p>
+<p>Spring的整体架构<br>Spring 总共有十几个组件，其中核心组件只有三个：Core、Context 和 Beans。组成 Spring 框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：  </p>
 <p>核心容器：核心容器提供 Spring 框架的基本功能。核心容器的主要组件是 BeanFactory，它是工厂模式的实现。BeanFactory 使用控制反转 （IOC） 模式将应用程序的配置和依赖性规范与实际的应用程序代码分开。<br>Spring 上下文：Spring 上下文是一个配置文件，向 Spring 框架提供上下文信息。Spring 上下文包括企业服务，例如：JNDI、EJB、电子邮件、国际化、校验和调度功能。<br>Spring AOP：通过配置管理特性，Spring AOP 模块直接将面向方面的编程功能集成到了 Spring 框架中。所以，可以很容易地使 Spring 框架管理的任何对象支持 AOP。Spring AOP 模块为基于 Spring 的应用程序中的对象提供了事务管理服务。通过使用 Spring AOP，不用依赖 EJB 组件，就可以将声明性事务管理集成到应用程序中。<br>Spring DAO：JDBC DAO 抽象层提供了有意义的异常层次结构，可用该结构来管理异常处理和不同数据库供应商抛出的错误消息。异常层次结构简化了错误处理，并且极大地降低了需要编写的异常代码数量（例如打开和关闭连接）。Spring DAO 的面向 JDBC 的异常遵从通用的 DAO 异常层次结构。<br>Spring ORM：Spring 框架插入了若干个 ORM 框架，从而提供了 ORM 的对象关系工具，其中包括 JDO、Hibernate 和 iBatis SQL Map。所有这些都遵从 Spring 的通用事务和 DAO 异常层次结构。<br>Spring Web 模块：Web 上下文模块建立在应用程序上下文模块之上，为基于 Web 的应用程序提供了上下文。所以，Spring 框架支持与 Jakarta Struts 的集成。Web 模块还简化了处理多部分请求以及将请求参数绑定到域对象的工作。<br>Spring MVC 框架：MVC 框架是一个全功能的构建 Web 应用程序的 MVC 实现。通过策略接口，MVC 框架变成为高度可配置的，MVC 容纳了大量视图技术，其中包括 JSP、Velocity、Tiles、iText 和 POI。   </p>
 <p><strong>3 Spring的bean如果要在实例化过程中修改其某一个成员变量，应该怎么做呢。不通过构造方法，并且AOP也并不能实现。</strong><br>4 Tomcat的类加载器了解么，回答不了解只了解Java的类加载器。<br><a href="https://blog.csdn.net/fuzhongmin05/article/details/57404890" target="_blank" rel="external">Java类加载机制与Tomcat类加载器架构</a>  </p>
+<p><a href="https://www.cnblogs.com/louistz/p/6295917.html" target="_blank" rel="external">类的加载和双亲委派模型</a> </p>
+<p>双亲委派模型的过程：如果一个类加载器收到了类加载的请求，首先不会自己去加载，而是把请求为派给自己的父类加载器去完成，每一个层次的类加载器都是如此。因此所有的加载请求最终都应该传送到顶层的启动类加载器中。只有当父类反馈自己无法完成这个加载请求时，子类加载器才会尝试自己完成。</p>
+<p>好处就是：Object类在程序的各种类加载器环境中都是同一个类。不会造成混乱。</p>
+<p>类加载<strong>过程</strong><br><a href="https://www.cnblogs.com/xiaoxian1369/p/5498817.html" target="_blank" rel="external">Java类加载过程</a>  </p>
 <p>5 自定义类加载器怎么实现，其中哪个方法走双亲委派模型，哪个不走，不走的话怎么加载类（实现findclass方法，一般用defineclass加载外部类），如何才能不走双亲委派。（重写loadclass方法）<br><a href="https://www.cnblogs.com/szlbm/p/5504631.html" target="_blank" rel="external">自定义一个类加载器</a></p>
 <p>6 布隆过滤器了解么，讲了ip地址过滤的布隆过滤器实现。<br><a href="https://blog.csdn.net/yinjing8435/article/details/70537046" target="_blank" rel="external">布隆过滤器(Bloom Filter)的原理和实现</a>  </p>
 <p>2 排序算法和适用场景<br><img src="/images/sort.png" alt=""><br><a href="https://blog.csdn.net/mbuger/article/details/67643185" target="_blank" rel="external">各类排序算法比较和应用场景</a>  </p>
 <p>3 数据库的事务有什么用<br><a href="https://www.cnblogs.com/linminglong/articles/1560724.html" target="_blank" rel="external">什么是事务（transaction）？它有什么好处</a><br><a href="https://www.cnblogs.com/fjdingsd/p/5273008.html" target="_blank" rel="external">数据库事务的四大特性以及事务的隔离级别</a>  </p>
 <p>4 数据库的悲观锁和乐观锁<br><a href="https://blog.csdn.net/xiaokang123456kao/article/details/75268240" target="_blank" rel="external">数据库的隔离级别以及悲观锁和乐观锁详解</a>  </p>
-<p>6 联合索引的匹配原则<br><a href="https://www.jianshu.com/p/b7911e0394b0" target="_blank" rel="external">联合索引的最左前缀匹配原则</a>  </p>
 <p>7 数据库万级变成亿级，怎么处理。分库分表，分片规则hash和取余数。使用mycat中间件实现。  </p>
 <p>9 Spring了解不，用到了哪些设计模式，说了四个，单例，工厂，代理，观察者，模板其实也算。  </p>
 <p><a href="http://www.cnblogs.com/yuefan/p/3763898.html" target="_blank" rel="external">深入解析spring中用到的九种设计模式</a>  </p>
 <p>10 web请求的过程，讲了浏览器到http服务器的过程，再讲了mvc的请求处理过程。<br>一HTTP<br><a href="http://www.baidu.com:80/index.html" target="_blank" rel="external">http://www.baidu.com:80/index.html</a><br>1浏览器根据所使用的http协议，解析出url对应的域名<br>2通过DNS域名解析，查询出对应的ip地址<br>3通过url解析出对应的端口号，如果是80端口，默认可以省略<br>4浏览器发起并建立到ip地址的80端口的连接<br>5浏览器向服务器发送get请求<br>6服务器响应浏览器的请求，浏览器读取响应，渲染网页<br>7浏览器关闭与服务器的连接</p>
-<p>二 springmvc<br>Spring工作流程描述</p>
-<pre><code>  1. 用户向服务器发送请求，请求被Spring 前端控制Servelt DispatcherServlet捕获；
-  2. DispatcherServlet对请求URL进行解析，得到请求资源标识符（URI）。然后根据该URI，调用HandlerMapping获得该Handler配置的所有相关的对象（包括Handler对象以及Handler对象对应的拦截器），最后以HandlerExecutionChain对象的形式返回；
-  3. DispatcherServlet 根据获得的Handler，选择一个合适的HandlerAdapter。（附注：如果成功获得HandlerAdapter后，此时将开始执行拦截器的preHandler(...)方法）
-   4.  提取Request中的模型数据，填充Handler入参，开始执行Handler（Controller)。 在填充Handler的入参过程中，根据你的配置，Spring将帮你做一些额外的工作：
-  HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一个对象，将对象转换为指定的响应信息
-  数据转换：对请求消息进行数据转换。如String转换成Integer、Double等
-  数据根式化：对请求消息进行数据格式化。 如将字符串转换成格式化数字或格式化日期等
-  数据验证： 验证数据的有效性（长度、格式等），验证结果存储到BindingResult或Error中
-  5.  Handler执行完成后，向DispatcherServlet 返回一个ModelAndView对象；
-  6.  根据返回的ModelAndView，选择一个适合的ViewResolver（必须是已经注册到Spring容器中的ViewResolver)返回给DispatcherServlet ；
-  7. ViewResolver 结合Model和View，来渲染视图
-  8. 将渲染结果返回给客户端。  
-</code></pre><p><a href="https://www.cnblogs.com/dreamworlds/p/5396112.html" target="_blank" rel="external">spring MVC请求处理流程</a>  </p>
+<p><a href="https://www.cnblogs.com/dreamworlds/p/5396112.html" target="_blank" rel="external">spring MVC请求处理流程</a>  </p>
 <p>4 dubbo的基本架构，几个组件说一下<br><a href="https://www.cnblogs.com/kevin1990/p/6257718.html" target="_blank" rel="external">dubbo框架基本分析</a>  </p>
 <p>5 服务生产者和消费者怎么进行rpc调用<br><a href="http://shiyanjun.cn/archives/341.html" target="_blank" rel="external">Dubbo实现RPC调用使用入门</a>  </p>
 <p>6 怎么进行服务注册发现 zk实现具体说说<br> 注册，即将服务节点写入到 ZooKeeper 中对应 app_id 和 cluster 的目录下，写入成功则视为服务启动成功；发现，即通过 ZooKeeper 的 watch 原语监听对方 app_id 和 cluster 之下的实例节点，发现更新则写入到本地文件系统缓存，供客户的的连接池取用。<br><a href="http://doc.okbase.net/661116/archive/241946.html" target="_blank" rel="external">dubbo的服务注册发现是怎么实现的.</a>  </p>
@@ -394,11 +348,8 @@
 <p>数据库主从复制、分库分表  </p>
 <p>分库分表后如何保证主键唯一性<br><a href="https://blog.csdn.net/xiao__jia__jia/article/details/81150112" target="_blank" rel="external">分库分表之后分布式如何保证ID全局唯一性</a><br><a href="https://www.cnblogs.com/aigongsi/archive/2013/01/25/2875731.html" target="_blank" rel="external">分库分表带来的完整性和一致性问题</a></p>
 <p>Java容器是如何启动的 ？  </p>
-<p>类加载过程<br><a href="https://www.cnblogs.com/xiaoxian1369/p/5498817.html" target="_blank" rel="external">Java类加载过程</a>  </p>
 <p>JVM字节码优化<br><a href="https://blog.csdn.net/tfnew21/article/details/3999974" target="_blank" rel="external">JVM虚拟机中对字节码优化的策略</a>  </p>
 <p>实现面向切面有哪些方法 具体怎么实现的<br><a href="http://www.cnblogs.com/jiaweit/p/9986390.html" target="_blank" rel="external">详解Spring面向切面编程（AOP)三种实现</a>  </p>
-<p>1、HashMap&amp;ConcurrentHashMap  </p>
-<p> <a href="http://www.importnew.com/28263.html" target="_blank" rel="external">Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析</a>  </p>
 <p>3、乐观锁&amp;悲观锁，可重入锁&amp;Synchronize<br> <a href="https://blog.csdn.net/nalanmingdian/article/details/77800355" target="_blank" rel="external">JAVA锁有哪些种类</a><br> <a href="https://blog.csdn.net/sinat_33087001/article/details/77644441#t27" target="_blank" rel="external">线程安全与锁优化</a>  </p>
 <p>6、事务的二段提交机制？<br> <a href="https://www.cnblogs.com/binyue/p/3678390.html" target="_blank" rel="external">对分布式事务及两阶段提交、三阶段提交的理解</a>  </p>
 <p>7、聚簇索引&amp;非聚簇索引<br><a href="https://blog.csdn.net/u010727189/article/details/79399384" target="_blank" rel="external">B-tree/b+tree 原理以及聚簇索引和非聚簇索引</a>  </p>
@@ -416,14 +367,67 @@
 <p>7、线程池实现过没？（一面面完下去研究了一下源代码，感觉这块儿还行）<br> <a href="https://www.jianshu.com/p/9b7dfb407f72" target="_blank" rel="external">如何实现一个线程池</a><br> <a href="https://www.cnblogs.com/wxwall/p/7050698.html" target="_blank" rel="external">java基础：简单实现线程池</a>   </p>
 <p>AQS 实现<br><a href="https://www.cnblogs.com/200911/p/6031350.html" target="_blank" rel="external">JUC回顾之-AQS同步器的实现原理</a>  </p>
 <p>7.讲讲jdk1.7和1.8的区别？<br><a href="https://www.cnblogs.com/aspirant/p/8617201.html" target="_blank" rel="external">Jdk1.7 与 jdk1.8的区别，最新的特征有哪些</a>  </p>
-<p>8.Jdbc要查询一条语句讲一下流程？用完JDBC关闭流程介绍一下？</p>
-<p>//1，创建对象,也可以直接new出来<br>        Class.forName(“com.mysql.jdbc.Driver”);<br>        //2，创建连接<br>        Connection conn = DriverManager.getConnection(“jdbc:mysql://localhost:3306/person”,”root”,”mz123zm”);<br>        //3，创建一个sql语句，即陈述，陈述对象是conn<br>        Statement stmt = conn.createStatement();<br>        //4，陈述的语句类型是查询，因此使用executeQuery，返回一个结果集,Query是询问的意思，换成Update执行的是更新删除等语句<br>        ResultSet rs = stmt.executeQuery(“select * from person”);<br>        //5,循环遍历<br>        while(rs.next()){<br>            System.out.println(rs.getString(“name”)+” : “+rs.getInt(“age”));<br>        }<br>        //6,不管打开了什么都关掉，后打开的先关掉，有点像鞋袜原理<br>        rs.close();<br>        stmt.close();<br>        conn.close();  </p>
-<p>5、RPC过程<br><a href="https://www.cnblogs.com/fqfanqi/p/6140877.html" target="_blank" rel="external">RPC远程过程调用概念及实现</a>  </p>
+<p>5、RPC过程<br><a href="https://blog.csdn.net/KingCat666/article/details/78577079" target="_blank" rel="external">RPC入门总结（一）RPC定义和原理</a><br><a href="https://www.cnblogs.com/fqfanqi/p/6140877.html" target="_blank" rel="external">RPC远程过程调用概念及实现</a>  </p>
 <p>java基础 JVM模型，答stack 区， heap 区 有什么区别，新生代 老生代， 垃圾回收算法，G2,parallel 回收， 线性回收，还有JDK11的ZGC。  </p>
 <p>Java 线程 Java 有什么锁类型?答: 自旋锁，读写锁，CAS操作，CAS的ABA问题，锁膨胀问题。   </p>
 <p>分布式系统 微服务架构下，如果有一个订单系统，一个库存系统，怎么保证事务？<br>答： 1 如果是Mysql类型的，利用XA接口，java使用JTA事务。2 可以使用第三方协调者，采用二阶段提交的方法去解决分布式事务， 协调者先发信息给两个数据库，叫他们锁定资源，进行本地事务操作，发送结果回协调者，如果都OK，则commit，如果不行，就回滚。 追问，二阶段提交有什么缺点？ 答：效率不够高，因为在资源锁定的时候，订单系统不能接受其他请求，业界采用三阶段提交。  </p>
 <p>讲解Raft算法<br>有三个角色，follower，candidate，leader。Raft最多能容忍(n-1)/2 的错误，假设系统有三个节点，A B C 一开始都是follower的状态，每一个节点都会倒计时，当倒计时完，就给各个节点发送 信号，争取当 leader。假设A节点最快完成，成为了leader，剩余两个节点就会变成Follower状态，从leader节点读取log文件。   </p>
 <p>电梯调度算法<br><a href="https://blog.csdn.net/sunshinetan/article/details/80305096" target="_blank" rel="external">【算法】电梯调度算法/磁盘扫描算法</a>    </p>
+<p><a href="https://blog.csdn.net/u010601183/article/details/56481868/" target="_blank" rel="external">怎么在海量数据中找出重复次数最多的一个</a>  </p>
+<p><a href="https://blog.csdn.net/kingcat666/article/details/78577079" target="_blank" rel="external">RPC入门总结（一）RPC定义和原理</a></p>
+<ol>
+<li>synchronized 和 ReentrantLock<br>2.4 ReentrantLock实现原理<br><a href="https://blog.csdn.net/u011202334/article/details/73188404" target="_blank" rel="external">ReentrantLock实现原理</a></li>
+</ol>
+<p>（AQS，结构，volatile的变量state，同步队列CLH，独占锁和共享锁模式获取锁的方法，CAS）</p>
+<ol>
+<li>CountDownLatch与Semaphore实现原理（AQS共享锁原理）<br><a href="https://blog.csdn.net/u013332124/article/details/79716377" target="_blank" rel="external">CountDownLatch &amp; Semaphore 实现原理详解</a><br>3.1 CountDownLatch与CyclicBarrier区别<br><a href="https://blog.csdn.net/a347911/article/details/53465445" target="_blank" rel="external">多线程之CountDownLatch和CyclicBarrier的区别和用法</a>  </li>
+</ol>
+<p>判断数是不是二的幂次方<br>(number &amp; number - 1) == 0</p>
+<p>两个单链表是否相交<br><a href="https://blog.csdn.net/fengxinlinux/article/details/78885764" target="_blank" rel="external">判断两个单链表是否相交及找到第一个交点</a>  </p>
+<p>我们把数存到redis的一个节点，在另一个节点却能查询到，这是怎么实现的呢<br><a href="https://blog.csdn.net/sanwenyublog/article/details/53167544" target="_blank" rel="external">redis集群实现（四） 数据的和槽位的分配</a>  </p>
+<p><a href="https://www.cnblogs.com/lpfuture/p/5796398.html" target="_blank" rel="external">一致性hash算法</a>  </p>
+<p><a href="https://www.cnblogs.com/PatrickLiu/p/8567453.html" target="_blank" rel="external">Redis协议</a>  </p>
+<p><a href="https://blog.csdn.net/wujiafei_njgcxy/article/details/77257500" target="_blank" rel="external">几种常用的操作系统调度策略</a>  </p>
+<p><a href="https://www.cnblogs.com/Berryxiong/p/6142735.html" target="_blank" rel="external">Java怎么实现多继承的功效</a>  </p>
+<p><a href="https://blog.csdn.net/ljheee/article/details/55213272" target="_blank" rel="external">自己实现JAVA线程池</a>  </p>
+<p>String为什么是final？<br>主要是为了”安全性“和”效率“的缘故，因为：</p>
+<p>1、由于String类不能被继承，所以就不会没修改，这就避免了因为继承引起的安全隐患；</p>
+<p>2、String类在程序中出现的频率比较高，如果为了避免安全隐患，在它每次出现时都用final来修饰，这无疑会降低程序的执行效率，所以干脆直接将其设为final一提高效率；  </p>
+<p><a href="https://www.cnblogs.com/twzheng/p/5923642.html" target="_blank" rel="external">Java 字符串拼接 五种方法的性能</a>  </p>
+<p><a href="https://blog.csdn.net/yzhou86/article/details/79156458" target="_blank" rel="external">幂等性，RocketMQ解决消息顺序和重复，Mysql与Java中的乐观锁悲观锁</a>   </p>
+<p><a href="https://www.cnblogs.com/dawn-and-night/p/7240280.html" target="_blank" rel="external">高并发处理方案</a>  </p>
+<p><a href="https://blog.csdn.net/bigtree_3721/article/details/72763135" target="_blank" rel="external">Spring - 几种RPC模型的使用与比较</a>  </p>
+<p> 1 面试题：Dubbo中zookeeper做注册中心，如果注册中心集群都挂掉，发布者和订阅者之间还能通信么？<br>可以的，启动dubbo时，消费者会从zk拉取注册的生产者的地址接口等数据，缓存在本地。每次调用时，按照本地存储的地址进行调用</p>
+<p>注册中心对等集群，任意一台宕掉后，会自动切换到另一台<br>注册中心全部宕掉，服务提供者和消费者仍可以通过本地缓存通讯<br>服务提供者无状态，任一台 宕机后，不影响使用<br>服务提供者全部宕机，服务消费者会无法使用，并无限次重连等待服务者恢复<br>2 dubbo连接注册中心和直连的区别<br>在开发及测试环境下，经常需要绕过注册中心，只测试指定服务提供者，这时候可能需要点对点直连，<br>点对点直联方式，将以服务接口为单位，忽略注册中心的提供者列表，</p>
+<p>服务注册中心，动态的注册和发现服务，使服务的位置透明，并通过在消费方获取服务提供方地址列表，实现软负载均衡和Failover， 注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。<br>服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。注册中心负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，服务消费者向注册中心获取服务提供者地址列表，并根据负载算法直接调用提供者，注册中心，服务提供者，服务消费者三者之间均为长连接，监控中心除外，注册中心通过长连接感知服务提供者的存在，服务提供者宕机，注册中心将立即推送事件通知消费者<br>注册中心和监控中心全部宕机，不影响已运行的提供者和消费者，消费者在本地缓存了提供者列表<br>注册中心和监控中心都是可选的，服务消费者可以直连服务提供者</p>
+<p>3、Dubbo在安全机制方面是如何解决的<br>Dubbo通过Token令牌防止用户绕过注册中心直连，然后在注册中心上管理授权。Dubbo还提供服务黑白名单，来控制服务所允许的调用方。</p>
+<p><a href="https://www.aliyun.com/jiaocheng/1106559.html" target="_blank" rel="external">缓存更新模式（策略）</a>  </p>
+<p><a href="https://blog.csdn.net/championhengyi/article/details/53490549" target="_blank" rel="external">Java—什么时候需要重写equals方法？为什么重写equals方法，一定要重写HashCode方法？</a>  </p>
+<p>Object类的方法，逐个解释一下（clone,hashCode,equals,wait,finalize,notify）<br><a href="https://blog.csdn.net/yx0628/article/details/79397140?utm_source=blogxgwz1" target="_blank" rel="external">Java.lang.Object类方法分析</a><br><a href="https://www.cnblogs.com/myseries/p/7435395.html" target="_blank" rel="external">java.lang包【Object类】</a>  </p>
+<p> <a href="https://www.cnblogs.com/sunddenly/p/4106562.html" target="_blank" rel="external">线程的生命周期</a>  </p>
+<p> <a href="https://www.cnblogs.com/Downtime/p/7806261.html" target="_blank" rel="external">Python和Java的区别</a>  </p>
+<p> <a href="https://www.cnblogs.com/cxrz/p/8529587.html" target="_blank" rel="external">分布式Session的几种实现方式</a>  </p>
+<p>悲观锁：总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。再比如Java里面的同步原语synchronized关键字的实现也是悲观锁。</p>
+<p>　　乐观锁：顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库提供的类似于write_condition机制，其实都是提供的乐观锁。在Java中java.util.concurrent.atomic包下面的原子变量类就是使用了乐观锁的一种实现方式CAS实现的。</p>
+<p>java有四个修饰符，分别为public/protected/default/private，这四个修饰符的权限范围是不一样的。</p>
+<pre><code> public修饰的成员，在同类、同包、子类（继承自本类）、其他包中都可以访问。
+
+ protected修饰的成员，在同类、同包、子类中可以访问，但是在其他包中不能访问。
+
+ default修饰的成员，在同类、同包中可以访问，但是在其他包中不管是不是子类都不能够访问。
+
+ private修饰的成员，只能在同类中被访问，而在同包、子类和其他包中是不能访问的。
+
+    另外需要说明的是，public和default一样都可以修饰任何类而且类名必须和文件名相同。而protected和private都不可以修饰类。  
+</code></pre><p><a href="https://blog.csdn.net/qingtian211/article/details/81316067" target="_blank" rel="external">AQS工作原理分析</a><br><a href="https://blog.csdn.net/ym123456677/article/details/80381354" target="_blank" rel="external">AQS实现原理 </a>   </p>
+<ol>
+<li>高并发系统，海量数据分库分表的策略<br><a href="https://825635381.iteye.com/blog/2368838" target="_blank" rel="external">海量数据存储—分库分表策略详解</a>  </li>
+<li>数据库前面的Redis缓存，如何实现查询的负载均衡（这里扯出了布隆过滤器及其哈希函数冗余）<br><a href="https://blog.csdn.net/u013699800/article/details/38850095" target="_blank" rel="external">redis缓存集群及集群负载均衡方案设计</a>  </li>
+</ol>
+<p><a href="https://www.cnblogs.com/ityouknow/p/5714703.html" target="_blank" rel="external">jvm系列(四):jvm调优-命令大全</a>  </p>
+<p>出现死锁怎么排查？<br><a href="https://www.cnblogs.com/aflyun/p/9194104.html" target="_blank" rel="external">Java死锁排查和Java CPU 100% 排查的步骤整理</a><br>如果查看堆内存信息？<br><a href="https://blog.csdn.net/infoflow/article/details/78160669" target="_blank" rel="external">使用jmap查看堆和对象的信息</a><br>出现OOM怎么排查问题？<br><a href="http://blog.sina.com.cn/s/blog_73b4b91f0102wze4.html" target="_blank" rel="external">如何快速定位OOM问题</a>  </p>
+<p>.讲下跳表怎么实现的<br><a href="https://blog.csdn.net/u014427196/article/details/52454462" target="_blank" rel="external">跳跃表 SkipList【数据结构】原理及实现</a><br>16.哈夫曼编码是怎么回事  </p>
+<p>17.非递归且不用额外空间（不用栈），如何遍历二叉树<br><a href="https://blog.csdn.net/cyuyanenen/article/details/51620559" target="_blank" rel="external">二叉树的非递归遍历（不用栈、O(1)空间）</a></p>
 
         
       </div>
@@ -485,7 +489,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
