@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Class," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 Java平台无关性Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。 平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！Java源代码首先需要使用J">
+<meta name="keywords" content="Java,Class">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java虚拟机之Class文件">
+<meta property="og:url" content="http://yoursite.com/2018/12/27/Java-JVM-Class/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="1 Java平台无关性Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。 平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！Java源代码首先需要使用J">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/class_word_table.png">
+<meta property="og:updated_time" content="2018-12-27T06:50:48.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java虚拟机之Class文件">
+<meta name="twitter:description" content="1 Java平台无关性Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。 平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！Java源代码首先需要使用J">
+<meta name="twitter:image" content="http://yoursite.com/images/class_word_table.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/27/Java-JVM-Class/"/>
+
+
+
+
+
+  <title>Java虚拟机之Class文件 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/27/Java-JVM-Class/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java虚拟机之Class文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-27T14:20:45+08:00">
+                2018-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-Java平台无关性"><a href="#1-Java平台无关性" class="headerlink" title="1 Java平台无关性"></a>1 Java平台无关性</h2><p>Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。 平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！Java源代码首先需要使用Javac编译器编译成class文件，然后启动JVM执行class文件，从而程序开始运行。 也就是JVM只认识class文件，它并不管何种语言生成了class文件，只要class文件符合JVM的规范就能运行。 </p>
+<a id="more"></a>
+<h2 id="2-Class文件结构"><a href="#2-Class文件结构" class="headerlink" title="2 Class文件结构"></a>2 Class文件结构</h2><p>class文件是而二进制文件，它的内容具有严格的规范，文件中没有任何空格，全是连续的0/1。class文件中的所有内容被分为两种类型：无符号数和表。</p>
+<ul>
+<li>无符号数<br>它表示class文件中的值，这些值没有任何类型，但是有不同的长度。根据这些值得长度的不同分为：u1、u2、u4、u8，分别代表1字节的无符号数、2字节的无符号数、4字节的无符号数、8字节的无符号数。  </li>
+<li>表<br>class文件中所有数据（即无符号数）要么单独存在，要么由多个无符号数组成二维表。即class文件中的数据要么是单个值，要么是二维表。</li>
+</ul>
+<p>其组织结构如下：</p>
+<ol>
+<li>魔数</li>
+<li>本文件的版本信息</li>
+<li>常量池</li>
+<li>访问标记</li>
+<li>类索引</li>
+<li>父类索引</li>
+<li>接口索引集合</li>
+<li>字段表集合</li>
+<li>方法表集合</li>
+</ol>
+<h3 id="2-1-魔数"><a href="#2-1-魔数" class="headerlink" title="2.1 魔数"></a>2.1 魔数</h3><p>class文件的头4个字节称为魔数，用来表示这个class文件的类型。魔数的作用就相当于文件后缀名，只不过后缀名容易被修改，不安全，因此在class文件中标示文件类型比较合适。class文件的魔数是用16进制表示的“CAFEBABE”。</p>
+<h3 id="2-2-版本信息"><a href="#2-2-版本信息" class="headerlink" title="2.2 版本信息"></a>2.2 版本信息</h3><p>紧接着魔数的4个字节是版本号。它表示本class中使用的是哪个版本的JDK。在高版本的JVM上能够运行低版本的class文件，但在低版本的JVM上无法运行高版本的class文件，即使该class文件中没有用到任何高版本JDK的特性也无法运行！ </p>
+<h3 id="2-3-常量池"><a href="#2-3-常量池" class="headerlink" title="2.3 常量池"></a>2.3 常量池</h3><h4 id="2-3-1-定义"><a href="#2-3-1-定义" class="headerlink" title="2.3.1 定义"></a>2.3.1 定义</h4><p>紧接着版本号之后的就是常量池，常量池中存放两种类型的常量：</p>
+<ol>
+<li>字面值常量：字面值常量即我们在程序定义的字符串、被final修饰的值；</li>
+<li>符号引用：符号引用就是我们定义的各种名字，包括类和符号的全限定名、字段的名字和描述符、方法的名字和描述符。</li>
+</ol>
+<h4 id="2-3-2-特点"><a href="#2-3-2-特点" class="headerlink" title="2.3.2 特点"></a>2.3.2 特点</h4><ul>
+<li>常量池长度不固定<br>常量池的大小是不固定的，因此常量池开头放置一个u2类型的无符号数，用来存储当前常量池的容量。JVM根据这个值就知道常量池的头尾来。<br>注：这个值是从1开始的，若为5表示池中有4个常量。  </li>
+<li>常量池中的常量由二维表来表示<br>常量池开头有个常量池容量计数器，接下来就全是一个个常量了，只不过常量都是由一张张二维表构成，除了记录常量的值以外，还记录当前常量的相关信息。  </li>
+<li>常量池是class文件的资源仓库</li>
+<li>常量池是与本class中其它部分关联最多的部分</li>
+<li>常量池是class文件中空间占用最大的部分之一 </li>
+</ul>
+<h4 id="2-3-3-常量池中常量的类型"><a href="#2-3-3-常量池中常量的类型" class="headerlink" title="2.3.3 常量池中常量的类型"></a>2.3.3 常量池中常量的类型</h4><p>量池中的常量大体上分为：字面值常量 和 符号引用。在此基础上，根据常量的数据类型不同，又可以被细分为14种常量类型。这14种常量类型都有各自的二维表示结构。每种常量类型的头1个字节都是tag，用于表示当前常量属于14种类型中的哪一个。</p>
+<p>【注】为什么Java中定义的类、变量名字必须小于64K？<br>类、接口、变量等名字都属于符号引用，它们都存储在常量池中。而不管哪种符号引用，它们的名字都由CONSTANT_Utf8_info类型的常量表示，这种类型的常量使用u2存储字符串的长度。由于2字节最多能表示65535个数，因此这些名字的最大长度最多只能是64K。</p>
+<h3 id="2-4-访问标记"><a href="#2-4-访问标记" class="headerlink" title="2.4 访问标记"></a>2.4 访问标记</h3><p>在常量池之后是2字节的访问标志。访问标志是用来表示这个class文件是类还是接口、是否被public修饰、是否被abstract修饰、是否被final修饰等。 由于这些标志都由是/否表示，因此可以用0/1表示。 访问标志为2字节，可以表示16位标志，但JVM目前只定义了8种，未定义的直接写0. </p>
+<h3 id="2-5-类索引、父类索引、接口索引集合"><a href="#2-5-类索引、父类索引、接口索引集合" class="headerlink" title="2.5 类索引、父类索引、接口索引集合"></a>2.5 类索引、父类索引、接口索引集合</h3><p>类索引、父类索引、接口索引集合是用来表示当前class文件所表示类的名字、父类名字、接口们的名字。 它们按照顺序依次排列，类索引和父类索引各自使用一个u2类型的无符号常量，这个常量指向CONSTANT_Class_info类型的常量，该常量的bytes字段记录了本类、父类的全限定名。 由于一个类的接口可能有好多个，因此需要用一个集合来表示接口索引，它在类索引和父类索引之后。这个集合头两个字节表示接口索引集合的长度，接下来就是接口的名字索引。 </p>
+<h3 id="2-6-字段表集合"><a href="#2-6-字段表集合" class="headerlink" title="2.6 字段表集合"></a>2.6 字段表集合</h3><h4 id="2-6-1-定义"><a href="#2-6-1-定义" class="headerlink" title="2.6.1 定义"></a>2.6.1 定义</h4><p>字段表集合用于存储本类所涉及到的成员变量，包括实例变量和类变量，但不包括方法中的局部变量。 每一个字段表只表示一个成员变量，本类中所有的成员变量构成了字段表集合。<br><img src="/images/class_word_table.png" alt=""></p>
+<ul>
+<li>access_flags<br>字段的访问标志。在Java中，每个成员变量都有一系列的修饰符，和上述class文件的访问标志的作用一样，只不过成员变量的访问标志与类的访问标志稍有区别。</li>
+<li>name_index<br>本字段名字的索引。指向一个CONSTANT_Class_info类型的常量，这里面存储了本字段的名字等信息。</li>
+<li>descriptor_index<br>描述符。用于描述本字段在Java中的数据类型等信息(下面详细介绍)</li>
+<li>attributes_count<br>属性表集合的长度。</li>
+<li>attributes<br>属性表集合。到descriptor_index为止是字段表的固定信息，光有上述信息可能无法完整地描述一个字段，因此用属性表集合来存放额外的信息，比如一个字段的值。</li>
+</ul>
+<h4 id="2-6-2-什么是描述符"><a href="#2-6-2-什么是描述符" class="headerlink" title="2.6.2 什么是描述符"></a>2.6.2 什么是描述符</h4><p>成员变量(包括静态成员变量和实例变量) 和 方法都有各自的描述符。<br>对于字段而言，描述符用于描述字段的数据类型；<br>对于方法而言，描述符用于描述字段的数据类型、参数列表、返回值。</p>
+<p>在描述符中，基本数据类型用大写字母表示，对象类型用“L对象类型的全限定名”表示，数组用“[数组类型的全限定名”表示。<br>描述方法时，将参数根据上述规则放在()中，()右侧按照上述方法放置返回值。而且，参数之间无需任何符号。</p>
+<h3 id="2-7-方法表的集合"><a href="#2-7-方法表的集合" class="headerlink" title="2.7 方法表的集合"></a>2.7 方法表的集合</h3><p>在class文件中，所有的方法以二维表的形式存储，每张表来表示一个函数，一个类中的所有方法构成方法表的集合。 方法表的结构和字段表的结构一致，只不过访问标志和属性表集合的可选项有所不同。方法表的属性表集合中有一张Code属性表，用于存储当前方法经编译器编译过后的字节码指令。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u010425776/article/details/51245055" target="_blank" rel="external"></a>  </p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/26/Java-Concurrent-Collections/" rel="next" title="Java并发编程之并发容器">
+                <i class="fa fa-chevron-left"></i> Java并发编程之并发容器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java平台无关性"><span class="nav-text">1 Java平台无关性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Class文件结构"><span class="nav-text">2 Class文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-魔数"><span class="nav-text">2.1 魔数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-版本信息"><span class="nav-text">2.2 版本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-常量池"><span class="nav-text">2.3 常量池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-定义"><span class="nav-text">2.3.1 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-特点"><span class="nav-text">2.3.2 特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-常量池中常量的类型"><span class="nav-text">2.3.3 常量池中常量的类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-访问标记"><span class="nav-text">2.4 访问标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-类索引、父类索引、接口索引集合"><span class="nav-text">2.5 类索引、父类索引、接口索引集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-字段表集合"><span class="nav-text">2.6 字段表集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-1-定义"><span class="nav-text">2.6.1 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-2-什么是描述符"><span class="nav-text">2.6.2 什么是描述符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-方法表的集合"><span class="nav-text">2.7 方法表的集合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
