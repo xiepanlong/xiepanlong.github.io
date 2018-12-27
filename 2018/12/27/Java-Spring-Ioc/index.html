@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,IOC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 基本概念1.1 IOC &amp;amp; DIIoC和DI是Spring的两个核心概念，很多人都把它们视为相同的东西，但事实并非如此。IoC(Inversion of Control)：控制反转。DI(Dependency Injection)：依赖注入。控制反转是目的，依赖注入是实现控制反转的手段。控制反转是一种面向对象的思想，它是一种宽泛的概念，只要一个类将对它内部状态的控制权交由其他机制去完成">
+<meta name="keywords" content="Java,IOC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-Spring-Ioc">
+<meta property="og:url" content="http://yoursite.com/2018/12/27/Java-Spring-Ioc/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="1 基本概念1.1 IOC &amp;amp; DIIoC和DI是Spring的两个核心概念，很多人都把它们视为相同的东西，但事实并非如此。IoC(Inversion of Control)：控制反转。DI(Dependency Injection)：依赖注入。控制反转是目的，依赖注入是实现控制反转的手段。控制反转是一种面向对象的思想，它是一种宽泛的概念，只要一个类将对它内部状态的控制权交由其他机制去完成">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/spring_ioc.png">
+<meta property="og:image" content="http://yoursite.com/images/spring_bean_life.png">
+<meta property="og:updated_time" content="2018-12-27T07:59:22.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java-Spring-Ioc">
+<meta name="twitter:description" content="1 基本概念1.1 IOC &amp;amp; DIIoC和DI是Spring的两个核心概念，很多人都把它们视为相同的东西，但事实并非如此。IoC(Inversion of Control)：控制反转。DI(Dependency Injection)：依赖注入。控制反转是目的，依赖注入是实现控制反转的手段。控制反转是一种面向对象的思想，它是一种宽泛的概念，只要一个类将对它内部状态的控制权交由其他机制去完成">
+<meta name="twitter:image" content="http://yoursite.com/images/spring_ioc.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/27/Java-Spring-Ioc/"/>
+
+
+
+
+
+  <title>Java-Spring-Ioc | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/27/Java-Spring-Ioc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java-Spring-Ioc</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-27T15:01:41+08:00">
+                2018-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1 基本概念"></a>1 基本概念</h2><h3 id="1-1-IOC-amp-DI"><a href="#1-1-IOC-amp-DI" class="headerlink" title="1.1 IOC &amp; DI"></a>1.1 IOC &amp; DI</h3><p>IoC和DI是Spring的两个核心概念，很多人都把它们视为相同的东西，但事实并非如此。IoC(Inversion of Control)：控制反转。DI(Dependency Injection)：依赖注入。<strong>控制反转是目的，依赖注入是实现控制反转的手段。</strong>控制反转是一种面向对象的思想，它是一种宽泛的概念，只要一个类将对它内部状态的控制权交由其他机制去完成即为『控制反转』。控制反转是为了降低类与类之间的耦合度。而Spring采用依赖注入这一具体的手段来达到控制反转的目的。<br><a id="more"></a></p>
+<h3 id="1-2-面向接口编程"><a href="#1-2-面向接口编程" class="headerlink" title="1.2 面向接口编程"></a>1.2 面向接口编程</h3><p>一个类依赖其他类的目的是为了获取其他类所提供的服务，可能这种服务有多种实现，我们可能需要根据不同的场景使用不同的实现。此时，我们可以使用多态，将同一功能的多种实现抽象出一个接口，并为所有实现定义一套相同的API。在使用时声明接口类型的变量而非实现类的变量，并将实现类的对象赋给接口变量，最后用接口变量去调用实现类的服务。若某一类服务有多种不同的实现，我们需要抽象出一个接口，并在接口中定义一套API。在使用时声明接口类型变量，并用实现类的对象赋值。接下来通过接口类型的变量调用服务即可。当功能发生变化时，仅需替换实现类即可。  </p>
+<p><strong>在面向接口编程的基础上使用依赖注入的好处</strong><br>上述过程如果要换一种实现，就必须要修改A类的代码，再重新编译。而使用了依赖注入后，由于依赖类不需要自己创建维护被依赖对象，该过程由IoC Service Provider完成。因此，当需要替换实现类时，只需在IoC Service Provider中修改，被依赖类、依赖类都不会受到影响，此时这两个类是松耦合的。</p>
+<h3 id="1-3-依赖注入的实现方式"><a href="#1-3-依赖注入的实现方式" class="headerlink" title="1.3 依赖注入的实现方式"></a>1.3 依赖注入的实现方式</h3><ol>
+<li><p>构造器方式<br>将被依赖对象通过构造函数的参数注入给依赖对象，并且在初始化对象的时候注入。<br>优点：<br>对象初始化完成后便可获得可使用的对象。<br>缺点：<br>当需要注入的对象很多时，构造器参数列表将会很长；<br>不够灵活。若有多种注入方式，每种方式只需注入指定几个依赖，那么就需要提供多个重载的构造函数，麻烦。  </p>
+</li>
+<li><p>setter方法注入<br>IoC Service Provider通过调用成员变量提供的setter函数将被依赖对象注入给依赖类。<br>优点：<br>灵活。可以选择性地注入需要的对象。<br>缺点：<br>依赖对象初始化完成后由于尚未注入被依赖对象，因此还不能使用。  </p>
+</li>
+<li><p>接口注入：侵入性太强不建议使用</p>
+</li>
+</ol>
+<h2 id="2-IoC容器的实现"><a href="#2-IoC容器的实现" class="headerlink" title="2 IoC容器的实现"></a>2 IoC容器的实现</h2><p>Spring有两种IoC容器，分别为BeanFactory以及ApplicationContext。</p>
+<ol>
+<li>BeanFactory<br>BeanFactory是基础类型的IoC容器，采用延迟初始化策略（容器初始化完成后并不会创建Bean对象，只有当收到初始化请求时才进行出初始化）；由于采用延迟初始化策略，其启动速度较快，占用资源少；</li>
+<li>ApplicationContext<br>在BeanFactory的基础上，增加了更为高级的应用场景：事件发布、国际化等；ApplicationContext在容器启动时便完成所有Bean的创建；其启动时间长，占用资源多。</li>
+</ol>
+<h3 id="2-1-IoC容器的主要类-接口介绍"><a href="#2-1-IoC容器的主要类-接口介绍" class="headerlink" title="2.1 IoC容器的主要类/接口介绍"></a>2.1 IoC容器的主要类/接口介绍</h3><p><img src="/images/spring_ioc.png" alt="">  </p>
+<ul>
+<li>BeanFactory<br>它是一个接口，提供了获取容器中Bean的相关方法。  </li>
+<li>BeanDefinitionRegistry<br>它才是IoC的容器，用于存储、管理所有的Bean对象。  </li>
+<li>DefaultListableBeanFactory<br>它是IoC容器的一个具体实现，实现了BeanFactory和BeanDefinitionRegistry接口，因此既拥有管理Bean的容器，又拥有访问Bean的方法。  </li>
+<li>BeanDefinition<br>每一个Bean都有一个BeanDefinition与之对应，用于存储Bean的相关信息：对象的class类型、是否是抽象类、构造方法参数等。<br>RootBeanDefinition和ChildBeanDefinition是BeanDefinition的两个主要的实现类。</li>
+<li>BeanDefinitionReader<br>在Spring中，标注Bean的依赖关系有四中方式：<br>(1)直接在代码中声明<br>(2)通过XML文件声明<br>(3)通过Properties文件声明<br>(4)通过注解声明   </li>
+</ul>
+<p>BeanDefinitionReader接口的作用就是读取配置文件中的bean信息，把它们解析成BeanDefinition对象，然后注册BeanDefinitionRegistry中去。PropertiesBeanDefinitionReader和XmlBeanDefinitionReader是该接口的两个实现类，分别用于解析properties和xml格式的配置文件。XmlBeanFactory它是一个集成了XmlBeanDefinitionReader功能的BeanFactory，用于简化初始化操作。</p>
+<h3 id="2-2-BeanFactory的两个重要阶段"><a href="#2-2-BeanFactory的两个重要阶段" class="headerlink" title="2.2 BeanFactory的两个重要阶段"></a>2.2 BeanFactory的两个重要阶段</h3><ol>
+<li><p>容器启动阶段<br>该阶段Spring会使用BeanDefinitionReader加载配置文件，并把所有的bean解析成BeanDefinition对象，并注册到BeanDefinitionRegistry。</p>
+</li>
+<li><p>Bean实例化阶段<br>对于BeanFactory容器，当调用者主动调用getBean方法或者因存在依赖关系容器隐式调用getBean时，如果当前Bean尚未初始化，或者bean配置成prototype，就会触发Bean实例的初始化。</p>
+</li>
+</ol>
+<h3 id="2-3-容器扩展机制"><a href="#2-3-容器扩展机制" class="headerlink" title="2.3 容器扩展机制"></a>2.3 容器扩展机制</h3><p>pring提供了BeanFactoryPostProcessor这种容器扩展机制，它允许我们在容器启动完成后、Bean实例化前插入额外的操作。<br>BeanFactoryPostProcessor提供了三个实现类：  </p>
+<ol>
+<li><p>PropertyPlaceholderConfigurer<br>一般情况下，我们并不会将数据库连接信息直接写死在dataSource这个bean中，而是将它们单独写在一个properties文件中，这样易于修改与阅读。而bean中使用占位符代替这些属性值，当容器启动完成后，在Bean初始化前用properties文件中的值替换占位符，再创建对象。PropertyPlaceholderConfigurer就能实现这样的功能。  </p>
+</li>
+<li><p>PropertyOverrideConfigurer<br>它的功能与PropertyPlaceholderConfigurer类似，也需要指定一个properties文件，只不过它会用配置文件中设置的那些bean的属性值替换指定bean的属性值。  </p>
+</li>
+</ol>
+<p>3.CustomEditorConfigurer<br>该类用于向Spring容器增添自定义的PropertyEditor对象。容器启动结束后bean创建之前，配置文件中所有的bean都被解析成BeanDefinition对象，该对象中关于bean所有的信息都是String类型的，若要创建bean对象，就需要将这些String类型的信息解析成它们原本的类型。在Spring中，每种类型都有对应一个PropertyEditor类，该类中封装了String与该类型的转换方法。当然，对于某些类型Spring并未提供相应的PropertyEditor时，我们可以自定义PropertyEditor，并使用CustomEditorConfigurer将其告诉Spring容器，让它在遇到该类型的时候采用我们自定义的PropertyEditor去解析。</p>
+<h2 id="3-Bean的生命周期"><a href="#3-Bean的生命周期" class="headerlink" title="3 Bean的生命周期"></a>3 Bean的生命周期</h2><p><img src="/images/spring_bean_life.png" alt="">    </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u010425776/article/details/55269848" target="_blank" rel="external">深入剖析Spring(一)——IoC的基本概念</a><br><a href="https://blog.csdn.net/u010425776/article/details/55269888" target="_blank" rel="external">深入剖析Spring(二)——IoC容器的实现</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/27/Java-JVM-Class/" rel="next" title="Java虚拟机之Class文件">
+                <i class="fa fa-chevron-left"></i> Java虚拟机之Class文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-基本概念"><span class="nav-text">1 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-IOC-amp-DI"><span class="nav-text">1.1 IOC & DI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-面向接口编程"><span class="nav-text">1.2 面向接口编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-依赖注入的实现方式"><span class="nav-text">1.3 依赖注入的实现方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IoC容器的实现"><span class="nav-text">2 IoC容器的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-IoC容器的主要类-接口介绍"><span class="nav-text">2.1 IoC容器的主要类/接口介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-BeanFactory的两个重要阶段"><span class="nav-text">2.2 BeanFactory的两个重要阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-容器扩展机制"><span class="nav-text">2.3 容器扩展机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Bean的生命周期"><span class="nav-text">3 Bean的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

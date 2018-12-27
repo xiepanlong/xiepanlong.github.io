@@ -76,7 +76,7 @@
 <meta property="og:description" content="1 Java平台无关性Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。 平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！Java源代码首先需要使用J">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/class_word_table.png">
-<meta property="og:updated_time" content="2018-12-27T06:50:48.530Z">
+<meta property="og:updated_time" content="2018-12-27T07:13:54.191Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java虚拟机之Class文件">
 <meta name="twitter:description" content="1 Java平台无关性Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。 平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！Java源代码首先需要使用J">
@@ -390,7 +390,7 @@
 <h4 id="2-6-2-什么是描述符"><a href="#2-6-2-什么是描述符" class="headerlink" title="2.6.2 什么是描述符"></a>2.6.2 什么是描述符</h4><p>成员变量(包括静态成员变量和实例变量) 和 方法都有各自的描述符。<br>对于字段而言，描述符用于描述字段的数据类型；<br>对于方法而言，描述符用于描述字段的数据类型、参数列表、返回值。</p>
 <p>在描述符中，基本数据类型用大写字母表示，对象类型用“L对象类型的全限定名”表示，数组用“[数组类型的全限定名”表示。<br>描述方法时，将参数根据上述规则放在()中，()右侧按照上述方法放置返回值。而且，参数之间无需任何符号。</p>
 <h3 id="2-7-方法表的集合"><a href="#2-7-方法表的集合" class="headerlink" title="2.7 方法表的集合"></a>2.7 方法表的集合</h3><p>在class文件中，所有的方法以二维表的形式存储，每张表来表示一个函数，一个类中的所有方法构成方法表的集合。 方法表的结构和字段表的结构一致，只不过访问标志和属性表集合的可选项有所不同。方法表的属性表集合中有一张Code属性表，用于存储当前方法经编译器编译过后的字节码指令。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u010425776/article/details/51245055" target="_blank" rel="external"></a>  </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u010425776/article/details/51245055" target="_blank" rel="external">深入理解JVM(七)——Class文件结构 </a>  </p>
 
       
     </div>
@@ -432,6 +432,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/27/Java-Spring-Ioc/" rel="prev" title="Java-Spring-Ioc">
+                Java-Spring-Ioc <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -511,7 +515,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -533,7 +537,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
