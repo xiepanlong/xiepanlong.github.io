@@ -78,7 +78,7 @@
 <meta property="og:image" content="http://yoursite.com/images/concurrent_list.png">
 <meta property="og:image" content="http://yoursite.com/images/concurrent_map.png">
 <meta property="og:image" content="http://yoursite.com/images/concurrent_queue.png">
-<meta property="og:updated_time" content="2018-12-26T07:08:29.906Z">
+<meta property="og:updated_time" content="2018-12-27T02:36:39.345Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程之并发容器">
 <meta name="twitter:description" content="1 综述本片博客主要介绍Java并发容器，主要从实现原理和使用场景来进行总结。Java包中提供的并发容器如下：">
@@ -363,13 +363,85 @@
 <li>LinkedBlockingQueue：链表实现的阻塞队列。</li>
 <li>LinkedBlockingDeque：双向链表实现的双端阻塞队列。</li>
 </ul>
-<h2 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2 实现原理"></a>2 实现原理</h2><h2 id="2-1-CopyOnWrite容器（写时复制容器）"><a href="#2-1-CopyOnWrite容器（写时复制容器）" class="headerlink" title="2.1 CopyOnWrite容器（写时复制容器）"></a>2.1 CopyOnWrite容器（写时复制容器）</h2><ol>
+<h2 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2 实现原理"></a>2 实现原理</h2><h3 id="2-1-CopyOnWrite容器（写时复制容器）"><a href="#2-1-CopyOnWrite容器（写时复制容器）" class="headerlink" title="2.1 CopyOnWrite容器（写时复制容器）"></a>2.1 CopyOnWrite容器（写时复制容器）</h3><ol>
 <li>特点：<br>适用于读操作远远多于写操作，并且数据量较小的情况；<br>修改容器的代价很高，因此建议批量添加addAll、批量删除removeAll。  </li>
 <li>如何保证线程安全：<br>使用volatile修饰数组引用：确保数组引用的内存可见性；<br>对容器的修改改操作进行同步：从而确保同意时刻只能有一条线程修改容器（因为修改容器会产生新的容器，增加同步可以避免同一时刻复制产生多个容器，从而无法保证数组数据的一致性）；<br>修改时复制容器：确保所有的修改操作都作用在新数组上，原本的数组在创建之后就用不变化，从而其他线程可以放心的读。  </li>
-<li>优点与缺点<br>优点：读操作无需加锁，非常高效；<br>缺点：<br>（1）数据一致性问题：由于迭代的是容器当前的快照，因此在迭代过程中容器发生的修改并不能实时被当前正在迭代的线程感知；<br>（2）内存占用问题：由于修改容器都会复制数组，从而</li>
-<li></li>
+<li>优点与缺点<br>优点：读操作无需加锁，非常高效；<br>缺点：<br>（1）数据一致性问题：由于迭代的是容器当前的快照，因此在迭代过程中容器发生的修改并不能实时被当前正在迭代的线程感知；<br>（2）内存占用问题：由于修改容器都会复制数组，从而当数组超大时修改容器效率很低。也正因此写时复制容器适合存储小容量数据。</li>
 </ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u010425776/article/details/54890215" target="_blank" rel="external">Java并发容器大合集</a>   </p>
+<h3 id="2-2-ConcurrentSkipListMap"><a href="#2-2-ConcurrentSkipListMap" class="headerlink" title="2.2 ConcurrentSkipListMap"></a>2.2 ConcurrentSkipListMap</h3><p>它是一个有序的Map，相当于TreeMap。TreeMap采用红黑树实现排序，而ConcurrentSkipListMap采用跳表实现有序。  </p>
+<p>【注】跳表<br>跳表是条有序的单链表，它的每个节点都有多个指向后继节点的引用。它有多个层次，上层都是下层的子集，从而能跳过不必要的节点，提升搜索速度。它通过空间来换取时间。作用：存储有序序列，并且实现高效的查找与插入删除。  </p>
+<h3 id="2-3-ConcurrentSkipListSet"><a href="#2-3-ConcurrentSkipListSet" class="headerlink" title="2.3 ConcurrentSkipListSet"></a>2.3 ConcurrentSkipListSet</h3><p>它是一个有序的、线程安全的Set，相当于线程安全的TreeSet。它内部拥有ConcurrentSkipListMap实例，本质上就是一个ConcurrentSkipListMap，只不过仅使用了Map中的key。</p>
+<h3 id="2-4-ArrayBlockingQueue"><a href="#2-4-ArrayBlockingQueue" class="headerlink" title="2.4 ArrayBlockingQueue"></a>2.4 ArrayBlockingQueue</h3><p>ArrayBlockingQueue是一个数组实现的、线程安全的、有限、阻塞队列。</p>
+<ul>
+<li>ArrayBlockingQueue继承自AbstractQueue，并实现了BlockingQueue接口。</li>
+<li>ArrayBlockingQueue内部由Object数组存储元素，构造时必须要指定队列容量。</li>
+<li>ArrayBlockingQueue由ReentrantLock实现队列的互斥访问，并由notEmpty、notFull这两个Condition分别实现队空、队满的阻塞。</li>
+<li>ReentrantLock分为公平锁和非公平锁，可以在构造ArrayBlockingQueue时指定。默认为非公平锁。</li>
+</ul>
+<p>【注】队满、队空阻塞唤醒的原理<br><strong>队满阻塞</strong>：当添加元素时，若队满，则调用notFull.await()阻塞当前线程；当移除一个元素时调用notFull.signal()唤醒在notFull上等待的线程。<br><strong>队空阻塞</strong>：当删除元素时，若队为空，则调用notEmpty.await()阻塞当前线程；当队首添加元素时，调用notEmpty.signal()唤醒在notEmpty上等待的线程。  </p>
+<h3 id="2-5-LinkedBlockingQueue"><a href="#2-5-LinkedBlockingQueue" class="headerlink" title="2.5 LinkedBlockingQueue"></a>2.5 LinkedBlockingQueue</h3><p>LinkedBlockingQueue是一个 单链表实现的、线程安全的、无限阻塞队列。 </p>
+<ul>
+<li>LinkedBlockingQueue继承自AbstractQueue，实现了BlockingQueue接口。</li>
+<li>LinkedBlockingQueue由单链表实现，因此是个无限队列。但为了方式无限膨胀，构造时可以加上容量加以限制。</li>
+<li>LinkedBlockingQueue分别采用读取锁和插入锁控制读取/删除 和 插入过程的并发访问，并采用notEmpty和notFull两个Condition实现队满队空的阻塞与唤醒。</li>
+</ul>
+<p>【注】队满队空阻塞唤醒的原理  </p>
+<ul>
+<li>队满阻塞：<br>若要插入元素，首先需要获取putLock；在此基础上，若此时队满，则调用notFull.await()，阻塞当前线程；当移除一个元素后调用notFull.signal()唤醒在notFull上等待的线程；最后，当插入操作完成后释放putLock。  </li>
+<li>队空阻塞：<br>若要删除/获取元素，首先要获取takeLock；在此基础上，若队为空，则调用notEmpty.await()，阻塞当前线程；当插入一个元素后调用notEmpty.signal()唤醒在notEmpty上等待的线程；最后，当删除操作完成后释放takeLock。  </li>
+</ul>
+<h3 id="2-6-LinkedBlockingDeque"><a href="#2-6-LinkedBlockingDeque" class="headerlink" title="2.6 LinkedBlockingDeque"></a>2.6 LinkedBlockingDeque</h3><p>它是一个由双向链表实现的、线程安全的、 双端无限阻塞队列。</p>
+<h3 id="2-7-ConcurrentLinkedQueue"><a href="#2-7-ConcurrentLinkedQueue" class="headerlink" title="2.7 ConcurrentLinkedQueue"></a>2.7 ConcurrentLinkedQueue</h3><p>它是一个由单链表实现的、线程安全的、无限队列。它仅仅继承了AbstractQueue，并未实现BlockingQueue接口，而是实现了Queue借口，因此它不是阻塞队列，仅仅是个线程安全的普通队列。<br>【注】特性<br>head、tail、next、item均使用volatile修饰，保证其内存可见性，并未使用锁，从而提高并发效率。  </p>
+<p>PS：它究竟是怎样在不使用锁的情况下实现<strong>线程安全</strong>的？<br>（1）线程安全的入队,offer这个方法是用来入队列的  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(E e)</span> </span>&#123;</div><div class="line">   <span class="comment">// 0.这里是检查入队列前要插入的节点是不是为空</span></div><div class="line">    checkNotNull(e);</div><div class="line">   <span class="comment">// 1. 这是入队前，先创建一个入队节点</span></div><div class="line">    <span class="keyword">final</span> Node&lt;E&gt; newNode = <span class="keyword">new</span> Node&lt;E&gt;(e);</div><div class="line">	<span class="comment">//2. 这里是一个死循环，如果入队不成功继续尝试入队</span></div><div class="line">    <span class="keyword">for</span> (Node&lt;E&gt; t = tail, p = t;;) &#123;</div><div class="line">    <span class="comment">//3.这里是判断尾节点给q，然后进行判空</span></div><div class="line">        Node&lt;E&gt; q = p.next;</div><div class="line">        <span class="keyword">if</span> (q == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">// 4. p表示尾节点，下面这句表示看尾节点的下一个节点是不是为空，</span></div><div class="line"><span class="comment">//casNext就表示P的下一个节点如果为空，就新建一个节点给尾节点的下一个节点（这个节点就是要入队的新节点），如果不为空，就不用管（说明已经有节点了）</span></div><div class="line">            <span class="keyword">if</span> (p.casNext(<span class="keyword">null</span>, newNode)) &#123;</div><div class="line"><span class="comment">//5.这个是判断尾节点和tail节点是不是指向的是同一个节点，这个是更新tail节点</span></div><div class="line">                <span class="keyword">if</span> (p != t) <span class="comment">// hop two nodes at a time</span></div><div class="line">                    casTail(t, newNode);  <span class="comment">// Failure is OK.</span></div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//(这里其实又是另外一种场景)说明p指向的节点的next也指向它自己，这种节点称之为哨兵节点，这种节点在队列中存在的价值不大，一般表示为要删除的节点或者是空节点</span></div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p == q)</div><div class="line">        </div><div class="line">            p = (t != (t = tail)) ? t : head;</div><div class="line">        <span class="keyword">else</span></div><div class="line">        	 <span class="comment">// Check for tail updates after two hops.</span></div><div class="line">            p = (p != t &amp;&amp; t != (t = tail)) ? t : q;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>入队列主要围绕着两步：</p>
+<ol>
+<li>把入队节点当成当前队列尾节点的下一个节点</li>
+<li>更新tail节点：（1）如果tail节点的下一个节点不为空，说明已经有了一个要入队的节点了，此时则将此时的入队节点设置为tail节点 ，例如下图中的添加元素1的图 （2）如果tail节点的下一个节点为空，例如添加元素2的图中，此时则将要入队列的节点设置为tail的下一个节点</li>
+<li>补充：因为如果在多线程的情况下，可能A线程刚完成第一步的操作，此时B线程过来了，看到tail节点已经发生了变化，这是A线程要准备操作第二更新tail节点的时候，此时A线程就会暂停入队操作，然后需要通过CAS重新获取尾节点</li>
+</ol>
+<p>（2）线程安全的出队， poll这个方法是用来出队列的  </p>
+<pre><code class="lang-java">public E poll() {
+    // 如果出现p被删除的情况需要从head重新开始
+    restartFromHead:
+    for (;;) {
+        for (Node&lt;E&gt; h = head, p = h, q;;) {
+            E item = p.item;
+
+            if (item != null &amp;&amp; p.casItem(item, null)) {
+                // Successful CAS is the linearization point
+                // for item to be removed from this queue.
+                if (p != h) // hop two nodes at a time
+                    updateHead(h, ((q = p.next) != null) ? q : p);
+                return item;
+            }
+            else if ((q = p.next) == null) {
+                // 队列为空
+                updateHead(h, p);
+                return null;
+            }
+            else if (p == q)
+                // 当一个线程在poll的时候，另一个线程已经把当前的p从队列中删除——将p.next = p，p已经被移除不能继续，需要重新开始
+                continue restartFromHead;
+            else
+                p = q;
+        }
+    }
+}
+
+final void updateHead(Node&lt;E&gt; h, Node&lt;E&gt; p) {
+    if (h != p &amp;&amp; casHead(h, p))
+        h.lazySetNext(h);
+}
+</code></pre>
+<p>出队的步骤：  </p>
+<ol>
+<li><p>如果当前head,h和p指向的节点的Item不为null的话，说明该节点即为真正的队头节点（待删除节点），只需要通过casItem方法将item域设置为null,然后将原来的item直接返回即可。</p>
+</li>
+<li><p>如果当前head,h和p指向的节点的item为null的话，则说明该节点不是真正的待删除节点，那么应该做的就是寻找item不为null的节点。通过让q指向p的下一个节点（q = p.next）进行试探，若找到则通过updateHead方法更新head指向的节点以及构造哨兵节点（通过updateHead方法的h.lazySetNext(h)）</p>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/u010425776/article/details/54890215" target="_blank" rel="external">Java并发容器大合集</a><br><a href="https://blog.csdn.net/qq_36520235/article/details/83243641" target="_blank" rel="external">如何理解线程安全的ConcurrentLinkedQueue队列的底层源码实现？</a></p>
 
       
     </div>
@@ -547,7 +619,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-综述"><span class="nav-text">1 综述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-List-amp-Set"><span class="nav-text">1.1 List & Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Map"><span class="nav-text">1.2 Map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Queue"><span class="nav-text">1.3 Queue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-实现原理"><span class="nav-text">2 实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-CopyOnWrite容器（写时复制容器）"><span class="nav-text">2.1 CopyOnWrite容器（写时复制容器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-综述"><span class="nav-text">1 综述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-List-amp-Set"><span class="nav-text">1.1 List & Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Map"><span class="nav-text">1.2 Map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Queue"><span class="nav-text">1.3 Queue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-实现原理"><span class="nav-text">2 实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-CopyOnWrite容器（写时复制容器）"><span class="nav-text">2.1 CopyOnWrite容器（写时复制容器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-ConcurrentSkipListMap"><span class="nav-text">2.2 ConcurrentSkipListMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-ConcurrentSkipListSet"><span class="nav-text">2.3 ConcurrentSkipListSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-ArrayBlockingQueue"><span class="nav-text">2.4 ArrayBlockingQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-LinkedBlockingQueue"><span class="nav-text">2.5 LinkedBlockingQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-LinkedBlockingDeque"><span class="nav-text">2.6 LinkedBlockingDeque</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-ConcurrentLinkedQueue"><span class="nav-text">2.7 ConcurrentLinkedQueue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
