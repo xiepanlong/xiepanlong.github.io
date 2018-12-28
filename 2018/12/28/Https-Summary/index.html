@@ -78,7 +78,7 @@
 <meta property="og:image" content="http://yoursite.com/images/encryption.jpeg">
 <meta property="og:image" content="http://yoursite.com/images/https_flow.png">
 <meta property="og:image" content="http://yoursite.com/images/num_ca.jpeg">
-<meta property="og:updated_time" content="2018-12-28T03:34:51.920Z">
+<meta property="og:updated_time" content="2018-12-28T03:37:36.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Https协议总结">
 <meta name="twitter:description" content="1 简介HTTP 协议（HyperText Transfer Protocol，超文本传输协议）：是客户端浏览器或其他程序与Web服务器之间的应用层通信协议 。HTTPS（全称：HyperText Transfer Protocol over Secure Socket Layer）：可以理解为HTTP+SSL/TLS， 即 HTTP 下加入 SSL 层，HTTPS 的安全基础是 SSL，因此加密">
@@ -364,7 +364,7 @@
 <p>4.服务器最后的回应<br>服务器这个时候和客户端一样生成对称密钥。然后发送以下消息：<br>（1）编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。<br>（2）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供客户端校验。  </p>
 <p>到这里客户端和服务器就可以进行https通信了。</p>
 <p>【注意】<br>非对称加密算法的性能是非常低的，原因在于寻找大素数、大数计算、数据分割需要耗费很多的CPU周期，所以一般的<strong>HTTPS连接只在第一次握手时使用非对称加密，通过握手交换对称加密密钥，在之后的通信走对称加密。</strong></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://baijiahao.baidu.com/s?id=1570143475599137&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">【HTTP】HTTPS 原理详解</a><br><a href="https://blog.csdn.net/suxiaotie/article/details/78007366" target="_blank" rel="external">https原理和建立的过程</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://baijiahao.baidu.com/s?id=1570143475599137&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">HTTPS原理详解</a><br><a href="https://blog.csdn.net/suxiaotie/article/details/78007366" target="_blank" rel="external">https原理和建立的过程</a></p>
 
       
     </div>
