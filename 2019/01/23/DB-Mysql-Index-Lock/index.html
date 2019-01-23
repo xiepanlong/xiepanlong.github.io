@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Database,Index,Lock," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。  为什么使用索引？索引能极大的减少存储引擎需要扫描的数据量；索引可以把随机IO改成顺序IO；索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。  索引数据结构的选择（1）为什么不能用平衡儿叉查找树？第一是因为太深：数据处的（高度）深度决定着它的IO操作次数，IO耗时大">
+<meta name="keywords" content="Database,Index,Lock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DB-Mysql-Index-Lock">
+<meta property="og:url" content="http://yoursite.com/2019/01/23/DB-Mysql-Index-Lock/index.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。  为什么使用索引？索引能极大的减少存储引擎需要扫描的数据量；索引可以把随机IO改成顺序IO；索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。  索引数据结构的选择（1）为什么不能用平衡儿叉查找树？第一是因为太深：数据处的（高度）深度决定着它的IO操作次数，IO耗时大">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/dirty_read.png">
+<meta property="og:image" content="http://yoursite.com/images/unrepeatable_read.png">
+<meta property="og:image" content="http://yoursite.com/images/huan_read.png">
+<meta property="og:image" content="http://yoursite.com/images/innodb_geli_class.png">
+<meta property="og:image" content="http://yoursite.com/images/testTable.png">
+<meta property="og:image" content="http://yoursite.com/images/solve_dirty_read.png">
+<meta property="og:image" content="http://yoursite.com/images/solve_unrepeatable_read.png">
+<meta property="og:image" content="http://yoursite.com/images/solve_huan_read.png">
+<meta property="og:updated_time" content="2019-01-23T12:42:56.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DB-Mysql-Index-Lock">
+<meta name="twitter:description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。  为什么使用索引？索引能极大的减少存储引擎需要扫描的数据量；索引可以把随机IO改成顺序IO；索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。  索引数据结构的选择（1）为什么不能用平衡儿叉查找树？第一是因为太深：数据处的（高度）深度决定着它的IO操作次数，IO耗时大">
+<meta name="twitter:image" content="http://yoursite.com/images/dirty_read.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/23/DB-Mysql-Index-Lock/"/>
+
+
+
+
+
+  <title>DB-Mysql-Index-Lock | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/23/DB-Mysql-Index-Lock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Panlong Xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/FitMan.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零柒 - Panlong Xie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DB-Mysql-Index-Lock</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-23T20:41:35+08:00">
+                2019-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> Views
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="正确的创建合适的索引，是提升数据库查询性能的基础。"><a href="#正确的创建合适的索引，是提升数据库查询性能的基础。" class="headerlink" title="正确的创建合适的索引，是提升数据库查询性能的基础。"></a>正确的创建合适的索引，是提升数据库查询性能的基础。</h3><ol>
+<li><p>定义：索引是为了<strong>加速</strong>对表中数据行的<strong>检索</strong>而创建的一种<strong>分散存储</strong>的<strong>数据结构</strong>。</p>
+</li>
+<li><p>为什么使用索引？<br>索引能极大的减少存储引擎需要扫描的数据量；<br>索引可以把随机IO改成顺序IO；<br>索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。</p>
+</li>
+<li><p>索引数据结构的选择<br>（1）为什么不能用平衡儿叉查找树？<br>第一是因为<strong>太深</strong>：数据处的（高度）深度决定着它的IO操作次数，IO耗时大；<br>第二是因为<strong>太小</strong>：每一个磁盘块（节点/页）保存的数据量太小了；没有很好的利用磁盘的预读的能力（空间局部性原理），从而带来频繁的IO操作。</p>
+</li>
+</ol>
+<p>（2）多路平衡查找树——B-Tree<br>（3）B+Tree<br>区别：<br>B+树节点关键字个数与子节点个数是1：1的关系，一般B<br>+树可以采用左闭区右开区间；<br>B+树非页节点不保存数据相关信息，只保存关键字和子节点的引用；<br>B+树关键字对应的数据保存在叶子节点中；<br>B+树叶子节点是顺序排列的，并且相邻节点具有顺序引用的关系。  </p>
+<ol>
+<li><p>为什么使用B+树？<br>B+树是B-树的变种，也是多路平衡查找树，它拥有B-树的优势；<br>B+树扫库能力更强；<br>B+树的磁盘读写能力更强；<br>B+树的排序能力更强；<br>B+树的查询效率更加稳定。</p>
+</li>
+<li><p>验证<br>索引列的数据长度能少则少；</p>
+</li>
+</ol>
+<h2 id="什么是事务"><a href="#什么是事务" class="headerlink" title="什么是事务"></a>什么是事务</h2><p>事务：数据库操作的最小工作单元，是作为单个逻辑工作单元执行的一系列操作；事务是一组不可再分割的操作集合（工作逻辑单元）</p>
+<h2 id="事务并发的三大问题"><a href="#事务并发的三大问题" class="headerlink" title="事务并发的三大问题"></a>事务并发的三大问题</h2><ol>
+<li><p>脏读：一个事务读取到了另一个未提交的事务的结果。<br><img src="/images/dirty_read.png" alt=""></p>
+</li>
+<li><p>不可重复读：一个事务中两次读取的数据不一致，可能是因为其他事务的修改(update/delete)已经提交。<br><img src="/images/unrepeatable_read.png" alt=""></p>
+</li>
+<li><p>幻读：  一个事务两次读取的结果行数不一致，可能是因为其他事务插入(insert)了一条新的记录。<br><img src="/images/huan_read.png" alt=""></p>
+</li>
+</ol>
+<p>总结：事务并发的三大问题其实都是数据库读一致性问题，必须由数据库提供一定的事务隔离机制来解决。</p>
+<h2 id="事务的四种隔离级别"><a href="#事务的四种隔离级别" class="headerlink" title="事务的四种隔离级别"></a>事务的四种隔离级别</h2><p>SQL92 ANSI/ISO标准：</p>
+<ol>
+<li>Read Uncommitted (未提交读) ——未解决任何并发问题<br>事务未提交的数据对其他事务也是可见的，会出现脏读；  </li>
+<li>Read Commited (读已提交) —— 解决脏读问题<br>一个事务开始之后，只能看到已提交的事务所做的修改，会出现不可重复读</li>
+<li>Repeatable Read（可重复读）—— 解决不可重复读问题；<br>在同一个事务中多次读取同样的数量的数据结果是一样的，这种隔离级别未定义解决幻读的问题；   </li>
+<li>Serializable （串行化） —— 解决所有问题<br>最高的隔离级别，通过强制事务的串行执行，解决了所有问题。</li>
+</ol>
+<h2 id="InnoDB对隔离级别的支持程度"><a href="#InnoDB对隔离级别的支持程度" class="headerlink" title="InnoDB对隔离级别的支持程度"></a>InnoDB对隔离级别的支持程度</h2><p><img src="/images/innodb_geli_class.png" alt=""></p>
+<h2 id="事务隔离级别的实现"><a href="#事务隔离级别的实现" class="headerlink" title="事务隔离级别的实现"></a>事务隔离级别的实现</h2><p>解决方案：  </p>
+<ol>
+<li>在读取数据前，对其加锁，阻止其他事务对数据进行修改（LBCC: Lock based concurrency control）;</li>
+<li>生成一个数据请求时间点的一致性数据快照（snapshot），并用这个快照提供一定级别（语句级或事务级）的一致性读取（MVCC: Multi-Version concurrency control）。</li>
+</ol>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h3 id="锁的力度"><a href="#锁的力度" class="headerlink" title="锁的力度"></a>锁的力度</h3><p>锁是用于管理不同事务对共享资源的并发<br>表锁与行锁的区别：<br>锁的力度：表锁 &gt; 行锁<br>锁的效率：表锁 &gt; 行锁<br>冲突概率：表锁 &gt; 行锁<br>并发性能：表锁 &lt; 行锁  </p>
+<p>MyISAM支持表锁<br>InnoDB支持行锁和表锁</p>
+<h3 id="MySql-InnoDB锁的类型"><a href="#MySql-InnoDB锁的类型" class="headerlink" title="MySql InnoDB锁的类型"></a>MySql InnoDB锁的类型</h3><p>共享锁（行锁）：Shared Locks<br>排他锁（行锁）：Exclusive Locks<br>意向共享锁（表锁）：Intention Shared Locks<br>意向拍他所（表锁）：Intention Exclusive Locks</p>
+<h3 id="行锁算法"><a href="#行锁算法" class="headerlink" title="行锁算法"></a>行锁算法</h3><p>记录锁 Record Locks<br>间隙锁 Gap Locks<br>临键锁 Next-key Locks</p>
+<h3 id="共享锁（S锁）"><a href="#共享锁（S锁）" class="headerlink" title="共享锁（S锁）"></a>共享锁（S锁）</h3><p>共享锁又称为读锁，简称S锁。顾明思议，共享锁就是多个事务对于同一数据可以共享一把锁，都能访问到数据，但是只能读不能修改；<br>注意不获取读锁的时候也是可以读取的。</p>
+<p>加锁/释锁方式：  LOCK IN SHARE MODE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM tableName WHERE id = 1 LOCK IN SHARE MODE;</div><div class="line">COMMIT/ROLLBACK;</div></pre></td></tr></table></figure>
+<h3 id="排他所（X锁）"><a href="#排他所（X锁）" class="headerlink" title="排他所（X锁）"></a>排他所（X锁）</h3><p>排他锁又称为写锁，简称X锁，排他锁不能与其他锁并存，如一个事务获取了一个数据行的排他锁，其他事务就不能再获取该行的锁（共享锁、排他锁），只有该获取了排他锁的事务是可以对数据进行读取和修改。</p>
+<p>加锁/释锁方式：  DELETE / UPDATE / INSERT / FOR UPDATE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">DELETE / UPDATE / INSERT -- 默认加上X锁, 自动加锁</div><div class="line">SELECT * FROM tableName WHERE id = 1 FOR UPDATE;  -- 手动加锁</div><div class="line">COMMIT/ROLLBACK;</div></pre></td></tr></table></figure>
+<h3 id="意向共享锁（IS）-意向排他锁（IX）"><a href="#意向共享锁（IS）-意向排他锁（IX）" class="headerlink" title="意向共享锁（IS）/ 意向排他锁（IX）"></a>意向共享锁（IS）/ 意向排他锁（IX）</h3><p>意向锁室友数据引擎自己维护的，用户无法手动操作意向锁，在为数据加共享/排他锁之前，InnoDB会先获取该数据行所在数据表的对应意向锁。</p>
+<p>意向共享锁：表示事务准备给数据行加入共享锁，也就是说一个数据行加共享锁前必须先取得该表的IS锁；<br>意向排他锁：表示事务准备给数据行加入排他锁，说明事务在一个数据行加排他锁前必须先取得该表的IX锁。</p>
+<p>【注】为什么需要表级别的意向锁？为了提高效率——我们能给一张表成功加上表锁的前提：没有其他任何事物已经锁定了这张表的某些行。因此如果没有意向锁，我们需要遍历所有行（全表扫描）来判断哪些行已经加上锁，这样的效率非常低。引入意向锁就解决了这个问题。</p>
+<h3 id="锁的原理——到底锁住了什么？——锁住索引来实现的。只要检索的时候索引失效，即没有通过索引去检索，那么这个查询将会锁住整个表。"><a href="#锁的原理——到底锁住了什么？——锁住索引来实现的。只要检索的时候索引失效，即没有通过索引去检索，那么这个查询将会锁住整个表。" class="headerlink" title="锁的原理——到底锁住了什么？——锁住索引来实现的。只要检索的时候索引失效，即没有通过索引去检索，那么这个查询将会锁住整个表。"></a>锁的原理——到底锁住了什么？——锁住索引来实现的。只要检索的时候索引失效，即没有通过索引去检索，那么这个查询将会锁住整个表。</h3><h3 id="行锁的算法——锁住了什么范围？"><a href="#行锁的算法——锁住了什么范围？" class="headerlink" title="行锁的算法——锁住了什么范围？"></a>行锁的算法——锁住了什么范围？</h3><p>几个概念：<br>针对数据库表testTable中结构如下。<br><img src="/images/testTable.png" alt=""><br>其中以id为主键。</p>
+<p>根据主键将id分为5（n+1）个范围：<br>（付无穷， 1）  1  （1， 4）  4 （4， 7）  7  （7， 11）  11  （11， 正无穷）  </p>
+<p>Record： 记录：{1, 4, 7, 11};<br>Gap:  间隙 （付无穷， 1）    （1， 4）   （4， 7）    （7， 11）    （11， 正无穷）<br>Next-Key:  记录锁+间隙锁：（付无穷， 1]    （1， 4]   （4， 7]    （7， 11]    （11， 正无穷）  </p>
+<ol>
+<li><p>临键锁（Next-Key Lock）：InnoDB默认的行锁算法——在使用范围查询的时候会使用该算法。<br>如下所示：select * from testTable where id &gt; 5 and id &lt; 9 for update;   —会锁住(4, 7]  (7, 11]，会锁住当前查询记录所在的左开右闭区间以及当前记录的下一个左开右闭的区间。<br>【注意】为什么InnoDB要选择临键锁作为默认的行锁算法？<br>为了解决幻读的问题，一定要锁住下一个左开右闭的区间，一共锁住两个区间。</p>
+</li>
+<li><p>间隙锁（Gap Lock）：当查询的记录不存在的时候，临键锁退化为间隙锁。<br>如下所示：</p>
+<blockquote>
+<p>select <em> from testTable where id &gt; 4 and id &lt; 7 for update;  — 锁住(4, 7)<br>select </em> from testTable where id = 6 for update; — 锁住(4, 7)<br>select * from testTable where id &gt; 20 for update; — 锁住(11,  正无穷)而不是锁住(20, 正无穷)</p>
+</blockquote>
+</li>
+</ol>
+<p>注意：Gap Lock只在RR事务隔离级别存在。  而且Gap锁之间对于select是不冲突的，但是对插入是冲突的。  </p>
+<ol>
+<li>记录锁（Record Lock）：对于唯一索引（主键/唯一）的等值查询，精确匹配，退化为Record Lock<br>如下所示：<blockquote>
+<p>select * from testTable where id = 4 for update; — 锁住id = 4的记录，只锁住当前的查询的记录。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="利用锁如何解决脏读"><a href="#利用锁如何解决脏读" class="headerlink" title="利用锁如何解决脏读"></a>利用锁如何解决脏读</h3><p>我们在更新某一条记录的时候，加上X锁，这样其他事务就不能读取修改之后回滚的脏数据。如下图所示：<br><img src="/images/solve_dirty_read.png" alt="">  </p>
+<h3 id="利用锁如何解决不可重复读"><a href="#利用锁如何解决不可重复读" class="headerlink" title="利用锁如何解决不可重复读"></a>利用锁如何解决不可重复读</h3><p>如果想让一个事务中两次读取同一条记录是一致的，也就是说不允许在这期间其他事务来修改这条记录，针对读取，我们只需要加上S锁，就可以解决不可重复读的问题。如下图所示：<br><img src="/images/solve_unrepeatable_read.png" alt="">  </p>
+<h3 id="利用锁解决幻读的问题"><a href="#利用锁解决幻读的问题" class="headerlink" title="利用锁解决幻读的问题"></a>利用锁解决幻读的问题</h3><p>当事务A在查询的时候给加上临键锁，之后事务B是不能在向表中插入这个记录的，从而解决了幻读的问题。如下图所示：<br><img src="/images/solve_huan_read.png" alt="">    </p>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><ol>
+<li><p>死锁产生的条件:</p>
+<blockquote>
+<ol>
+<li>多个并发事务（2个或者以上）；</li>
+<li>每个事务都持有锁（或者已经在等待锁）；</li>
+<li>每个事务都需要在继续持有锁；</li>
+<li>事务之间产生加锁的循环等待，形成死锁。</li>
+</ol>
+</blockquote>
+</li>
+<li><p>死锁的避免</p>
+<blockquote>
+<ol>
+<li>已固定的顺序访问表和行。比如两个事务操作批量数据的情形，简单的方法是对id列表先排序，后执行，这样可以避免交叉等待锁的情形；</li>
+<li>大事务拆小。大事务更倾向于死锁，如果业务允许，将大事务拆小；</li>
+<li>在同一个事务中，尽可能做到一次锁定所需要的所有资源，减少死锁概率；</li>
+<li>降低隔离级别。如果业务允许，将隔离级别调低也是较好的选择，比如将隔离级别从RR降低为RC，可以避免掉很多因为Gap锁造成的死锁；</li>
+<li>为表添加合适的索引。如果不走索引将会为表的每一行记录添加上锁，死锁的概率大大增加；</li>
+<li>在程序中捕获死锁异常。</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+  
+    <div style="text-align:center;color: #ccc;font-size:12px;">----------Ending <i class="fa fa-star"></i> Thanks----------</div>
+  
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+    <footer class="post-footer">
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/22/Sql-in-10-Minutes/" rel="next" title="SQL必知必会">
+                <i class="fa fa-chevron-left"></i> SQL必知必会
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#正确的创建合适的索引，是提升数据库查询性能的基础。"><span class="nav-text">正确的创建合适的索引，是提升数据库查询性能的基础。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是事务"><span class="nav-text">什么是事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务并发的三大问题"><span class="nav-text">事务并发的三大问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的四种隔离级别"><span class="nav-text">事务的四种隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB对隔离级别的支持程度"><span class="nav-text">InnoDB对隔离级别的支持程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务隔离级别的实现"><span class="nav-text">事务隔离级别的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁"><span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的力度"><span class="nav-text">锁的力度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySql-InnoDB锁的类型"><span class="nav-text">MySql InnoDB锁的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行锁算法"><span class="nav-text">行锁算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享锁（S锁）"><span class="nav-text">共享锁（S锁）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排他所（X锁）"><span class="nav-text">排他所（X锁）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#意向共享锁（IS）-意向排他锁（IX）"><span class="nav-text">意向共享锁（IS）/ 意向排他锁（IX）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的原理——到底锁住了什么？——锁住索引来实现的。只要检索的时候索引失效，即没有通过索引去检索，那么这个查询将会锁住整个表。"><span class="nav-text">锁的原理——到底锁住了什么？——锁住索引来实现的。只要检索的时候索引失效，即没有通过索引去检索，那么这个查询将会锁住整个表。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行锁的算法——锁住了什么范围？"><span class="nav-text">行锁的算法——锁住了什么范围？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用锁如何解决脏读"><span class="nav-text">利用锁如何解决脏读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用锁如何解决不可重复读"><span class="nav-text">利用锁如何解决不可重复读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用锁解决幻读的问题"><span class="nav-text">利用锁解决幻读的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁"><span class="nav-text">死锁</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> Visitors
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> Total
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
