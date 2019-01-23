@@ -67,13 +67,13 @@
 
 
 
-<meta name="description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。  为什么使用索引？索引能极大的减少存储引擎需要扫描的数据量；索引可以把随机IO改成顺序IO；索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。  索引数据结构的选择（1）为什么不能用平衡儿叉查找树？第一是因为太深：数据处的（高度）深度决定着它的IO操作次数，IO耗时大">
+<meta name="description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。">
 <meta name="keywords" content="Database,Index,Lock">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DB-Mysql-Index-Lock">
+<meta property="og:title" content="MySql中索引以及锁的知识总结">
 <meta property="og:url" content="http://yoursite.com/2019/01/23/DB-Mysql-Index-Lock/index.html">
 <meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
-<meta property="og:description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。  为什么使用索引？索引能极大的减少存储引擎需要扫描的数据量；索引可以把随机IO改成顺序IO；索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。  索引数据结构的选择（1）为什么不能用平衡儿叉查找树？第一是因为太深：数据处的（高度）深度决定着它的IO操作次数，IO耗时大">
+<meta property="og:description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/dirty_read.png">
 <meta property="og:image" content="http://yoursite.com/images/unrepeatable_read.png">
@@ -83,10 +83,10 @@
 <meta property="og:image" content="http://yoursite.com/images/solve_dirty_read.png">
 <meta property="og:image" content="http://yoursite.com/images/solve_unrepeatable_read.png">
 <meta property="og:image" content="http://yoursite.com/images/solve_huan_read.png">
-<meta property="og:updated_time" content="2019-01-23T12:42:56.909Z">
+<meta property="og:updated_time" content="2019-01-23T12:46:39.115Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DB-Mysql-Index-Lock">
-<meta name="twitter:description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。  为什么使用索引？索引能极大的减少存储引擎需要扫描的数据量；索引可以把随机IO改成顺序IO；索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。  索引数据结构的选择（1）为什么不能用平衡儿叉查找树？第一是因为太深：数据处的（高度）深度决定着它的IO操作次数，IO耗时大">
+<meta name="twitter:title" content="MySql中索引以及锁的知识总结">
+<meta name="twitter:description" content="正确的创建合适的索引，是提升数据库查询性能的基础。 定义：索引是为了加速对表中数据行的检索而创建的一种分散存储的数据结构。">
 <meta name="twitter:image" content="http://yoursite.com/images/dirty_read.png">
 
 
@@ -123,7 +123,7 @@
 
 
 
-  <title>DB-Mysql-Index-Lock | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>MySql中索引以及锁的知识总结 | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">DB-Mysql-Index-Lock</h1>
+          <h1 class="post-title" itemprop="name headline">MySql中索引以及锁的知识总结</h1>
         
 
         <div class="post-meta">
@@ -355,8 +355,10 @@
 
       
         <h3 id="正确的创建合适的索引，是提升数据库查询性能的基础。"><a href="#正确的创建合适的索引，是提升数据库查询性能的基础。" class="headerlink" title="正确的创建合适的索引，是提升数据库查询性能的基础。"></a>正确的创建合适的索引，是提升数据库查询性能的基础。</h3><ol>
-<li><p>定义：索引是为了<strong>加速</strong>对表中数据行的<strong>检索</strong>而创建的一种<strong>分散存储</strong>的<strong>数据结构</strong>。</p>
-</li>
+<li>定义：索引是为了<strong>加速</strong>对表中数据行的<strong>检索</strong>而创建的一种<strong>分散存储</strong>的<strong>数据结构</strong>。</li>
+</ol>
+<a id="more"></a>
+<ol>
 <li><p>为什么使用索引？<br>索引能极大的减少存储引擎需要扫描的数据量；<br>索引可以把随机IO改成顺序IO；<br>索引可以帮助我们在进行分组、排序等操作时，避免使用临时表。</p>
 </li>
 <li><p>索引数据结构的选择<br>（1）为什么不能用平衡儿叉查找树？<br>第一是因为<strong>太深</strong>：数据处的（高度）深度决定着它的IO操作次数，IO耗时大；<br>第二是因为<strong>太小</strong>：每一个磁盘块（节点/页）保存的数据量太小了；没有很好的利用磁盘的预读的能力（空间局部性原理），从而带来频繁的IO操作。</p>
