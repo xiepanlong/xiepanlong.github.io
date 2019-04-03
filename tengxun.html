@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="作者：奋怒嘚菜鸟链接：https://www.nowcoder.com/discuss/129660来源：牛客网 1.自我介绍（介绍到一半被打断了。。。）2.数据库里怎么优化查询效率。3.联合索引为什么是向左前缀4.http协议简单说一说，然后嫌弃我说的太简单，开怼。。5.ssl和tsl区别，http的头部有哪些？（太紧张，忘记了。。）6.如何判断两个ip是联通的。7.说一说jvm内存管理吧。然后">
+<meta property="og:type" content="website">
+<meta property="og:title" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/tengxun.html">
+<meta property="og:site_name" content="零柒 - Panlong Xie&#39;s Blog">
+<meta property="og:description" content="作者：奋怒嘚菜鸟链接：https://www.nowcoder.com/discuss/129660来源：牛客网 1.自我介绍（介绍到一半被打断了。。。）2.数据库里怎么优化查询效率。3.联合索引为什么是向左前缀4.http协议简单说一说，然后嫌弃我说的太简单，开怼。。5.ssl和tsl区别，http的头部有哪些？（太紧张，忘记了。。）6.如何判断两个ip是联通的。7.说一说jvm内存管理吧。然后">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-02-27T11:42:57.402Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="零柒 - Panlong Xie&#39;s Blog">
+<meta name="twitter:description" content="作者：奋怒嘚菜鸟链接：https://www.nowcoder.com/discuss/129660来源：牛客网 1.自我介绍（介绍到一半被打断了。。。）2.数据库里怎么优化查询效率。3.联合索引为什么是向左前缀4.http协议简单说一说，然后嫌弃我说的太简单，开怼。。5.ssl和tsl区别，http的头部有哪些？（太紧张，忘记了。。）6.如何判断两个ip是联通的。7.说一说jvm内存管理吧。然后">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/tengxun.html"/>
+
+
+
+
+
+  <title> | 零柒 - Panlong Xie's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零柒 - Panlong Xie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p>作者：奋怒嘚菜鸟<br>链接：<a href="https://www.nowcoder.com/discuss/129660" target="_blank" rel="external">https://www.nowcoder.com/discuss/129660</a><br>来源：牛客网</p>
+<p>1.自我介绍（介绍到一半被打断了。。。）<br>2.数据库里怎么优化查询效率。<br>3.联合索引为什么是向左前缀<br>4.http协议简单说一说，然后嫌弃我说的太简单，开怼。。<br>5.ssl和tsl区别，http的头部有哪些？（太紧张，忘记了。。）<br>6.如何判断两个ip是联通的。<br>7.说一说jvm内存管理吧。然后全程开怼。为什么年轻代一定要划分成两个区域，为什么老年代不行，为什么一定要分代。（近乎灵魂的拷问😭😭😭）<br>8.说说A*算法吧，然后介绍到一半，又问我迪杰斯特拉算法（全程被蔑视。。。）<br>9.操作系统里面内存管理有哪些啊？（我忘记了。。）</p>
+<p>作者：毛里求斯的爱<br>链接：<a href="https://www.nowcoder.com/discuss/130944" target="_blank" rel="external">https://www.nowcoder.com/discuss/130944</a><br>来源：牛客网</p>
+<p>实习项目介绍<br>项目背景<br>项目完成周期<br>自己负责的模块<br>数据结构和算法<br>算法手撕题1(对单链表反转)<br>给定一个单链表头结点，对其进行反转)<br>首先给出的递归解法(面试官貌似不认可) 空间复杂度O(n)<br>然后给出基于循环结构的解法 空间复杂度O(1)<br>最长公共子序列问题<br>给定两个字符串，然后求两个字符串的最长公共子序列（给出思路，不要求写代码）<br>直接通过二维表，列地推关系式。<br>高并发知识<br>介绍高并发<br>多线程<br>线程池<br>宏观(设计线程池的思想层面：参数，接口，策略)<br>微观(编程语言层面)<br>死锁<br>如何避免死锁？<br>导致死锁的必要条件<br>避免死锁的方法<br>指定获取锁和释放锁的顺序<br>破坏导致死锁的必要条件，使其不被满足<br>Http协议<br>what：(Hyper Text Transfer Protocol)超文本传输协议，包含那些东西？<br>how：底层实现<br>http2.0的特性<br>服务器推送数据<br>首部压缩，减小带宽<br>更多加密方式的支持<br>文本转为二进制数据传输<br>内存泄漏<br>what<br>解释什么是内存泄漏？<br>附带对比内存泄漏和内存溢出<br>why<br>分析为什么产生了内存泄漏？<br>how<br>怎么去检测程序是否存在内存泄漏？<br>智力题<em>(tencent两轮面试都出了两三道智力题，可怕)</em></p>
+<p>1.给定一串数字，其个数为偶数个，但是数字之和为奇数，现在两人分别交替从两端拿数字，最后两人拿到的数字之和最大者胜出，问是否存在一种必胜的策略，如果存在请给出，不存在说明理由？<br>2.一个桶中有100个球，两个人交替拿球，每个人每次可以选择在桶中拿出1个或者2个或者3个或者4个球，问是否存在一种必胜的策略，如果存在请给出，不存在说明理由？<br>解决方案：首先从100个数中，先手拿出奇数个数n1=（1 or 3），然后剩下的数也就变成了100-n1。然后每次两人都拿的数之和满足偶数，最后剩下的数肯定是基数，先手赢(可惜该方案是错误的)<br>正确方案：第二个人赢，策略如下：假设每次先手拿n1个数，然后后手拿5-n1个数，最后肯定是第二个人最后拿数，所以第二个人赢。perfect</p>
+<p>作者：毛里求斯的爱<br>链接：<a href="https://www.nowcoder.com/discuss/130338" target="_blank" rel="external">https://www.nowcoder.com/discuss/130338</a><br>来源：牛客网</p>
+<p>自我介绍<br>基础知识储备<br>学业、项目、实习<br>课余生活<br>java基础<br>HashMap原理介绍<br>宏观（数据结构和编程语言层面）<br>微观（具体HashMap的实现）<br>底层数据结构<br>扩容<br>同步异步<br>同步阻塞和异步非阻塞的性能比较<br>同步阻塞和异步非阻塞的区别？<br>场景题</p>
+<p>在高速公路上，假设每10min，就能看到一辆车通过的概率为97%，同时假设所有的车流量是匀速、稳定的。求解30min内至少看到一辆车的概率为多少？<br>解决方案：采用反面考虑该问题，30min内没有看到一辆车的概率为p=3%3%3%，所以本题的答案为1-p<br>两个人玩游戏，游戏场景如下：在一个圆桌上，摆放硬币，当一方无法在放下硬币时，结束游戏，对方获胜。（圆桌至少可以放置下一个硬币）求解是否存在先手必胜的策略<br>自己的思路：先手第一次放的硬币的位置为圆桌的中心，以后存放仍然按照剩余空间两段弧长的中心放置硬币，貌似没有必胜的策略<br>面试官给的提示：先手第一次放置的策略同上，以后每次放置的位置是通过对方放置后的位置，然后找其关于圆心的对称点进行放置，这种策略下是必胜的策略。<br>场景如下：现在在网上有一个购买虚拟课程的需求，目前已有的实现是：从前台提交订单付款，到后台处理数据，记录状态，发货，给客户发通知，这些一系列的操作是串行执行的。请问如何对该场景进行优化、解耦<br>串行执行可能带来阻塞（用户体验不太好）<br>事务的控制<br>算法题</p>
+<p>给定1~n n个连续的正整数，然后在文件中存储n+1个数，取值范围在1~n闭区间中，其中只有一个数重复出现一次，找出重复出现的该数（simple）</p>
+<p>解决方案：采用数学解，通过等差数列求和求解，时间复杂度O(n)<br>上题的前半部分题目不变，后面条件改变为存储的n+1个数中，有多个重复的数，全部找出来重复的数，n很大很大（42亿）。（hard）<br>解决方案：采用bitmap求解（附带问题42亿需要多大的bitmap存储空间？）<br>设计模式<br>装饰者设计模式<br>简单介绍其jdk中的使用场景<br>举个简单的业务使用场景<br>装饰者设计模式的思想是继承还是组合？（组合）<br>单例设计模式<br>手写单例模式实现<br>懒汉式、synchronized(方法级别锁)<br>双重锁（优化1）<br>静态内部类（优化2）<br>Spring框架<br>what what is Spring？<br>why why do you use Spring in your projects?<br>how How to use Spring and which modules use in projects?<br>IOC<br>AOP<br>声明式事务<br>JdbcTemplate(持久层)<br>redis<br>五种数据结构 string,hash,set,list,zset.<br>zset的底层实现<br>redis的两种持久化方式<br>实现分布式锁set nx ex<br>面试官建议<br>考虑在正式入职之前，到公司实习增强自身的能力<br>关注前沿技术</p>
+<p>作者：公众号：程序员江湖<br>链接：<a href="https://www.nowcoder.com/discuss/100383" target="_blank" rel="external">https://www.nowcoder.com/discuss/100383</a><br>来源：牛客网</p>
+<p>一面：<br>1 有序数组排序，二分，复杂度<br>2 常见排序算法，说下快排过程，时间复杂度<br>3 有N个节点的满二叉树的高度。1+logN<br>4 朋友之间的点对点关系用图维护，怎么判断两人是否是朋友，并查集，时间复杂度，过程。没讲清楚</p>
+<ol>
+<li>初始化元素</li>
+<li>实现元素与元素间的联合操作</li>
+<li>实现查找元素所在树的根节点</li>
+<li>解决一个问题，判定两个元素是否在同一棵树上（两个元素是否相互连接）<br>5 单元点最短路的方法，时间复杂度<br>6 如何实现关键字输入提示，使用字典树，复杂度多少，有没有其他方案，答哈希，如果是中文呢，分词后建立字典树？<br>7 hashmap的实现讲一下吧，讲的很详细了。讲一下红黑树的结构，查询性能等。<br>8 Java中的垃圾回收讲一下，讲了分代，gc算法，gc root可达性分析等<br>9 讲一下两个项目你都做了什么把。<br>10 除了代码之外你还学习了什么技术，框架。<br>11 死锁是怎么产生的<br>12 线程和进程的区别<br>13 进程的通信方式<br>14 CPU的执行方式<br>15 代码中遇到进程阻塞，进程僵死，内存泄漏等情况怎么排查。通过ps查询状态，分析dump文件等方式排查。<br>16 Linux了解么，查看进程状态ps，查看cpu状态 top。查看占用端口的进程号netstat grep<br>17 10g文件，只有2g内存，怎么查找文件中指定的字符串出现位置。MapReduce分割文件处理。<br>他说可以用cat | grep 管道处理。<br>18 Linux的swap了解么，完全不懂。<br>19 Redis和MySQL最大的区别<br>20 讲一下Tomcat的基本架构和组件，以及请求的整个流程。说了一下connector和container架构和servlet请求过程。<br>21 MySQL的存储引擎，有什么区别。<br>22 范围1到1000的数，原本有1000个，互不重复，现多出来1个重复的数，怎么找到他，统计次数，太慢，求和相减。<br>23 N个糖果，每次只能取1个到6个，不能不取，你先取，请问是否有必胜策略，怎么取。<br>刚开始说不太记得了，面试官提示了几个例子，找出规律不能为7的倍数，每次取到只剩7的倍数个糖果即可。</li>
+</ol>
+<p>二面：</p>
+<p>1 快排的时间复杂度，冒泡时间复杂度，快排是否稳定，快排的过程<br>2 100w个数，怎么找到前1000个最大的，堆排序，怎么构造，怎么调整，时间复杂度。<br>3 一个矩阵，从左上角到右下角，每个位置有一个权值。可以上下左右走，到达右下角的路径权值最小怎么走。<br>先说了一下dfs递归实现。面试官说要优化。<br>说了一下用迪杰斯特拉的思路，说可以。<br>4 四辆小车，每辆车加满油可以走一公里，问怎么能让一辆小车走最远。说了好几种方案，面试官引导我优化了一下，但是还是不满意，最后他说跳过。<br>5 hashmap的实现，hashtable，concurrenthashmap实现。<br>6 MySQL的索引，B+树性质。<br>7 Linux的cpu 100怎么排查，top jstack，日志，gui工具<br>8 Linux大文件怎么查某一行的内容。<br>9 Redis内存数据库的内存指的是共享内存么<br>10 Redis的持久化方式<br>11 秒杀系统的架构设计</p>
+<p>三面：</p>
+<p>1 十亿个数的集合和10w个数的集合，如何求它们的交集。<br>集合的数字不重复。<br>我讲了两次循环，两次hash，以及排序或者合并等方式。。都不对。后来面试官说是对小数组做hash，然后遍历大数组即可。我完全想错方向了。<br>2 十亿和数找到前100个最大的，堆排序，怎么实现，怎么调整。<br>3 TCP和UDP的区别，具体使用场景呢。<br>4 TCP四次挥手讲一下过程，最后一次ack如果客户端没收到怎么办。<br>5 对于socket编程，accept方法是干什么的，在三次握手中属于第几次，可以猜一下，为什么这么觉得。<br>6 Linux操作系统了解么，了解一点点，就没问了。<br>7 对于单例模式，有什么使用场景了，讲了全局id生成器，他问我分布式id生成器怎么实现，说了zk，问我zk了解原理不，讲了zab，然后就没问啦。<br>8 除了单例模式，知道适配器模式怎么实现么，有什么用<br>9 回到网络，刚才你说到直播场景，知道直播的架构怎么设计么，要点是什么，说了几个不太对，他说要避免广播风暴，答不会。<br>10 Redis和MySQL有什么区别，用于什么场景。<br>11 问了一下最近看什么书，什么时候开始写博客的<br>12 问了还有几轮面试，他说这轮我可以过，有点小惊喜</p>
+<p>四面：</p>
+<p>三面过了半个多月，终于安排四面了。</p>
+<p>1 自我介绍<br>2 项目，收获<br>3 Linux了解哪些，基础命令和知识。问我proc文件系统了解么，答不了解。<br>4 TCP和UDP的核心区别在哪，讲了滑动窗口保证可靠有序传输，UDP不可靠。TCP需要连接而UDP不需要。<br>5 TCP的四次挥手，time wait状态有什么意义。<br>6 说完这个他问我有什么想问他的了。<br>7 我问他为什么隔了这么久才面试，而且之前三面都只是初试，然后他说最近他在休假，所以就。。。害我担心了好久。他说接下来等HR面就行了。</p>
+<p>HR面</p>
+<p>1 自我介绍<br>2 实习收获<br>3 台湾交流体验<br>4 之前实习公司的情况，拿到offer了吗，会如何选择呢<br>5 排一下公司，部门，薪资和城市等因素。<br>6 你的优缺点，如何改进<br>7 学生时代最成功的事<br>8 你的预期薪资</p>
+<p>作者：woeM<br>链接：<a href="https://www.nowcoder.com/discuss/90723" target="_blank" rel="external">https://www.nowcoder.com/discuss/90723</a><br>来源：牛客网</p>
+<p>一面<br>1、三次握手<br>2、流控和拥塞控制<br>3、vector和list<br>4、strcpy和memcpy的区别<br>5、int几个字节，long几个字节，指针几个字节<br>一面是面试官直接打电话过来，没有任何提前预约，所以也没有拿纸记下来，就记得这几个题目了</p>
+<p>二面<br>1、个人介绍<br>2、问了点项目，实验室项目简单介绍下<br>3、在浏览器中输入网址发生了什么事情<br>4、nginx、apache执行cgi的过程<br>5、ipc、哪种最好<br>6、线程池的优点、好处（动态增长）<br>7、epoll的优点，select的适用场景（轮询？）<br>8、TCP在建立连接过程中会交换哪些信息<br>9、TCP和UDP应用场景<br>10、TCP和UDP中传输效率受哪些<br>11、C++中extern的用法<br>12、STL中map是怎么实现的，红黑树和平衡树哪个查找元素的效率高，红黑树相对于平衡树有什么优点<br>13、用过数据库吗？<br>14、hash_map如何解决冲突，以及扩容<br>15、1亿个数字求前100个<br>16、课外还看过哪些东西<br>17、对腾讯音乐有什么了解吗</p>
+<p>作者：菜是原罪!<br>链接：<a href="https://www.nowcoder.com/discuss/90649" target="_blank" rel="external">https://www.nowcoder.com/discuss/90649</a><br>来源：牛客网</p>
+<p>1.做的几个项目（问的巨细，基本上把该问的都问到了，尤其是细节）<br>2.TCP/IP结构有几层<br>3.三次握手，四次握手，以及为什么是三次和四次。<br>4.Linux常用的指令（内存查看，进程查看之类的。。。）<br>5.HTTP和HTTPS<br>6.HTTP状态码<br>7.类的加载过程<br>8.反射机制<br>9.常用的类<br>10.给你一个未知长度的链表,怎么找到中间的那个节点(提示:两个指针)<br>10.有什么想问的</p>
+<p>作者：羽墨如歌<br>链接：<a href="https://www.nowcoder.com/discuss/90542" target="_blank" rel="external">https://www.nowcoder.com/discuss/90542</a><br>来源：牛客网</p>
+<p>.对Java多线程和高并发有了解吗？（了解，用的不多，感觉凉了）<br>3.说一下线程池这一块？（讲了线程池的几个参数以及几个线程池的细分）<br>4.Java提供了几个类加载器？分别是？怎么对类进行加载的？（我死活忘记了中文名，然后英文命也记不得了，面试官人真得很好，他说，记不得名字没关系，你简单说一下他们的关系）<br>5.hashCode知道是干什么的吗？如果要你重写，需要注意哪些点？（我靠，这，一脸懵逼，，，，）<br>5.classnotfoundexception 知道吗？遇到场景是什么？怎么解决的？<br>6.NoSuchMethodException遇到过吗？（我做梦也不会想到居然会问这个。。。周公骗我，哇，忍不住哭出声了）</p>
+<p>作者：羽墨如歌<br>链接：<a href="https://www.nowcoder.com/discuss/93465" target="_blank" rel="external">https://www.nowcoder.com/discuss/93465</a><br>来源：牛客网</p>
+<p>2.自我介绍<br>3.TCP/IP有几层？那些？传输层有哪些协议？（我擦，我就知道TCP/UDP），http是基于什么协议的？（TCP，T：确定吗？M：确定！！！）<br>4.cookies和session的区别？<br>5.session是怎么做区分的？<br>6.cookie是怎么传到前端的？（M：啊，new Cookie()???    T:你说的语言实现吧，我说的是怎么传的？ M：这个。。。 T：没关系没关系）我觉得他是想问数据的传输过程？这地方求大佬指导<br>7.物理层我们常用的协议有哪些？（M：不知道，不了解，不清楚，别问我。。（这么答，怕不是当场挂电话） emmm。。。佯装思考，不知道）<br>8.项目里有个数据安全的，aes和md5的区别？详细点（只会用，不知道原理）<br>9.单点登录怎么实现的？<br>10.https怎么实现的？SSL和TLS的区别？<br>11.上海和深圳两个集群，他们https加密的公共密钥怎么同步？（M：卧槽，，想想想，redis，第三方？T：没关系没关系，下一个题。M：啊，好吧！！！）<br>12.页面报错了，你怎么排查？思考了下，状态码？请求日志？程序日志？数据库日志？Jconsole？jsadebugd？（T：okok）<br>以上是Java的<br>还有Python。。。。<br>1.你简历写还会爬虫？（M：镇静的说：嗯）<br>2.你都用那些框架？<br>3.Pyhton和Java的区别？（个人觉的Java是python他爹，别打我，我错了，我在也不敢了）<br>4.with open() as f:的底层实现（没看过，瞎扯，语法糖，封装了打开和关闭。。。）<br>5.python都用过哪些特别炫酷的技巧？（炫酷？切片？过滤？）<br>6.一个数组倒序的方法？（for？切片？列表生成式？ T：okok）其实我不确定python数据有木有reverse方法这类的，不敢说<br>7.你还写了会flask和Django？（en）<br>8.说一下他们的区别？（谈了一些个人的感受，正好实训在学，顺便吹了一波，吹到一半。T：okok）</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/FitMan.jpeg"
+              alt="Panlong Xie" />
+          
+            <p class="site-author-name" itemprop="name">Panlong Xie</p>
+            <p class="site-description motion-element" itemprop="description">The future you will be remorse now don't desperately own.</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Panlong Xie</span>
+
+  
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> Visitors
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> Total
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

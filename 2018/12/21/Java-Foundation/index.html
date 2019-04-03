@@ -78,7 +78,7 @@
 <meta property="og:image" content="http://yoursite.com/images/classtointerface.png">
 <meta property="og:image" content="http://yoursite.com/images/exception.png">
 <meta property="og:image" content="http://yoursite.com/images/throwable.png">
-<meta property="og:updated_time" content="2018-12-23T11:43:55.144Z">
+<meta property="og:updated_time" content="2019-03-21T03:54:10.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java语言基础总结">
 <meta name="twitter:description" content="1 面向对象1.1 封装首先是抽象，把事物抽象成一个类，其次才是封装，将事物拥有的属性和动作隐藏起来，只保留特定的方法与外界联系。封装符合面向对象设计原则的第一条：单一性原则，一个类把自己该做的事情封装起来，而不是暴露给其他类去处理，当内部的逻辑发生变化时，外部调用不用因此而修改，他们只调用开放的接口，而不用去关心内部的实现。">
@@ -387,7 +387,7 @@
 <li>静态内部类（static修饰类的话只能修饰内部类）： 静态内部类与非静态内部类之间存在一个最大的区别: 非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围类，但是静态内部类却没有。没有这个引用就意味着：1. 它的创建是不需要依赖外围类的创建。2. 它不能使用任何外围类的非static成员变量和方法。  </li>
 <li>静态导包(用来导入类中的静态资源，1.5之后的新特性): 格式为：import static 这两个关键字连用可以指定导入某个类中的指定静态资源，并且不需要使用类名调用类中静态成员，可以直接使用类中静态成员变量和成员方法。  </li>
 </ol>
-<h2 id="3-反射"><a href="#3-反射" class="headerlink" title="3 反射"></a>3 反射</h2><h3 id="3-1-概念"><a href="#3-1-概念" class="headerlink" title="3.1 概念"></a>3.1 概念</h3><p><strong>在运行的状态中，对于任何一个类或者对象，可以知道其任意的方法和属性，这种动态地调用其属性和方法的手段叫做反。</strong><br>反射 (Reflection) 是 Java 的特征之一，它允许运行中的 Java 程序获取自身的信息，并且可以操作类或对象的内部属性。  每个类都有一个 Class 对象，包含了与类有关的信息。当编译一个新类时，会产生一个同名的 .class 文件，该文件内容保存着 Class 对象。类加载相当于 Class 对象的加载。类在第一次使用时才动态加载到 JVM 中，可以使用 Class.forName(‘com.mysql.jdbc.Driver.class’) 这种方式来控制类的加载，该方法会返回一个 Class 对象。  </p>
+<h2 id="3-反射"><a href="#3-反射" class="headerlink" title="3 反射"></a>3 反射</h2><h3 id="3-1-概念"><a href="#3-1-概念" class="headerlink" title="3.1 概念"></a>3.1 概念</h3><p><strong>在运行的状态中，对于任何一个类或者对象，可以知道其任意的方法和属性，这种动态地调用其属性和方法的手段叫做反射。</strong><br>反射 (Reflection) 是 Java 的特征之一，它允许运行中的 Java 程序获取自身的信息，并且可以操作类或对象的内部属性。  每个类都有一个 Class 对象，包含了与类有关的信息。当编译一个新类时，会产生一个同名的 .class 文件，该文件内容保存着 Class 对象。类加载相当于 Class 对象的加载。类在第一次使用时才动态加载到 JVM 中，可以使用 Class.forName(‘com.mysql.jdbc.Driver.class’) 这种方式来控制类的加载，该方法会返回一个 Class 对象。  </p>
 <p><strong>反射</strong>可以提供运行时的类信息，并且这个类可以在运行时才加载进来，甚至在编译时期该类的 .class 不存在也可以加载进来。<br>Class 和 java.lang.reflect 一起对反射提供了支持，java.lang.reflect 类库主要包含了以下三个类：</p>
 <ul>
 <li>Field ：可以使用 get() 和 set() 方法读取和修改 Field 对象关联的字段；</li>
@@ -537,7 +537,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -548,7 +548,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -559,7 +559,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
